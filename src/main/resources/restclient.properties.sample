@@ -1,0 +1,13 @@
+# Namnet på certifikatsfilerna kan antingen innehålla absoluta sökvägar
+# som "/path/to/certificate.jks" alternativt en relativ sökväg i för-
+# hållande till system propertin 'user.home'. Inledande / avgör hur
+# clienten ska hantera filen.
+
+restbase=https://api.mit.ladok.se/
+restApiTransportProtcol=<protocol name>          # Defaults to TLSv1.2 (TLSv1.0, TLSv1.1, SSLv2, SSLv3)
+clientCertificateFile=<filename>
+clientCertificatePwd=<password>
+clientCertificateKeystoreType=<key store format> # Defaults to PKCS12
+trustStoreFile=<filename>
+trustStorePwd=<password>
+trustStoreType=<trust store format>              # Defaults to JKS

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint default-activation="eager"
+	xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+    <cm:property-placeholder persistent-id="se.sunet.ati.integration.ladok">
+		<cm:default-properties>
+			<cm:property name="rest-client.restbase"                      value="https://api.mit.ladok.se/" />
+			<cm:property name="rest-client.restApiTransportProtcol"       value="TLSv1.2" />
+			<cm:property name="rest-client.clientCertificateFile"         value="/path/to/LADOK_CLIENT_CERTIFICATE.p12" />
+			<cm:property name="rest-client.clientCertificatePwd"          value="LADOK_CLIENT_CERTIFICATE_PWD" />
+			<cm:property name="rest-client.clientCertificateKeystoreType" value="PKCS12" />
+			<cm:property name="rest-client.trustStoreFile"                value="/path/to/LADOK_CLIENT_TRUSTSTORE" />
+			<cm:property name="rest-client.trustStorePwd"                 value="LADOK_TRUSTSTORE_PWD" />
+			<cm:property name="rest-client.trustStoreType"                value="JKS" />
+		</cm:default-properties>
+	</cm:property-placeholder>
+
+    <bean id="kiServiceImpl" class="se.sunet.ati.ladok.rest.services.impl.KataloginformationImpl">
+		<property name="restbase"                      value="${rest-client.restbase}" />
+		<property name="restApiTransportProtcol"       value="${rest-client.restApiTransportProtcol}" />
+		<property name="clientCertificateFile"         value="${rest-client.clientCertificateFile}" />
+		<property name="clientCertificatePwd"          value="${rest-client.clientCertificatePwd}" />
+		<property name="clientCertificateKeystoreType" value="${rest-client.clientCertificateKeystoreType}" />
+		<property name="trustStoreFile"                value="${rest-client.trustStoreFile}" />
+		<property name="trustStorePwd"                 value="${rest-client.trustStorePwd}" />
+		<property name="trustStoreType"                value="${rest-client.trustStoreType}" />
+    </bean>
+
+    <bean id="uiServiceImpl" class="se.sunet.ati.ladok.rest.services.impl.UtbildningsinformationImpl">
+		<property name="restbase"                      value="${rest-client.restbase}" />
+		<property name="restApiTransportProtcol"       value="${rest-client.restApiTransportProtcol}" />
+		<property name="clientCertificateFile"         value="${rest-client.clientCertificateFile}" />
+		<property name="clientCertificatePwd"          value="${rest-client.clientCertificatePwd}" />
+		<property name="clientCertificateKeystoreType" value="${rest-client.clientCertificateKeystoreType}" />
+		<property name="trustStoreFile"                value="${rest-client.trustStoreFile}" />
+		<property name="trustStorePwd"                 value="${rest-client.trustStorePwd}" />
+		<property name="trustStoreType"                value="${rest-client.trustStoreType}" />
+    </bean>
+
+    <bean id="sdServiceImpl" class="se.sunet.ati.ladok.rest.services.impl.StudiedeltagandeImpl">
+		<property name="restbase"                      value="${rest-client.restbase}" />
+		<property name="restApiTransportProtcol"       value="${rest-client.restApiTransportProtcol}" />
+		<property name="clientCertificateFile"         value="${rest-client.clientCertificateFile}" />
+		<property name="clientCertificatePwd"          value="${rest-client.clientCertificatePwd}" />
+		<property name="clientCertificateKeystoreType" value="${rest-client.clientCertificateKeystoreType}" />
+		<property name="trustStoreFile"                value="${rest-client.trustStoreFile}" />
+		<property name="trustStorePwd"                 value="${rest-client.trustStorePwd}" />
+		<property name="trustStoreType"                value="${rest-client.trustStoreType}" />
+    </bean>
+
+    <service interface="se.sunet.ati.ladok.rest.services.Kataloginformation" ref="kiServiceImpl">
+         <service-properties>
+            <entry key="osgi.jndi.service.name" value="ladok/KI"/>
+        </service-properties>
+    </service>
+     
+    <service interface="se.sunet.ati.ladok.rest.services.Studiedeltagande" ref="sdServiceImpl">
+         <service-properties>
+            <entry key="osgi.jndi.service.name" value="ladok/SD"/>
+        </service-properties>
+    </service>
+    
+    <service interface="se.sunet.ati.ladok.rest.services.Utbildningsinformation" ref="uiServiceImpl">
+         <service-properties>
+            <entry key="osgi.jndi.service.name" value="ladok/UI"/>
+        </service-properties>
+    </service>
+
+</blueprint>
