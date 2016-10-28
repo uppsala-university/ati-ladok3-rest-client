@@ -16,6 +16,7 @@ import se.ladok.schemas.Benamningar;
 import se.ladok.schemas.Organisation;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.PeriodID;
+import se.ladok.schemas.utbildningsinformation.StudietaktID;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
 import se.ladok.schemas.utbildningsinformation.Versionsinformation;
@@ -27,6 +28,7 @@ public class UtbildningsinformationITCase {
 
 	private static final String organisationUID = "05c81ef6-9232-11e6-8ca9-ef169e22488c";
 	private static final String utbildningsmallUtbildningsinstansUID = "55555555-2007-0001-0001-000024000036";
+	private static final String utbildningsmallUtbildningstillfalleUID = "55555555-2007-0004-0002-000052000036";
 	private static final String utbildningsmallModulUID = "55555555-2007-0005-0001-000004000036";
 	private static final String utbildningstillfalleUID = "68616ef5-8e12-11e6-9c62-ab9879144e80";
 	private static final String utbildningstillfalleInstansUID = "1d5d97eb-8e11-11e6-9c62-ab9879144e80";
@@ -177,5 +179,35 @@ public class UtbildningsinformationITCase {
 		uiToSave.setUtbildningsmallUID(utbildningsmallModulUID);
 
 		ui.skapaUnderliggandeUtbildningsinstans(uiToSave, utbildningstillfalleInstansUID);
+	}
+
+	/**
+	 * Test för att skapa en Utbildningsinstans.
+	 * @throws Exception
+	 */
+	@Test
+	public void testSkapaUtbildningstillfalle() throws Exception {
+		Utbildningstillfalle utToSave = new Utbildningstillfalle();
+		StudietaktID studietakt = new StudietaktID();
+		// Studietakt på halvfart
+		studietakt.setValue(4);
+		utToSave.setStudietaktID(studietakt);
+		utToSave.setOrganisationUID(organisationUID);
+		utToSave.setStatus(1);
+		// Kurstillfälle enl. 2007 förordn.
+		utToSave.setUtbildningstypID(52);
+		utToSave.setTillfalleskod("12345");
+
+		Versionsinformation vInfo = new Versionsinformation();
+		vInfo.setArSenasteVersion(true);
+		vInfo.setVersionsnummer(1);
+		PeriodID pid = new PeriodID();
+		pid.setValue(periodID);
+		vInfo.setGiltigFranPeriodID(pid);
+
+		utToSave.setUtbildningsmallUID(utbildningsmallUtbildningstillfalleUID);
+
+		Utbildningstillfalle utbildningstillfalle = ui.skapaUtbildningstillfalle(utToSave);
+		assertNotNull(utbildningstillfalle);
 	}
 }
