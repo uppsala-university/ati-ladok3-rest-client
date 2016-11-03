@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.ladok.schemas.kataloginformation.I18NLista;
+import se.ladok.schemas.kataloginformation.Perioder;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -39,5 +40,13 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public I18NLista hamtaOversattningarSvenska() {
 		return hamtaOversattningar(SPRAKKOD_SVENSKA);
+	}
+
+	@Override
+	public Perioder listaLokalaPerioder() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path("grunddata").path("period");
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+			.accept(responseType).get(Perioder.class);
 	}
 }

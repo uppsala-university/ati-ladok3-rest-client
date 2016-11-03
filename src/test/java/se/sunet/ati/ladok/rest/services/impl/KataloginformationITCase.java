@@ -1,5 +1,6 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -9,6 +10,7 @@ import org.junit.Test;
 
 import se.ladok.schemas.kataloginformation.I18N;
 import se.ladok.schemas.kataloginformation.I18NLista;
+import se.ladok.schemas.kataloginformation.Perioder;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 
 public class KataloginformationITCase {
@@ -35,4 +37,10 @@ public class KataloginformationITCase {
 
 	}
 
+    @Test
+    public void listaLokalaPerioder() throws Exception {
+        Kataloginformation ki = new KataloginformationImpl();
+        Perioder perioder = ki.listaLokalaPerioder();
+        assertFalse(perioder.getPeriod().isEmpty());
+    }
 }
