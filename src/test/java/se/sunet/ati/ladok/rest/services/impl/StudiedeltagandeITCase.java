@@ -2,9 +2,11 @@ package se.sunet.ati.ladok.rest.services.impl;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Properties;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -14,6 +16,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.gson.Gson;
@@ -24,13 +27,20 @@ import com.google.gson.JsonParser;
 import se.ladok.schemas.Student;
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
 import se.sunet.ati.ladok.rest.services.impl.StudiedeltagandeImpl;
+import se.sunet.ati.ladok.rest.util.TestUtil;
 
 public class StudiedeltagandeITCase {
+	private static Properties properties = null;
+
+	@BeforeClass
+	public static void beforeClass() throws IOException {
+		properties = TestUtil.getProperties();
+	}
 
 	@Test
 	public void testHamtaStudentViaPersonnummer() throws Exception {
 		Studiedeltagande st = new StudiedeltagandeImpl();
-		Student student = st.hamtaStudentViaPersonnummer("199311168075");
+		Student student = st.hamtaStudentViaPersonnummer(properties.getProperty("rest.studiedeltagande.student.personnummer"));
 		assertNotNull(student);
 
 //		assertNotNull("");
