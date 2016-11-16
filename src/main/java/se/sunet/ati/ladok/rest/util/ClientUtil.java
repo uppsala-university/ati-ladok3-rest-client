@@ -35,19 +35,25 @@ public class ClientUtil {
 			SSLContext sslContext = SSLContext.getInstance(lsp.getRestApiTransportProtcol());
 			KeyManagerFactory kmf = KeyManagerFactory.getInstance( KeyManagerFactory.getDefaultAlgorithm() );	
 
-			// Initiate client certificate key store and certificate trust store.
+			// Initiate client certificate key store.
 			KeyStore clientKeystore;
 			clientKeystore = KeyStore.getInstance(lsp.getClientCertificateKeystoreType());
 			clientKeystore.load(new FileInputStream(lsp.getClientCertificateFile()), lsp.getClientCertificatePwd().toCharArray());
-			KeyStore trustStore = KeyStore.getInstance(lsp.getTrustStoreType());
-			trustStore.load(new FileInputStream(lsp.getTrustStoreFile()), lsp.getTrustStorePwd().toCharArray());
+			// Initiate optional certificate trust store.
+			KeyStore trustStore = null;
+			if (lsp.getTrustStoreFile() != null) {
+				trustStore = KeyStore.getInstance(lsp.getTrustStoreType());
+				trustStore.load(new FileInputStream(lsp.getTrustStoreFile()), lsp.getTrustStorePwd().toCharArray());
+			}
 
 			// Assign and initiate client builder.
 			kmf.init(clientKeystore, lsp.getClientCertificatePwd().toCharArray() );
 			sslContext.init( kmf.getKeyManagers(), null, null );
 			ClientBuilder cb = ClientBuilder.newBuilder();
 			cb.keyStore(clientKeystore, lsp.getClientCertificatePwd());
-			cb.trustStore(trustStore);
+			if (trustStore != null) {
+				cb.trustStore(trustStore);
+			}
 
 			return cb.build().target(stripEndSlash(lsp.getRestbase()) + "/" + stripStartSlash(path));
 		} catch (Exception e) {
@@ -128,27 +134,30 @@ public class ClientUtil {
 		
 		String trustStoreFile = lsp.getTrustStoreFile();
 		if (trustStoreFile == null || trustStoreFile.equals("")) {
-			throw new Exception("Missing property \"trustStoreFile\".");					
+			log.info("The property \"trustStoreFile\" is not specified. No truststore will be used.");
 		}
-		if (!trustStoreFile.substring(0, 1).equalsIgnoreCase("/")) {
-			trustStoreFile = System.getProperty("user.home") + "/" + trustStoreFile;
-			lsp.setTrustStoreFile(trustStoreFile);
-			log.debug("Using certificate trust store path relative to home directory '" + System.getProperty("user.home")  + "'.");
-		}
-		if (!Files.exists(Paths.get(trustStoreFile))) {
-			throw new Exception("Property \"trustStoreFile\" have no corresponding resource.");
-		}
-		log.info("Using certificate trust store: " + trustStoreFile);
+		else {
+			if(!trustStoreFile.substring(0, 1).equalsIgnoreCase("/")) {
+				trustStoreFile = System.getProperty("user.home") + "/" + trustStoreFile;
+				lsp.setTrustStoreFile(trustStoreFile);
+				log.debug("Using certificate trust store path relative to home directory '" + System.getProperty("user.home") + "'.");
+			}
+			if(!Files.exists(Paths.get(trustStoreFile))) {
+				throw new Exception("Property \"trustStoreFile\" have no corresponding resource.");
+			}
+			log.info("Using certificate trust store: " + trustStoreFile);
 		
-		String trustStorePwd = lsp.getTrustStorePwd();
-		if (trustStorePwd == null || trustStorePwd.equals("")) {
-			throw new Exception("Missing property \"trustStorePwd\".");					
+			String trustStorePwd = lsp.getTrustStorePwd();
+			if(trustStorePwd == null || trustStorePwd.equals("")) {
+				throw new Exception("Missing property \"trustStorePwd\".");
+			}
+			String trustStoreType = lsp.getTrustStoreType();
+			if(trustStoreType == null || trustStoreType.equals("")) {
+				throw new Exception("Missing property \"trustStoreType\".");
+			}
+			log.info("Using trust store type: " + trustStoreType);
 		}
-		String trustStoreType = lsp.getTrustStoreType();
-		if (trustStoreType == null || trustStoreType.equals("")) {
-			throw new Exception("Missing property \"trustStoreType\".");					
-		}
-		log.info("Using trust store type: " + trustStoreType);
+
 		String restBase = lsp.getRestbase();
 		if (restBase == null || restBase.equals("")) {
 			throw new Exception("Missing property \"restbase\"");

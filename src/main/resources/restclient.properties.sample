@@ -8,6 +8,9 @@ restApiTransportProtcol=<protocol name>          # Defaults to TLSv1.2 (TLSv1.0,
 clientCertificateFile=<filename>
 clientCertificatePwd=<password>
 clientCertificateKeystoreType=<key store format> # Defaults to PKCS12
+
+# Vissa JAX-RS-implementationer kräver en trust store medan andra inte kräver
+# det. Nedanstående properties är därför optional.
 trustStoreFile=<filename>
 trustStorePwd=<password>
 trustStoreType=<trust store format>              # Defaults to JKS
