@@ -24,7 +24,7 @@ public class KataloginformationITCase {
 		I18NLista i18nLista = ki.hamtaOversattningarSvenska();
 		assertNotNull(i18nLista);
 		assertNotNull(i18nLista.getOversattning());
-		assertTrue(!i18nLista.getOversattning().isEmpty());
+		assertFalse(i18nLista.getOversattning().isEmpty());
 		I18N iaaa18n = new I18N();
 		iaaa18n.setI18NNyckel("commons.fel.detaljkod.antagningsforfarande");
 		iaaa18n.setText("Antagningsförfarande");

@@ -68,12 +68,12 @@ public class UtbildningsinformationITCase {
 			if (kod.equals(organisation.getKod())) {
 				for (Benamning benamn : organisation.getBenamningar().getBenamning()) {
 					if (benamn.getSprakkod().equals("en")) {
-						assertTrue(benamn.getText().equals(benamnEn));
+						assertEquals(benamnEn, benamn.getText());
 					} else if (benamn.getSprakkod().equals("sv")) {
-						assertTrue(benamn.getText().equals(benamnSv));
+						assertEquals(benamnSv, benamn.getText());
 					}
 				}
-				assertTrue(getOrganisationUID().equals(organisation.getUid()));
+				assertEquals(getOrganisationUID(), organisation.getUid());
 			}
 		}
 	}
@@ -84,8 +84,8 @@ public class UtbildningsinformationITCase {
 		Utbildningstillfalle utbildningstillfalle = ui
 				.hamtaUtbildningstillfalleViaUtbildningsUtbildningstillfalleUID(utbildningstillfalleUID);
 
-		assertTrue(utbildningstillfalleUID.equals(utbildningstillfalle.getUid()));
-		assertTrue(utbildningstillfalleInstansUID.equals(utbildningstillfalle.getUtbildningsinstansUID()));
+		assertEquals(utbildningstillfalleUID, utbildningstillfalle.getUid());
+		assertEquals(utbildningstillfalleInstansUID, utbildningstillfalle.getUtbildningsinstansUID());
 	}
 
 	@Test
@@ -97,9 +97,9 @@ public class UtbildningsinformationITCase {
 
 		for (Benamning benamn : utbildningsinstans.getBenamningar().getBenamning()) {
 			if (benamn.getSprakkod().equals("en")) {
-				assertTrue(benamn.getText().equals("Additive manufacturing"));
+				assertEquals("Additive manufacturing", benamn.getText());
 			} else if (benamn.getSprakkod().equals("sv")) {
-				assertTrue(benamn.getText().equals("Additiv tillverkning"));
+				assertEquals("Additiv tillverkning", benamn.getText());
 			}
 		}
 	}
