@@ -35,7 +35,6 @@ public class UtbildningsinformationITCase {
 	private static final String utbildningsmallModulUID = "55555555-2007-0005-0001-000004000036";
 	private static final String utbildningstillfalleUID = "68616ef5-8e12-11e6-9c62-ab9879144e80";
 	private static final String utbildningstillfalleInstansUID = "1d5d97eb-8e11-11e6-9c62-ab9879144e80";
-	private static final int periodID = 174050; // HT16
 
 	private static Properties properties = null;
 
@@ -53,6 +52,10 @@ public class UtbildningsinformationITCase {
 
 	private String getOrganisationUID() {
 		return properties.getProperty("rest.utbildningsinformation.organisation.uid");
+	}
+
+	private static int getPeriodID() {
+		return Integer.parseInt(properties.getProperty("rest.utbildningsinformation.period.id"));
 	}
 
 	@Test
@@ -120,7 +123,7 @@ public class UtbildningsinformationITCase {
 		vInfo.setArSenasteVersion(true);
 		vInfo.setVersionsnummer(1);
 		PeriodID pid = new PeriodID();
-		pid.setValue(periodID);
+		pid.setValue(getPeriodID());
 		vInfo.setGiltigFranPeriodID(pid);
 
 		uiToSave.setVersionsinformation(vInfo);
@@ -151,7 +154,7 @@ public class UtbildningsinformationITCase {
 		vInfo.setArSenasteVersion(true);
 		vInfo.setVersionsnummer(1);
 		PeriodID pid = new PeriodID();
-		pid.setValue(periodID);
+		pid.setValue(getPeriodID());
 		vInfo.setGiltigFranPeriodID(pid);
 
 		uiToSave.setVersionsinformation(vInfo);
@@ -188,7 +191,7 @@ public class UtbildningsinformationITCase {
 		vInfo.setArSenasteVersion(true);
 		vInfo.setVersionsnummer(1);
 		PeriodID pid = new PeriodID();
-		pid.setValue(periodID);
+		pid.setValue(getPeriodID());
 		vInfo.setGiltigFranPeriodID(pid);
 
 		uiToSave.setVersionsinformation(vInfo);
@@ -218,7 +221,7 @@ public class UtbildningsinformationITCase {
 		vInfo.setArSenasteVersion(true);
 		vInfo.setVersionsnummer(1);
 		PeriodID pid = new PeriodID();
-		pid.setValue(periodID);
+		pid.setValue(getPeriodID());
 		vInfo.setGiltigFranPeriodID(pid);
 
 		utToSave.setUtbildningsmallUID(utbildningsmallUtbildningstillfalleUID);
