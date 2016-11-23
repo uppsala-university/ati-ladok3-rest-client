@@ -1,5 +1,7 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
+import java.io.IOException;
+import java.util.Properties;
 import javax.ws.rs.BadRequestException;
 
 import static org.junit.Assert.assertEquals;
@@ -9,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import se.ladok.schemas.Benamning;
@@ -21,12 +24,12 @@ import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
 import se.ladok.schemas.utbildningsinformation.Versionsinformation;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
+import se.sunet.ati.ladok.rest.util.TestUtil;
 
 public class UtbildningsinformationITCase {
 
 	private static Log log = LogFactory.getLog(UtbildningsinformationITCase.class);
 
-	private static final String organisationUID = "05c81ef6-9232-11e6-8ca9-ef169e22488c";
 	private static final String utbildningsmallUtbildningsinstansUID = "55555555-2007-0001-0001-000024000036";
 	private static final String utbildningsmallUtbildningstillfalleUID = "55555555-2007-0004-0002-000052000036";
 	private static final String utbildningsmallModulUID = "55555555-2007-0005-0001-000004000036";
@@ -34,27 +37,40 @@ public class UtbildningsinformationITCase {
 	private static final String utbildningstillfalleInstansUID = "1d5d97eb-8e11-11e6-9c62-ab9879144e80";
 	private static final int periodID = 174050; // HT16
 
+	private static Properties properties = null;
 
-	Utbildningsinformation ui;
+	private Utbildningsinformation ui;
 
 	@Before
 	public void setUp() {
 		ui = new UtbildningsinformationImpl();
 	}
 
+	@BeforeClass
+	public static void beforeClass() throws IOException {
+		properties = TestUtil.getProperties();
+	}
+
+	private String getOrganisationUID() {
+		return properties.getProperty("rest.utbildningsinformation.organisation.uid");
+	}
+
 	@Test
 	public void testSokAllaOrganisationer() {
 		Organisationslista organisationer = ui.sokAllaOrganisationer();
+		String benamnEn = properties.getProperty("rest.utbildningsinformation.organisation.benamn.en");
+		String benamnSv = properties.getProperty("rest.utbildningsinformation.organisation.benamn.sv");
+		String kod = properties.getProperty("rest.utbildningsinformation.organisation.kod");
 		for (Organisation organisation : organisationer.getOrganisation()) {
-			if ("ITS".equals(organisation.getKod())) {
+			if (kod.equals(organisation.getKod())) {
 				for (Benamning benamn : organisation.getBenamningar().getBenamning()) {
 					if (benamn.getSprakkod().equals("en")) {
-						assertTrue(benamn.getText().equals("- No translation available -"));
+						assertTrue(benamn.getText().equals(benamnEn));
 					} else if (benamn.getSprakkod().equals("sv")) {
-						assertTrue(benamn.getText().equals("IT-sektionen, MDH"));
+						assertTrue(benamn.getText().equals(benamnSv));
 					}
 				}
-				assertTrue(organisationUID.equals(organisation.getUid()));
+				assertTrue(getOrganisationUID().equals(organisation.getUid()));
 			}
 		}
 	}
@@ -95,7 +111,7 @@ public class UtbildningsinformationITCase {
 		benamningar.getBenamning().add(svenska);
 		uiToSave.setBenamningar(benamningar);
 		uiToSave.setOmfattning("7.5");
-		uiToSave.setOrganisationUID(organisationUID);
+		uiToSave.setOrganisationUID(getOrganisationUID());
 		uiToSave.setStatus(1);
 		uiToSave.setUtbildningstypID(24);
 		uiToSave.setUtbildningskod("TEST");
@@ -125,7 +141,7 @@ public class UtbildningsinformationITCase {
 		benamningar.getBenamning().add(svenska);
 		uiToSave.setBenamningar(benamningar);
 		uiToSave.setOmfattning("7.5");
-		uiToSave.setOrganisationUID(organisationUID);
+		uiToSave.setOrganisationUID(getOrganisationUID());
 		uiToSave.setStatus(1);
 		// Kurs på grundnivå enl. 2007 förordn.
 		uiToSave.setUtbildningstypID(22);
@@ -163,7 +179,7 @@ public class UtbildningsinformationITCase {
 		benamningar.getBenamning().add(svenska);
 		uiToSave.setBenamningar(benamningar);
 		uiToSave.setOmfattning("1.0");
-		uiToSave.setOrganisationUID(organisationUID);
+		uiToSave.setOrganisationUID(getOrganisationUID());
 		uiToSave.setStatus(1);
 		uiToSave.setUtbildningstypID(4);
 		uiToSave.setUtbildningskod("TEST");
@@ -192,7 +208,7 @@ public class UtbildningsinformationITCase {
 		// Studietakt på halvfart
 		studietakt.setValue(4);
 		utToSave.setStudietaktID(studietakt);
-		utToSave.setOrganisationUID(organisationUID);
+		utToSave.setOrganisationUID(getOrganisationUID());
 		utToSave.setStatus(1);
 		// Kurstillfälle enl. 2007 förordn.
 		utToSave.setUtbildningstypID(52);
