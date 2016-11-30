@@ -1,9 +1,10 @@
 package se.sunet.ati.ladok.rest.services;
 
 import se.ladok.schemas.Student;
+import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
 
 public interface Studiedeltagande extends LadokServiceProperties {
-	
-	public Student hamtaStudentViaPersonnummer(String personnummer);
+	public TillfallesdeltagandeLista hamtaPaborjadeKurser(String studentUid);
 
+	public Student hamtaStudentViaPersonnummer(String personnummer);
 }

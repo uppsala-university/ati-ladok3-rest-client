@@ -25,6 +25,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import se.ladok.schemas.Student;
+import se.ladok.schemas.studiedeltagande.Tillfallesdeltagande;
+import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
 import se.sunet.ati.ladok.rest.services.impl.StudiedeltagandeImpl;
 import se.sunet.ati.ladok.rest.util.TestUtil;
@@ -35,6 +37,18 @@ public class StudiedeltagandeITCase {
 	@BeforeClass
 	public static void beforeClass() throws IOException {
 		properties = TestUtil.getProperties();
+	}
+
+	@Test
+	public void testHamtaPaborjadeKurser() throws Exception {
+		Studiedeltagande st = new StudiedeltagandeImpl();
+		Student student = st.hamtaStudentViaPersonnummer(properties.getProperty("rest.studiedeltagande.student.personnummer"));
+		TillfallesdeltagandeLista tillfallesdeltagandeLista = st.hamtaPaborjadeKurser(student.getUid());
+		assertNotNull(tillfallesdeltagandeLista);
+
+		for(Tillfallesdeltagande tillfallesdeltagande : tillfallesdeltagandeLista.getTillfallesdeltaganden().getTillfallesdeltagande()) {
+			System.out.println("Utbildningskod: " + tillfallesdeltagande.getUtbildningsinformation().getUtbildningskod());
+		}
 	}
 
 	@Test
@@ -64,7 +78,5 @@ public class StudiedeltagandeITCase {
 //				String.valueOf("4"));
 //		transformer.transform(xmlInput, xmlOutput);
 //		System.out.println(xmlOutput.getWriter().toString());
-
 	}
-
 }
