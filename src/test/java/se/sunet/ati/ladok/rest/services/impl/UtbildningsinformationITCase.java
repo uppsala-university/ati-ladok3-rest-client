@@ -1,12 +1,13 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
-import java.io.IOException;
-import java.util.Properties;
-import javax.ws.rs.BadRequestException;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.Properties;
+
+import javax.ws.rs.BadRequestException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +19,7 @@ import se.ladok.schemas.Benamning;
 import se.ladok.schemas.Benamningar;
 import se.ladok.schemas.Organisation;
 import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.utbildningsinformation.Kurs2007GrundAvancerad;
 import se.ladok.schemas.utbildningsinformation.PeriodID;
 import se.ladok.schemas.utbildningsinformation.StudietaktID;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
@@ -81,17 +83,15 @@ public class UtbildningsinformationITCase {
 	@Test
 	public void testHamtaUtbildningstillfalle() throws Exception {
 
-		Utbildningstillfalle utbildningstillfalle = ui
-				.hamtaUtbildningstillfalleViaUtbildningsUtbildningstillfalleUID(utbildningstillfalleUID);
+		Utbildningstillfalle utbildningstillfalle = ui.hamtaUtbildningstillfalleViaUtbildningsUtbildningstillfalleUID(utbildningstillfalleUID);
 
 		assertEquals(utbildningstillfalleUID, utbildningstillfalle.getUid());
 		assertEquals(utbildningstillfalleInstansUID, utbildningstillfalle.getUtbildningsinstansUID());
 	}
 
 	@Test
-	public void testHamtaUtbildningsinstansViaUtbildningsinstansUID(){
-		Utbildningsinstans utbildningsinstans = ui
-				.hamtaUtbildningsinstansViaUtbildningsinstansUID(utbildningstillfalleInstansUID);
+	public void testHamtaUtbildningsinstansViaUtbildningsinstansUID() {
+		Utbildningsinstans utbildningsinstans = ui.hamtaUtbildningsinstansViaUtbildningsinstansUID(utbildningstillfalleInstansUID);
 
 		assertTrue(utbildningstillfalleInstansUID.equalsIgnoreCase(utbildningsinstans.getUid()));
 
@@ -105,7 +105,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testSkapaUtbildningsinstans(){
+	public void testSkapaUtbildningsinstans() {
 		Utbildningsinstans uiToSave = new Utbildningsinstans();
 		Benamningar benamningar = new Benamningar();
 		Benamning svenska = new Benamning();
@@ -169,9 +169,9 @@ public class UtbildningsinformationITCase {
 	* Test för att skapa en underliggande Utbildningsinstans.
 	* Kräver att den överliggande utbildningsinstansen inte är i komplett status (3).
 	* Förväntat resultat är då att anropet mot {@link Utbildningsinformation#skapaUnderliggandeUtbildningsinstans} kastar {@link BadRequestException}.
-	*
-	* @throws Exception
-	*/
+	 *
+	 * @throws Exception
+	 */
 	@Test(expected = BadRequestException.class)
 	public void testSkapaUnderliggandeUtbildningsinstans() throws Exception {
 		Utbildningsinstans uiToSave = new Utbildningsinstans();
@@ -228,5 +228,45 @@ public class UtbildningsinformationITCase {
 
 		Utbildningstillfalle utbildningstillfalle = ui.skapaUtbildningstillfalle(utToSave);
 		assertNotNull(utbildningstillfalle);
+	}
+
+	@Test
+	public void testSkapaUtbildningsinstansOchNyVersion() {
+		Kurs2007GrundAvancerad uiToSave = new Kurs2007GrundAvancerad();
+		Benamningar benamningar = new Benamningar();
+		Benamning svenska = new Benamning();
+		svenska.setSprakkod("sv");
+		svenska.setText("TEST_SVENSKA");
+		Benamning engelska = new Benamning();
+		engelska.setSprakkod("en");
+		engelska.setText("TEST_ENGLISH");
+		benamningar.getBenamning().add(svenska);
+		benamningar.getBenamning().add(engelska);
+		uiToSave.setBenamningar(benamningar);
+		uiToSave.setOmfattning("7.5");
+		uiToSave.setOrganisationUID("ea459c31-b235-11e6-a17b-fa6452a340a2");
+		uiToSave.setStatus(2);
+		uiToSave.setUtbildningstypID(22);
+		uiToSave.setUtbildningskod("OST66");
+
+		Versionsinformation vInfo = new Versionsinformation();
+		vInfo.setAnteckning("Hej");
+		vInfo.setArSenasteVersion(true);
+		PeriodID pid = new PeriodID();
+		pid.setValue(104302);
+		vInfo.setGiltigFranPeriodID(pid);
+
+		uiToSave.setVersionsinformation(vInfo);
+		uiToSave.setUtbildningsmallUID("55555555-2007-0001-0005-000022000036");
+
+		Utbildningsinstans savedIuVer1 = ui.skapaUtbildningsinstans(uiToSave);
+		assertNotNull(savedIuVer1);
+		assertEquals(uiToSave.getUtbildningskod(), savedIuVer1.getUtbildningskod());
+		assertEquals(Integer.valueOf(1), savedIuVer1.getVersionsinformation().getVersionsnummer());
+
+		Utbildningsinstans savedIuVer2 = ui.skapaNyVersionUtbildningsinstans(savedIuVer1.getUid(), vInfo);
+		assertNotNull(savedIuVer2);
+		assertEquals(uiToSave.getUtbildningskod(), savedIuVer2.getUtbildningskod());
+		assertEquals(Integer.valueOf(2), savedIuVer2.getVersionsinformation().getVersionsnummer());
 	}
 }
