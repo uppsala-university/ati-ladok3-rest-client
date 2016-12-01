@@ -3,9 +3,12 @@ package se.sunet.ati.ladok.rest.services;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
+import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
 import se.ladok.schemas.utbildningsinformation.Versionsinformation;
 
 public interface Utbildningsinformation extends LadokServiceProperties {
+
+	Utbildningstyp hamtaUtbildningsttypID(String utbildningstypKod);
 
 	Utbildningstillfalle hamtaUtbildningstillfalleViaUtbildningsUtbildningstillfalleUID(String utbildningstillfalleUID);
 

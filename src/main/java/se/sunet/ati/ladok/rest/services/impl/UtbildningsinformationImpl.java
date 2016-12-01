@@ -12,6 +12,7 @@ import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.ObjectFactory;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
+import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
 import se.ladok.schemas.utbildningsinformation.Versionsinformation;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
@@ -25,8 +26,11 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String UTBILDNINGSINFORMATION_MEDIATYPE = "xml";
 	private static final String RESOURCE_UTBILDNINGSTILFALLE = "utbildningstillfalle";
 	private static final String RESOURCE_UTBILDNINGSINSSTANS = "utbildningsinstans";
+	private static final String RESOURCE_GRUNDDATA = "grunddata";
+	private static final String RESOURCE_KOD = "kod";
 	private static final String RESOURCE_ORGANISATION = "organisation";
 	private static final String RESOURCE_UNDERLIGGANDE = "underliggande";
+	private static final String RESOURCE_UTBILDNINGSTYP = "utbildningstyp";
 	private static final String RESOURCE_VERSION = "version";
 
 	WebTarget utbildningsinformation;
@@ -41,6 +45,18 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 			this.utbildningsinformation = ClientUtil.newClient(this, UTBILDNINGSINFORMATION_URL);
 		}
 		return this.utbildningsinformation;
+	}
+
+	@Override
+	public Utbildningstyp hamtaUtbildningsttypID(String utbildningstypKod) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path(RESOURCE_UTBILDNINGSTYP).path(RESOURCE_KOD).path(utbildningstypKod);
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		return client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get(Utbildningstyp.class);
 	}
 
 	@Override

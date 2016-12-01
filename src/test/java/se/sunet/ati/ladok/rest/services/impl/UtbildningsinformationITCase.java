@@ -24,6 +24,7 @@ import se.ladok.schemas.utbildningsinformation.PeriodID;
 import se.ladok.schemas.utbildningsinformation.StudietaktID;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
+import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
 import se.ladok.schemas.utbildningsinformation.Versionsinformation;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
@@ -37,6 +38,11 @@ public class UtbildningsinformationITCase {
 	private static final String utbildningsmallModulUID = "55555555-2007-0005-0001-000004000036";
 	private static final String utbildningstillfalleUID = "68616ef5-8e12-11e6-9c62-ab9879144e80";
 	private static final String utbildningstillfalleInstansUID = "1d5d97eb-8e11-11e6-9c62-ab9879144e80";
+	// Nationellt beslutade koder som ska vara samma för alla lärosäten
+	private static final String UTBILDNINGSTYP_2007_KURS_AVANCERAD_KOD = "2007AKURS";
+	private static final String UTBILDNINGSTYP_2007_KURS_GRUND_KOD = "2007GKURS";
+	private static final String UTBILDNINGSTYP_2007_KURSTILLFÄLLE = "2007KTF";
+	private static final String UTBILDNINGSTYP_2007_MODUL_MED_OMFATTNING = "2007MOD";
 
 	private static Properties properties = null;
 
@@ -60,6 +66,13 @@ public class UtbildningsinformationITCase {
 		return Integer.parseInt(properties.getProperty("rest.utbildningsinformation.period.id"));
 	}
 
+	private int getUtbildningstypID(String utbildningstypKod) {
+		Utbildningstyp utbildningstyp = ui
+				.hamtaUtbildningsttypID(utbildningstypKod);
+		log.info("Hämtade utbildningstypID " + utbildningstyp.getID() + " för koden " + utbildningstypKod);
+		return Integer.parseInt(utbildningstyp.getID());
+	}
+
 	@Test
 	public void testSokAllaOrganisationer() {
 		Organisationslista organisationer = ui.sokAllaOrganisationer();
@@ -78,6 +91,13 @@ public class UtbildningsinformationITCase {
 				assertEquals(getOrganisationUID(), organisation.getUid());
 			}
 		}
+	}
+
+	@Test
+	public void testHamtaUtbildningsttypID() throws Exception {
+		Utbildningstyp utbildningstyp = ui
+				.hamtaUtbildningsttypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
+		assertNotNull(utbildningstyp);
 	}
 
 	@Test
@@ -116,7 +136,7 @@ public class UtbildningsinformationITCase {
 		uiToSave.setOmfattning("7.5");
 		uiToSave.setOrganisationUID(getOrganisationUID());
 		uiToSave.setStatus(1);
-		uiToSave.setUtbildningstypID(24);
+		uiToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_AVANCERAD_KOD));
 		uiToSave.setUtbildningskod("TEST");
 
 		Versionsinformation vInfo = new Versionsinformation();
@@ -146,8 +166,7 @@ public class UtbildningsinformationITCase {
 		uiToSave.setOmfattning("7.5");
 		uiToSave.setOrganisationUID(getOrganisationUID());
 		uiToSave.setStatus(1);
-		// Kurs på grundnivå enl. 2007 förordn.
-		uiToSave.setUtbildningstypID(22);
+		uiToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
 		uiToSave.setUtbildningskod("TEST");
 
 		Versionsinformation vInfo = new Versionsinformation();
@@ -184,7 +203,7 @@ public class UtbildningsinformationITCase {
 		uiToSave.setOmfattning("1.0");
 		uiToSave.setOrganisationUID(getOrganisationUID());
 		uiToSave.setStatus(1);
-		uiToSave.setUtbildningstypID(4);
+		uiToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_MODUL_MED_OMFATTNING));
 		uiToSave.setUtbildningskod("TEST");
 
 		Versionsinformation vInfo = new Versionsinformation();
@@ -213,8 +232,7 @@ public class UtbildningsinformationITCase {
 		utToSave.setStudietaktID(studietakt);
 		utToSave.setOrganisationUID(getOrganisationUID());
 		utToSave.setStatus(1);
-		// Kurstillfälle enl. 2007 förordn.
-		utToSave.setUtbildningstypID(52);
+		utToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURSTILLFÄLLE));
 		utToSave.setTillfalleskod("12345");
 
 		Versionsinformation vInfo = new Versionsinformation();
