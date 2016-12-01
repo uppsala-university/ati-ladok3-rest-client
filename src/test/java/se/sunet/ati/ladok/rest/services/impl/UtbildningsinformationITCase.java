@@ -263,7 +263,7 @@ public class UtbildningsinformationITCase {
 		uiToSave.setOmfattning("7.5");
 		uiToSave.setOrganisationUID("ea459c31-b235-11e6-a17b-fa6452a340a2");
 		uiToSave.setStatus(2);
-		uiToSave.setUtbildningstypID(22);
+		uiToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
 		uiToSave.setUtbildningskod("OST66");
 
 		Versionsinformation vInfo = new Versionsinformation();
