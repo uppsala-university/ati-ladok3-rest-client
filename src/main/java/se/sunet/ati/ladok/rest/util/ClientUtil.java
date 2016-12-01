@@ -21,8 +21,8 @@ import se.sunet.ati.ladok.rest.services.LadokServiceProperties;
 public class ClientUtil {
 
 	private static Log log = LogFactory.getLog(ClientUtil.class);
-	
-	static public WebTarget newClient(LadokServiceProperties lsp, String path) { 
+
+	static public WebTarget newClient(LadokServiceProperties lsp, String path) {
 		try {
 			loadProperties(lsp);
 			checkProperties(lsp);
@@ -33,7 +33,7 @@ public class ClientUtil {
 
 		try {
 			SSLContext sslContext = SSLContext.getInstance(lsp.getRestApiTransportProtcol());
-			KeyManagerFactory kmf = KeyManagerFactory.getInstance( KeyManagerFactory.getDefaultAlgorithm() );	
+			KeyManagerFactory kmf = KeyManagerFactory.getInstance( KeyManagerFactory.getDefaultAlgorithm() );
 
 			// Initiate client certificate key store.
 			KeyStore clientKeystore;
@@ -60,7 +60,7 @@ public class ClientUtil {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	static private void loadProperties(LadokServiceProperties lsp) throws IOException {
 		if (lsp.getClientCertificatePwd() != null) {
 			log.info("Properties already set via setters. Not using restclient.properties");
@@ -107,11 +107,11 @@ public class ClientUtil {
 			throw new RuntimeException("No restclient.properties found");
 		}
 	}
-	
+
 	static private void checkProperties(LadokServiceProperties lsp) throws Exception {
 		String clientCertificateFile = lsp.getClientCertificateFile();
 		if (clientCertificateFile == null || clientCertificateFile.equals("")) {
-			throw new Exception("Missing property \"clientCertificateFile\".");					
+			throw new Exception("Missing property \"clientCertificateFile\".");
 		}
 		if (!clientCertificateFile.substring(0, 1).equalsIgnoreCase("/")) {
 			clientCertificateFile = System.getProperty("user.home") + "/" + clientCertificateFile;
@@ -124,14 +124,14 @@ public class ClientUtil {
 		log.info("Using client certificate keystore: " + clientCertificateFile);
 		String clientCertificatePwd = lsp.getClientCertificatePwd();
 		if (clientCertificatePwd == null || clientCertificatePwd.equals("")) {
-			throw new Exception("Missing property \"clientCertificatePwd\".");					
+			throw new Exception("Missing property \"clientCertificatePwd\".");
 		}
 		String clientCertificateKeystoreType = lsp.getClientCertificateKeystoreType();
 		if (clientCertificateKeystoreType == null || clientCertificateKeystoreType.equals("")) {
-			throw new Exception("Missing property \"clientCertificateKeystoreType\".");					
+			throw new Exception("Missing property \"clientCertificateKeystoreType\".");
 		}
 		log.info("Using client certificate key store type: " + clientCertificateKeystoreType);
-		
+
 		String trustStoreFile = lsp.getTrustStoreFile();
 		if (trustStoreFile == null || trustStoreFile.equals("")) {
 			log.info("The property \"trustStoreFile\" is not specified. No truststore will be used.");
@@ -146,7 +146,7 @@ public class ClientUtil {
 				throw new Exception("Property \"trustStoreFile\" have no corresponding resource.");
 			}
 			log.info("Using certificate trust store: " + trustStoreFile);
-		
+
 			String trustStorePwd = lsp.getTrustStorePwd();
 			if(trustStorePwd == null || trustStorePwd.equals("")) {
 				throw new Exception("Missing property \"trustStorePwd\".");
@@ -169,7 +169,7 @@ public class ClientUtil {
 		}
 		log.info("Using transport protocol: " + restApiTransportProtcol);
 	}
-	
+
 	static private String stripEndSlash(String path) {
 		return path.replaceFirst("/$", "");
 	}
@@ -180,5 +180,5 @@ public class ClientUtil {
 
 	public static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
 	public static final String CONTENT_TYPE_HEADER_VALUE = "application/vnd.ladok+xml";
-	
+
 }

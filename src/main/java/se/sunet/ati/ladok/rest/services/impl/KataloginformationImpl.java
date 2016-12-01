@@ -19,7 +19,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	private static final String KATALOGINFORMATION_MEDIATYPE = "xml";
 
 	private static final String SPRAKKOD_SVENSKA = "sv";
-	
+
 	WebTarget kataloginformation;
 
 	WebTarget getClient() {

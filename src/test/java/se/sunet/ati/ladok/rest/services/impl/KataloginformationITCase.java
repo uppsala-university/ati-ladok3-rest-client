@@ -37,10 +37,10 @@ public class KataloginformationITCase {
 
 	}
 
-    @Test
-    public void listaLokalaPerioder() throws Exception {
-        Kataloginformation ki = new KataloginformationImpl();
-        Perioder perioder = ki.listaLokalaPerioder();
-        assertFalse(perioder.getPeriod().isEmpty());
-    }
+	@Test
+	public void listaLokalaPerioder() throws Exception {
+		Kataloginformation ki = new KataloginformationImpl();
+		Perioder perioder = ki.listaLokalaPerioder();
+		assertFalse(perioder.getPeriod().isEmpty());
+	}
 }

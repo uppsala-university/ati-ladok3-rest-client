@@ -12,7 +12,7 @@ public class LadokServicePropertiesImpl implements LadokServiceProperties {
 	String trustStoreFile;
 	String trustStorePwd = "changeit";
 	String trustStoreType = "JKS";
-	
+
 	public String getRestbase() {
 		return restbase;
 	}
