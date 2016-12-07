@@ -16,6 +16,8 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	Utbildningsinstans skapaUtbildningsinstans(Utbildningsinstans utbildningsinstans);
 
+	Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans);
+
 	/**
 	 * Skapa en ny version av en utbildningsinstans.
 	 * @param utbildningsinstansUID uid för utbildningsinstansen som en ny version ska skapas utifrån.

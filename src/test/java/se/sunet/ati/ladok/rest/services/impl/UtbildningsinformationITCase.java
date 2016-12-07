@@ -285,5 +285,21 @@ public class UtbildningsinformationITCase {
 		assertNotNull(savedIuVer2);
 		assertEquals(uiToSave.getUtbildningskod(), savedIuVer2.getUtbildningskod());
 		assertEquals(Integer.valueOf(2), savedIuVer2.getVersionsinformation().getVersionsnummer());
+
+		for (Benamning b : savedIuVer2.getBenamningar().getBenamning()) {
+				b.setText(b.getText() + "2");
+		}
+
+		Utbildningsinstans updatedIuVer2 = ui.uppdateraUtbildningsinstans(savedIuVer2);
+		assertNotNull(updatedIuVer2);
+		assertEquals(uiToSave.getUtbildningskod(), updatedIuVer2.getUtbildningskod());
+
+		for (Benamning b : updatedIuVer2.getBenamningar().getBenamning()) {
+			if (engelska.getSprakkod().equals(b.getSprakkod())) {
+				assertEquals(engelska.getText()+"2", b.getText());
+			} else if (svenska.getSprakkod().equals(b.getSprakkod())) {
+				assertEquals(svenska.getText()+"2", b.getText());
+			}
+		}
 	}
 }
