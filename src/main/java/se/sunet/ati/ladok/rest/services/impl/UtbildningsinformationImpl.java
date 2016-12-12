@@ -120,7 +120,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public Utbildningsinstans utbildningsinstansTillStatus2(String utbildningsinstansUID) {
+	public Utbildningsinstans utbildningsinstansTillStatusPaborjad(String utbildningsinstansUID) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSSTANS).path("status2").path(utbildningsinstansUID);
 		return client
