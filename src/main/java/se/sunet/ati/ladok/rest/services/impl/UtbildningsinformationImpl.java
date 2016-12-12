@@ -127,7 +127,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.request(MediaType.APPLICATION_XML_TYPE)
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
-				.put(null, Utbildningsinstans.class);
+				.put(Entity.entity("", ClientUtil.CONTENT_TYPE_HEADER_VALUE), Utbildningsinstans.class);
 	}
 
 	@Override

@@ -30,6 +30,8 @@ import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
 
 public class UtbildningsinformationITCase {
+	private static final Integer STATUS_PABORJAD = 2;
+
 	private static Log log = LogFactory.getLog(UtbildningsinformationITCase.class);
 
 	private static final String utbildningsmallUtbildningsinstansUID = "55555555-2007-0001-0001-000024000036";
@@ -301,5 +303,8 @@ public class UtbildningsinformationITCase {
 				assertEquals(svenska.getText()+"2", b.getText());
 			}
 		}
+
+		Utbildningsinstans statusPaborjadIuVer2 = ui.utbildningsinstansTillStatusPaborjad(updatedIuVer2.getUid());
+		assertEquals(STATUS_PABORJAD, statusPaborjadIuVer2.getStatus());
 	}
 }
