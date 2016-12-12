@@ -31,4 +31,6 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	Organisationslista sokAllaOrganisationer();
 
 	Utbildningstillfalle skapaUtbildningstillfalle(Utbildningstillfalle utbildningstillfalle);
+
+	Utbildningsinstans utbildningsinstansTillStatus2(String utbildningsinstansUID);
 }
