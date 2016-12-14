@@ -38,7 +38,7 @@ public class UtbildningsinformationITCase {
 	private static final String utbildningsmallUtbildningstillfalleUID = "55555555-2007-0004-0002-000052000036";
 	private static final String utbildningsmallModulUID = "55555555-2007-0005-0001-000004000036";
 	private static final String utbildningstillfalleUID = "68616ef5-8e12-11e6-9c62-ab9879144e80";
-	private static final String utbildningstillfalleInstansUID = "1d5d97eb-8e11-11e6-9c62-ab9879144e80";
+	private static final String utbildningsinstansUID = "1d5d97eb-8e11-11e6-9c62-ab9879144e80";
 	// Nationellt beslutade koder som ska vara samma för alla lärosäten
 	private static final String UTBILDNINGSTYP_2007_KURS_AVANCERAD_KOD = "2007AKURS";
 	private static final String UTBILDNINGSTYP_2007_KURS_GRUND_KOD = "2007GKURS";
@@ -104,17 +104,17 @@ public class UtbildningsinformationITCase {
 	@Test
 	public void testHamtaUtbildningstillfalle() throws Exception {
 
-		Utbildningstillfalle utbildningstillfalle = ui.hamtaUtbildningstillfalleViaUtbildningsUtbildningstillfalleUID(utbildningstillfalleUID);
+		Utbildningstillfalle utbildningstillfalle = ui.hamtaUtbildningstillfalleViaUtbildningstillfalleUID(utbildningstillfalleUID);
 
 		assertEquals(utbildningstillfalleUID, utbildningstillfalle.getUid());
-		assertEquals(utbildningstillfalleInstansUID, utbildningstillfalle.getUtbildningsinstansUID());
+		assertEquals(utbildningsinstansUID, utbildningstillfalle.getUtbildningsinstansUID());
 	}
 
 	@Test
 	public void testHamtaUtbildningsinstansViaUtbildningsinstansUID() {
-		Utbildningsinstans utbildningsinstans = ui.hamtaUtbildningsinstansViaUtbildningsinstansUID(utbildningstillfalleInstansUID);
+		Utbildningsinstans utbildningsinstans = ui.hamtaUtbildningsinstansViaUtbildningsinstansUID(utbildningsinstansUID);
 
-		assertTrue(utbildningstillfalleInstansUID.equalsIgnoreCase(utbildningsinstans.getUid()));
+		assertTrue(utbildningsinstansUID.equalsIgnoreCase(utbildningsinstans.getUid()));
 
 		for (Benamning benamn : utbildningsinstans.getBenamningar().getBenamning()) {
 			if (benamn.getSprakkod().equals("en")) {
@@ -217,7 +217,7 @@ public class UtbildningsinformationITCase {
 		uiToSave.setVersionsinformation(vInfo);
 		uiToSave.setUtbildningsmallUID(utbildningsmallModulUID);
 
-		ui.skapaUnderliggandeUtbildningsinstans(uiToSave, utbildningstillfalleInstansUID);
+		ui.skapaUnderliggandeUtbildningsinstans(uiToSave, utbildningsinstansUID);
 	}
 
 	/**
