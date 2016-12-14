@@ -34,11 +34,6 @@ public class UtbildningsinformationITCase {
 
 	private static Log log = LogFactory.getLog(UtbildningsinformationITCase.class);
 
-	private static final String utbildningsmallUtbildningsinstansUID = "55555555-2007-0001-0001-000024000036";
-	private static final String utbildningsmallUtbildningstillfalleUID = "55555555-2007-0004-0002-000052000036";
-	private static final String utbildningsmallModulUID = "55555555-2007-0005-0001-000004000036";
-	private static final String utbildningstillfalleUID = "68616ef5-8e12-11e6-9c62-ab9879144e80";
-	private static final String utbildningsinstansUID = "1d5d97eb-8e11-11e6-9c62-ab9879144e80";
 	// Nationellt beslutade koder som ska vara samma för alla lärosäten
 	private static final String UTBILDNINGSTYP_2007_KURS_AVANCERAD_KOD = "2007AKURS";
 	private static final String UTBILDNINGSTYP_2007_KURS_GRUND_KOD = "2007GKURS";
@@ -67,6 +62,30 @@ public class UtbildningsinformationITCase {
 		return Integer.parseInt(properties.getProperty("rest.utbildningsinformation.period.id"));
 	}
 
+	private String getUtbildningsinstansUID() {
+		return properties.getProperty("rest.utbildningsinformation.utbildningsinstans.uid");
+	}
+
+	private String getUtbildningsmallUIDModul() {
+		return properties.getProperty("rest.utbildningsinformation.utbildningsmall.uid.modul");
+	}
+
+	private String getUtbildningsmallUIDKursAvancerad() {
+		return properties.getProperty("rest.utbildningsinformation.utbildningsmall.uid.kurs.avancerad");
+	}
+
+	private String getUtbildningsmallUIDKursGrund() {
+		return properties.getProperty("rest.utbildningsinformation.utbildningsmall.uid.kurs.grund");
+	}
+
+	private String getUtbildningsmallUIDUtbildningstillfalle() {
+		return properties.getProperty("rest.utbildningsinformation.utbildningsmall.uid.utbildningstillfalle");
+	}
+
+	private String getUtbildningstillfalleUID() {
+		return properties.getProperty("rest.utbildningsinformation.utbildningstillfalle.uid");
+	}
+
 	private int getUtbildningstypID(String utbildningstypKod) {
 		Utbildningstyp utbildningstyp = ui
 				.hamtaUtbildningsttypID(utbildningstypKod);
@@ -81,6 +100,7 @@ public class UtbildningsinformationITCase {
 		String benamnSv = properties.getProperty("rest.utbildningsinformation.organisation.benamn.sv");
 		String kod = properties.getProperty("rest.utbildningsinformation.organisation.kod");
 		for (Organisation organisation : organisationer.getOrganisation()) {
+			log.debug("UID=" + organisation.getUid() + "  Namn='" + organisation.getBenamningar().getBenamning().get(0).getText() + "'");
 			if (kod.equals(organisation.getKod())) {
 				for (Benamning benamn : organisation.getBenamningar().getBenamning()) {
 					if (benamn.getSprakkod().equals("en")) {
@@ -104,17 +124,17 @@ public class UtbildningsinformationITCase {
 	@Test
 	public void testHamtaUtbildningstillfalle() throws Exception {
 
-		Utbildningstillfalle utbildningstillfalle = ui.hamtaUtbildningstillfalleViaUtbildningstillfalleUID(utbildningstillfalleUID);
+		Utbildningstillfalle utbildningstillfalle = ui.hamtaUtbildningstillfalleViaUtbildningstillfalleUID(getUtbildningstillfalleUID());
 
-		assertEquals(utbildningstillfalleUID, utbildningstillfalle.getUid());
-		assertEquals(utbildningsinstansUID, utbildningstillfalle.getUtbildningsinstansUID());
+		assertEquals(getUtbildningstillfalleUID(), utbildningstillfalle.getUid());
+		assertEquals(getUtbildningsinstansUID(), utbildningstillfalle.getUtbildningsinstansUID());
 	}
 
 	@Test
 	public void testHamtaUtbildningsinstansViaUtbildningsinstansUID() {
-		Utbildningsinstans utbildningsinstans = ui.hamtaUtbildningsinstansViaUtbildningsinstansUID(utbildningsinstansUID);
+		Utbildningsinstans utbildningsinstans = ui.hamtaUtbildningsinstansViaUtbildningsinstansUID(getUtbildningsinstansUID());
 
-		assertTrue(utbildningsinstansUID.equalsIgnoreCase(utbildningsinstans.getUid()));
+		assertTrue(getUtbildningsinstansUID().equalsIgnoreCase(utbildningsinstans.getUid()));
 
 		for (Benamning benamn : utbildningsinstans.getBenamningar().getBenamning()) {
 			if (benamn.getSprakkod().equals("en")) {
@@ -126,7 +146,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testSkapaUtbildningsinstans() {
+	public void testSkapaKursAvancerad() {
 		Utbildningsinstans uiToSave = new Utbildningsinstans();
 		Benamningar benamningar = new Benamningar();
 		Benamning svenska = new Benamning();
@@ -148,7 +168,7 @@ public class UtbildningsinformationITCase {
 		vInfo.setGiltigFranPeriodID(pid);
 
 		uiToSave.setVersionsinformation(vInfo);
-		uiToSave.setUtbildningsmallUID(utbildningsmallUtbildningsinstansUID);
+		uiToSave.setUtbildningsmallUID(getUtbildningsmallUIDKursAvancerad());
 
 		Utbildningsinstans savedIu = ui.skapaUtbildningsinstans(uiToSave);
 		assertNotNull(savedIu);
@@ -156,7 +176,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testSkapaKurs() {
+	public void testSkapaKursGrund() {
 		Utbildningsinstans uiToSave = new Utbildningsinstans();
 		Benamningar benamningar = new Benamningar();
 		Benamning svenska = new Benamning();
@@ -178,7 +198,7 @@ public class UtbildningsinformationITCase {
 		vInfo.setGiltigFranPeriodID(pid);
 
 		uiToSave.setVersionsinformation(vInfo);
-		uiToSave.setUtbildningsmallUID("55555555-2007-0001-0005-000022000036");
+		uiToSave.setUtbildningsmallUID(getUtbildningsmallUIDKursGrund());
 
 		Utbildningsinstans savedIu = ui.skapaUtbildningsinstans(uiToSave);
 		assertNotNull(savedIu);
@@ -215,9 +235,9 @@ public class UtbildningsinformationITCase {
 		vInfo.setGiltigFranPeriodID(pid);
 
 		uiToSave.setVersionsinformation(vInfo);
-		uiToSave.setUtbildningsmallUID(utbildningsmallModulUID);
+		uiToSave.setUtbildningsmallUID(getUtbildningsmallUIDModul());
 
-		ui.skapaUnderliggandeUtbildningsinstans(uiToSave, utbildningsinstansUID);
+		ui.skapaUnderliggandeUtbildningsinstans(uiToSave, getUtbildningsinstansUID());
 	}
 
 	/**
@@ -243,7 +263,7 @@ public class UtbildningsinformationITCase {
 		pid.setValue(getPeriodID());
 		vInfo.setGiltigFranPeriodID(pid);
 
-		utToSave.setUtbildningsmallUID(utbildningsmallUtbildningstillfalleUID);
+		utToSave.setUtbildningsmallUID(getUtbildningsmallUIDUtbildningstillfalle());
 
 		Utbildningstillfalle utbildningstillfalle = ui.skapaUtbildningstillfalle(utToSave);
 		assertNotNull(utbildningstillfalle);
@@ -263,7 +283,7 @@ public class UtbildningsinformationITCase {
 		benamningar.getBenamning().add(engelska);
 		uiToSave.setBenamningar(benamningar);
 		uiToSave.setOmfattning("7.5");
-		uiToSave.setOrganisationUID("ea459c31-b235-11e6-a17b-fa6452a340a2");
+		uiToSave.setOrganisationUID(getOrganisationUID());
 		uiToSave.setStatus(2);
 		uiToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
 		uiToSave.setUtbildningskod("OST66");
@@ -272,11 +292,11 @@ public class UtbildningsinformationITCase {
 		vInfo.setAnteckning("Hej");
 		vInfo.setArSenasteVersion(true);
 		PeriodID pid = new PeriodID();
-		pid.setValue(104302);
+		pid.setValue(getPeriodID());
 		vInfo.setGiltigFranPeriodID(pid);
 
 		uiToSave.setVersionsinformation(vInfo);
-		uiToSave.setUtbildningsmallUID("55555555-2007-0001-0005-000022000036");
+		uiToSave.setUtbildningsmallUID(getUtbildningsmallUIDKursGrund());
 
 		Utbildningsinstans savedIuVer1 = ui.skapaUtbildningsinstans(uiToSave);
 		assertNotNull(savedIuVer1);
