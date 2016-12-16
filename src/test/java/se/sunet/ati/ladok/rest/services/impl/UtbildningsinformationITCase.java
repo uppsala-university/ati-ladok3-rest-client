@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import javax.ws.rs.BadRequestException;
@@ -25,6 +26,7 @@ import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.PeriodID;
 import se.ladok.schemas.utbildningsinformation.StudietaktID;
+import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
 import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
@@ -33,9 +35,10 @@ import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
 
 public class UtbildningsinformationITCase {
-	private static final Integer STATUS_PABORJAD = 2;
-
 	private static Log log = LogFactory.getLog(UtbildningsinformationITCase.class);
+
+	private static final Integer STATUS_PABORJAD = 2;
+	private static final int STUDIEORDNING_ID = 1;
 
 	// Nationellt beslutade koder som ska vara samma för alla lärosäten
 	private static final String UTBILDNINGSTYP_2007_KURS_AVANCERAD_KOD = "2007AKURS";
@@ -55,6 +58,10 @@ public class UtbildningsinformationITCase {
 	@BeforeClass
 	public static void beforeClass() throws IOException {
 		properties = TestUtil.getProperties();
+	}
+
+	private String getUtbildningsinstansKod() {
+		return properties.getProperty("rest.utbildningsinformation.utbildningsinstans.kod");
 	}
 
 	private String getOrganisationUID() {
@@ -167,6 +174,27 @@ public class UtbildningsinformationITCase {
 
 		assertEquals(getUtbildningstillfalleUID(), utbildningstillfalle.getUid());
 		assertEquals(getUtbildningsinstansUID(), utbildningstillfalle.getUtbildningsinstansUID());
+	}
+
+	@Test
+	public void testHamtaUtbildningsinstansViaKod() {
+		String utbildningskod = getUtbildningsinstansKod();
+		List<UtbildningProjektion> utbildningProjektioner = ui.hamtaUtbildningsinstansViaKod(utbildningskod,
+												     STUDIEORDNING_ID,
+												     getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
+		log.info("Hämtade " + utbildningProjektioner.size() + " utbildningsinstanser för utbildningskod " + utbildningskod);
+
+		UtbildningProjektion utbildningsinstans = utbildningProjektioner.get(0);
+		assertTrue(getUtbildningsinstansUID().equalsIgnoreCase(utbildningsinstans.getUid()));
+		log.info("Hämtade utbildningsinstans med UID " + utbildningsinstans.getUid() + " för utbildningskod " + utbildningskod);
+
+		for (Benamning benamn : utbildningsinstans.getBenamningar().getBenamning()) {
+			if (benamn.getSprakkod().equals("en")) {
+				assertEquals("Additive manufacturing", benamn.getText());
+			} else if (benamn.getSprakkod().equals("sv")) {
+				assertEquals("Additiv tillverkning", benamn.getText());
+			}
+		}
 	}
 
 	@Test
