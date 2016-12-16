@@ -1,6 +1,8 @@
 package se.sunet.ati.ladok.rest.services;
 
 import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
+import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
 import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
@@ -33,4 +35,19 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	Utbildningstillfalle skapaUtbildningstillfalle(Utbildningstillfalle utbildningstillfalle);
 
 	Utbildningsinstans utbildningsinstansTillStatusPaborjad(String utbildningsinstansUID);
+
+	/**
+	 * Lista nivåer inom studieordning.
+	 *
+	 * @return Nivåer inom studieordning
+	 */
+	NivaerInomStudieordning listaNivaerInomStudieordning();
+
+	/**
+	 * Hämtar en nivå inom studieordning.
+	 *
+	 * @param kod Kod på den nivå som ska hämtas
+	 * @return Nivå inom studieordning
+	 */
+	NivaInomStudieordning hamtaNivaInomStudieordning(String kod);
 }

@@ -20,6 +20,8 @@ import se.ladok.schemas.Benamningar;
 import se.ladok.schemas.Organisation;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.Kurs2007GrundAvancerad;
+import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
+import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.PeriodID;
 import se.ladok.schemas.utbildningsinformation.StudietaktID;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
@@ -323,5 +325,18 @@ public class UtbildningsinformationITCase {
 
 		Utbildningsinstans statusPaborjadIuVer2 = ui.utbildningsinstansTillStatusPaborjad(updatedIuVer2.getUid());
 		assertEquals(STATUS_PABORJAD, statusPaborjadIuVer2.getStatus());
+	}
+
+	@Test
+	public void testListaNivaerInomStudieordning() throws Exception {
+		NivaerInomStudieordning nivaerInomStudieordning = ui.listaNivaerInomStudieordning();
+		assertNotNull(nivaerInomStudieordning);
+	}
+
+	@Test
+	public void testHamtaNivaInomStudieordning() throws Exception {
+		String nivaKod = properties.getProperty("rest.utbildningsinformation.nivainomstudieordning.kod");
+		NivaInomStudieordning nivaInomStudieordning = ui.hamtaNivaInomStudieordning(nivaKod);
+		assertNotNull(nivaInomStudieordning);
 	}
 }
