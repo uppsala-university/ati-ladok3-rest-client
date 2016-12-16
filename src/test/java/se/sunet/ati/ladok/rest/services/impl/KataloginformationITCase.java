@@ -11,6 +11,7 @@ import org.junit.Test;
 import se.ladok.schemas.kataloginformation.I18N;
 import se.ladok.schemas.kataloginformation.I18NLista;
 import se.ladok.schemas.kataloginformation.Perioder;
+import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 
 public class KataloginformationITCase {
@@ -42,5 +43,12 @@ public class KataloginformationITCase {
 		Kataloginformation ki = new KataloginformationImpl();
 		Perioder perioder = ki.listaLokalaPerioder();
 		assertFalse(perioder.getPeriod().isEmpty());
+	}
+
+	@Test
+	public void listaSuccessivaFordjupningar() throws Exception {
+		Kataloginformation ki = new KataloginformationImpl();
+		SuccessivaFordjupningar successivaFordjupningar = ki.listaSuccessivaFordjupningar();
+		assertFalse(successivaFordjupningar.getSuccessivFordjupning().isEmpty());
 	}
 }
