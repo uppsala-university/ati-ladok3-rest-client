@@ -243,9 +243,8 @@ public class UtbildningsinformationITCase {
 	/**
 	 * Test för att skapa en Utbildningsinstans.
 	 * @throws Exception
-	 * @todo This test currently fails with a 400 Bad Request
 	 */
-//	@Test
+	@Test
 	public void testSkapaUtbildningstillfalle() throws Exception {
 		Utbildningstillfalle utToSave = new Utbildningstillfalle();
 		StudietaktID studietakt = new StudietaktID();
@@ -254,16 +253,13 @@ public class UtbildningsinformationITCase {
 		utToSave.setStudietaktID(studietakt);
 		utToSave.setOrganisationUID(getOrganisationUID());
 		utToSave.setStatus(1);
+		utToSave.setUtbildningsinstansUID(getUtbildningsinstansUID());
 		utToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURSTILLFÄLLE));
 		utToSave.setTillfalleskod("12345");
 
-		Versionsinformation vInfo = new Versionsinformation();
-		vInfo.setArSenasteVersion(true);
-		vInfo.setVersionsnummer(1);
 		PeriodID pid = new PeriodID();
 		pid.setValue(getPeriodID());
-		vInfo.setGiltigFranPeriodID(pid);
-
+		utToSave.setStartperiodID(pid);
 		utToSave.setUtbildningsmallUID(getUtbildningsmallUIDUtbildningstillfalle());
 
 		Utbildningstillfalle utbildningstillfalle = ui.skapaUtbildningstillfalle(utToSave);
