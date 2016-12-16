@@ -1,6 +1,5 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
-import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -14,9 +13,7 @@ import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
 import se.ladok.schemas.utbildningsinformation.ObjectFactory;
-import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
-import se.ladok.schemas.utbildningsinformation.Utbildningsinstansprojektioner;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
 import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
 import se.ladok.schemas.utbildningsinformation.Versionsinformation;
@@ -30,10 +27,12 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 	private static final String UTBILDNINGSINFORMATION_RESPONSE_TYPE = "application/vnd.ladok-utbildningsinformation";
 	private static final String UTBILDNINGSINFORMATION_MEDIATYPE = "xml";
+	private static final String RESOURCE_UTBILDNINGSMALL = "utbildningsmall";
 	private static final String RESOURCE_UTBILDNINGSTILFALLE = "utbildningstillfalle";
 	private static final String RESOURCE_UTBILDNINGSINSSTANS = "utbildningsinstans";
 	private static final String RESOURCE_GRUNDDATA = "grunddata";
 	private static final String RESOURCE_KOD = "kod";
+	private static final String RESOURCE_LOKAL = "lokal";
 	private static final String RESOURCE_NIVAINOMSTUDIEORDNING = "nivaInomStudieordning";
 	private static final String RESOURCE_ORGANISATION = "organisation";
 	private static final String RESOURCE_UNDERLIGGANDE = "underliggande";
@@ -57,7 +56,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	@Override
 	public LokalUtbildningsmall hamtaLokalUtbildningsmall(int utbildningstypID, String datum) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSSTANS)
+		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSMALL).path(RESOURCE_LOKAL)
 				.queryParam("utbildningstypID", utbildningstypID)
 				.queryParam("datum", datum);
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
@@ -78,21 +77,6 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
 				.get(Utbildningstyp.class);
-	}
-
-	@Override
-	public List<UtbildningProjektion> hamtaUtbildningsinstansViaKod(String utbildningstillfalleKod, int studieordningID, int utbildningstypID) {
-		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSSTANS)
-				.queryParam("kod", utbildningstillfalleKod)
-				.queryParam("studieordningID", studieordningID)
-				.queryParam("utbildningstypID", utbildningstypID);
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
-		return client
-				.request()
-				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-				.accept(responseType)
-				.get(Utbildningsinstansprojektioner.class).getUtbildningar();
 	}
 
 	@Override
@@ -191,12 +175,10 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	@Override
 	public Utbildningstillfalle skapaUtbildningstillfalle(Utbildningstillfalle utbildningstillfalle) {
 		JAXBElement<Utbildningstillfalle> utbildningstillfalleJAXBElement = new ObjectFactory().createUtbildningstillfalle(utbildningstillfalle);
-//		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSTILFALLE);
 		return client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-//				.accept(responseType)
 				.post(Entity.entity(utbildningstillfalleJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE), Utbildningstillfalle.class);
 	}
 
