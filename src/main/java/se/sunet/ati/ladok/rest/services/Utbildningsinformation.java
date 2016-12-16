@@ -1,8 +1,11 @@
 package se.sunet.ati.ladok.rest.services;
 
+import java.util.List;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
+import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
+import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
 import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
@@ -10,9 +13,13 @@ import se.ladok.schemas.utbildningsinformation.Versionsinformation;
 
 public interface Utbildningsinformation extends LadokServiceProperties {
 
+	LokalUtbildningsmall hamtaLokalUtbildningsmall(int utbildningstypID, String datum);
+
 	Utbildningstyp hamtaUtbildningsttypID(String utbildningstypKod);
 
 	Utbildningstillfalle hamtaUtbildningstillfalleViaUtbildningstillfalleUID(String utbildningstillfalleUID);
+
+	List<UtbildningProjektion> hamtaUtbildningsinstansViaKod(String utbildningstillfalleKod, int studieordningID, int utbildningstypID);
 
 	Utbildningsinstans hamtaUtbildningsinstansViaUtbildningsinstansUID(String utbildningsinstansUID);
 

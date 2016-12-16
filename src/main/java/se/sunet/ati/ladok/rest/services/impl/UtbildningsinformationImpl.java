@@ -1,5 +1,6 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
+import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -11,8 +12,11 @@ import org.apache.commons.logging.LogFactory;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
+import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
 import se.ladok.schemas.utbildningsinformation.ObjectFactory;
+import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
+import se.ladok.schemas.utbildningsinformation.Utbildningsinstansprojektioner;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
 import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
 import se.ladok.schemas.utbildningsinformation.Versionsinformation;
@@ -51,6 +55,20 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
+	public LokalUtbildningsmall hamtaLokalUtbildningsmall(int utbildningstypID, String datum) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSSTANS)
+				.queryParam("utbildningstypID", utbildningstypID)
+				.queryParam("datum", datum);
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		return client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get(LokalUtbildningsmall.class);
+	}
+
+	@Override
 	public Utbildningstyp hamtaUtbildningsttypID(String utbildningstypKod) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path(RESOURCE_UTBILDNINGSTYP).path(RESOURCE_KOD).path(utbildningstypKod);
@@ -60,6 +78,21 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
 				.get(Utbildningstyp.class);
+	}
+
+	@Override
+	public List<UtbildningProjektion> hamtaUtbildningsinstansViaKod(String utbildningstillfalleKod, int studieordningID, int utbildningstypID) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSSTANS)
+				.queryParam("kod", utbildningstillfalleKod)
+				.queryParam("studieordningID", studieordningID)
+				.queryParam("utbildningstypID", utbildningstypID);
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		return client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get(Utbildningsinstansprojektioner.class).getUtbildningar();
 	}
 
 	@Override
@@ -158,10 +191,12 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	@Override
 	public Utbildningstillfalle skapaUtbildningstillfalle(Utbildningstillfalle utbildningstillfalle) {
 		JAXBElement<Utbildningstillfalle> utbildningstillfalleJAXBElement = new ObjectFactory().createUtbildningstillfalle(utbildningstillfalle);
+//		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSTILFALLE);
 		return client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+//				.accept(responseType)
 				.post(Entity.entity(utbildningstillfalleJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE), Utbildningstillfalle.class);
 	}
 

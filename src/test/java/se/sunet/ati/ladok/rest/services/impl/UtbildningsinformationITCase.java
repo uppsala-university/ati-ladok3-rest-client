@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 import javax.ws.rs.BadRequestException;
@@ -24,6 +25,7 @@ import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.PeriodID;
 import se.ladok.schemas.utbildningsinformation.StudietaktID;
+import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
 import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
@@ -130,6 +132,25 @@ public class UtbildningsinformationITCase {
 
 		assertEquals(getUtbildningstillfalleUID(), utbildningstillfalle.getUid());
 		assertEquals(getUtbildningsinstansUID(), utbildningstillfalle.getUtbildningsinstansUID());
+	}
+
+	@Test
+	public void testHamtaUtbildningsinstansViaKod() {
+		List<UtbildningProjektion> utbildningProjektioner = ui.hamtaUtbildningsinstansViaKod("PPU205",
+												     1,
+												     getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
+
+		log.info("Hämtade " + utbildningProjektioner.size() + " utbildning(ar).");
+		UtbildningProjektion utbildningProjektion = utbildningProjektioner.get(0);
+		assertTrue(getUtbildningsinstansUID().equalsIgnoreCase(utbildningProjektion.getUid()));
+
+		for (Benamning benamn : utbildningProjektion.getBenamningar().getBenamning()) {
+			if (benamn.getSprakkod().equals("en")) {
+				assertEquals("Additive manufacturing", benamn.getText());
+			} else if (benamn.getSprakkod().equals("sv")) {
+				assertEquals("Additiv tillverkning", benamn.getText());
+			}
+		}
 	}
 
 	@Test
