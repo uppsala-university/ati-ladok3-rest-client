@@ -37,6 +37,7 @@ import se.sunet.ati.ladok.rest.util.TestUtil;
 public class UtbildningsinformationITCase {
 	private static Log log = LogFactory.getLog(UtbildningsinformationITCase.class);
 
+	private static final String DATUM = "2016-01-01";
 	private static final Integer STATUS_PABORJAD = 2;
 	private static final int STUDIEORDNING_ID = 1;
 
@@ -76,20 +77,27 @@ public class UtbildningsinformationITCase {
 		return properties.getProperty("rest.utbildningsinformation.utbildningsinstans.uid");
 	}
 
+	private String getUtbildningsmallUID(String utbildningstypKod) {
+		LokalUtbildningsmall lokalUtbildningsmall = ui
+				.hamtaLokalUtbildningsmall(getUtbildningstypID(utbildningstypKod), DATUM);
+		log.info("Hämtade lokal utbildningsmall med UID " + lokalUtbildningsmall.getUid() + " för utbildningstyp " + utbildningstypKod);
+		return lokalUtbildningsmall.getUid();
+	}
+
 	private String getUtbildningsmallUIDModul() {
-		return properties.getProperty("rest.utbildningsinformation.utbildningsmall.uid.modul");
+		return getUtbildningsmallUID(UTBILDNINGSTYP_2007_MODUL_MED_OMFATTNING);
 	}
 
 	private String getUtbildningsmallUIDKursAvancerad() {
-		return properties.getProperty("rest.utbildningsinformation.utbildningsmall.uid.kurs.avancerad");
+		return getUtbildningsmallUID(UTBILDNINGSTYP_2007_KURS_AVANCERAD_KOD);
 	}
 
 	private String getUtbildningsmallUIDKursGrund() {
-		return properties.getProperty("rest.utbildningsinformation.utbildningsmall.uid.kurs.grund");
+		return getUtbildningsmallUID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
 	}
 
 	private String getUtbildningsmallUIDUtbildningstillfalle() {
-		return properties.getProperty("rest.utbildningsinformation.utbildningsmall.uid.utbildningstillfalle");
+		return getUtbildningsmallUID(UTBILDNINGSTYP_2007_KURSTILLFÄLLE);
 	}
 
 	private String getUtbildningstillfalleUID() {
@@ -128,7 +136,7 @@ public class UtbildningsinformationITCase {
 	public void testHamtaLokalUtbildningsmallKursAvancerad() throws Exception {
 		int utbildningstypID = getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_AVANCERAD_KOD);
 		LokalUtbildningsmall lokalUtbildningsmall = ui
-				.hamtaLokalUtbildningsmall(utbildningstypID, "2016-01-01");
+				.hamtaLokalUtbildningsmall(utbildningstypID, DATUM);
 		assertNotNull(lokalUtbildningsmall);
 		log.info("Hämtade lokal utbildningsmall med UID " + lokalUtbildningsmall.getUid() + " för utbildningstyp " + utbildningstypID);
 	}
@@ -137,7 +145,7 @@ public class UtbildningsinformationITCase {
 	public void testHamtaLokalUtbildningsmallKursGrund() throws Exception {
 		int utbildningstypID = getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
 		LokalUtbildningsmall lokalUtbildningsmall = ui
-				.hamtaLokalUtbildningsmall(utbildningstypID, "2016-01-01");
+				.hamtaLokalUtbildningsmall(utbildningstypID, DATUM);
 		assertNotNull(lokalUtbildningsmall);
 		log.info("Hämtade lokal utbildningsmall med UID " + lokalUtbildningsmall.getUid() + " för utbildningstyp " + utbildningstypID);
 	}
@@ -146,7 +154,7 @@ public class UtbildningsinformationITCase {
 	public void testHamtaLokalUtbildningsmallKurstillfalle() throws Exception {
 		int utbildningstypID = getUtbildningstypID(UTBILDNINGSTYP_2007_KURSTILLFÄLLE);
 		LokalUtbildningsmall lokalUtbildningsmall = ui
-				.hamtaLokalUtbildningsmall(utbildningstypID, "2016-01-01");
+				.hamtaLokalUtbildningsmall(utbildningstypID, DATUM);
 		assertNotNull(lokalUtbildningsmall);
 		log.info("Hämtade lokal utbildningsmall med UID " + lokalUtbildningsmall.getUid() + " för utbildningstyp " + utbildningstypID);
 	}
@@ -155,7 +163,7 @@ public class UtbildningsinformationITCase {
 	public void testHamtaLokalUtbildningsmallModulMedOmfattning() throws Exception {
 		int utbildningstypID = getUtbildningstypID(UTBILDNINGSTYP_2007_MODUL_MED_OMFATTNING);
 		LokalUtbildningsmall lokalUtbildningsmall = ui
-				.hamtaLokalUtbildningsmall(utbildningstypID, "2016-01-01");
+				.hamtaLokalUtbildningsmall(utbildningstypID, DATUM);
 		assertNotNull(lokalUtbildningsmall);
 		log.info("Hämtade lokal utbildningsmall med UID " + lokalUtbildningsmall.getUid() + " för utbildningstyp " + utbildningstypID);
 	}
