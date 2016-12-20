@@ -15,17 +15,30 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	LokalUtbildningsmall hamtaLokalUtbildningsmall(int utbildningstypID, String datum);
 
-	Utbildningstyp hamtaUtbildningsttypID(String utbildningstypKod);
+	/**
+	 * Hämtar en nivå inom studieordning.
+	 *
+	 * @param kod Kod på den nivå som ska hämtas
+	 * @return Nivå inom studieordning
+	 */
+	NivaInomStudieordning hamtaNivaInomStudieordning(String kod);
 
-	Utbildningstillfalle hamtaUtbildningstillfalleViaUtbildningstillfalleUID(String utbildningstillfalleUID);
+	/**
+	 * Lista nivåer inom studieordning.
+	 *
+	 * @return Nivåer inom studieordning
+	 */
+	NivaerInomStudieordning listaNivaerInomStudieordning();
 
 	List<UtbildningProjektion> hamtaUtbildningsinstansViaKod(String utbildningsinstansKod, int studieordningID, int utbildningstypID);
 
 	Utbildningsinstans hamtaUtbildningsinstansViaUtbildningsinstansUID(String utbildningsinstansUID);
 
-	Utbildningsinstans skapaUtbildningsinstans(Utbildningsinstans utbildningsinstans);
+	Utbildningstillfalle hamtaUtbildningstillfalleViaUtbildningstillfalleUID(String utbildningstillfalleUID);
 
-	Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans);
+	Utbildningstyp hamtaUtbildningsttypID(String utbildningstypKod);
+
+	Utbildningsinstans skapaUtbildningsinstans(Utbildningsinstans utbildningsinstans);
 
 	/**
 	 * Skapa en ny version av en utbildningsinstans.
@@ -37,24 +50,11 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	Utbildningsinstans skapaUnderliggandeUtbildningsinstans(Utbildningsinstans utbildningsinstans, String utbildningsinstansUID);
 
-	Organisationslista sokAllaOrganisationer();
-
 	Utbildningstillfalle skapaUtbildningstillfalle(Utbildningstillfalle utbildningstillfalle);
 
+	Organisationslista sokAllaOrganisationer();
+
+	Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans);
+
 	Utbildningsinstans utbildningsinstansTillStatusPaborjad(String utbildningsinstansUID);
-
-	/**
-	 * Lista nivåer inom studieordning.
-	 *
-	 * @return Nivåer inom studieordning
-	 */
-	NivaerInomStudieordning listaNivaerInomStudieordning();
-
-	/**
-	 * Hämtar en nivå inom studieordning.
-	 *
-	 * @param kod Kod på den nivå som ska hämtas
-	 * @return Nivå inom studieordning
-	 */
-	NivaInomStudieordning hamtaNivaInomStudieordning(String kod);
 }

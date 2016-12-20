@@ -71,6 +71,31 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
+	public NivaInomStudieordning hamtaNivaInomStudieordning(String kod) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_GRUNDDATA)
+				.path(RESOURCE_NIVAINOMSTUDIEORDNING)
+				.path(RESOURCE_KOD)
+				.path(kod);
+
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(NivaInomStudieordning.class);
+	}
+
+	@Override
+	public NivaerInomStudieordning listaNivaerInomStudieordning() {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path(RESOURCE_NIVAINOMSTUDIEORDNING);
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		return client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get(NivaerInomStudieordning.class);
+	}
+
+	@Override
 	public Utbildningstyp hamtaUtbildningsttypID(String utbildningstypKod) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path(RESOURCE_UTBILDNINGSTYP).path(RESOURCE_KOD).path(utbildningstypKod);
@@ -98,18 +123,6 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public Utbildningstillfalle hamtaUtbildningstillfalleViaUtbildningstillfalleUID(String utbildningstillfalleUID) {
-		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSTILFALLE).path(utbildningstillfalleUID);
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
-		return client
-				.request()
-				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-				.accept(responseType)
-				.get(Utbildningstillfalle.class);
-	}
-
-	@Override
 	public Utbildningsinstans hamtaUtbildningsinstansViaUtbildningsinstansUID(String utbildningsinstansUID) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSTANS).path(utbildningsinstansUID);
@@ -122,15 +135,15 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public Organisationslista sokAllaOrganisationer() {
+	public Utbildningstillfalle hamtaUtbildningstillfalleViaUtbildningstillfalleUID(String utbildningstillfalleUID) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path(RESOURCE_ORGANISATION);
+		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSTILFALLE).path(utbildningstillfalleUID);
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		return client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
-				.get(Organisationslista.class);
+				.get(Utbildningstillfalle.class);
 	}
 
 	@Override
@@ -143,29 +156,6 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
 				.post(Entity.entity(utbildningsinstansJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE), Utbildningsinstans.class);
-	}
-
-	@Override
-	public Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans) {
-		JAXBElement<Utbildningsinstans> utbildningsinstansJAXBElement = new ObjectFactory().createUtbildningsinstans(utbildningsinstans);
-		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSTANS).path(utbildningsinstans.getUid());
-		return client
-				.request(MediaType.APPLICATION_XML_TYPE)
-				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-				.accept(responseType)
-				.put(Entity.entity(utbildningsinstansJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE), Utbildningsinstans.class);
-	}
-
-	@Override
-	public Utbildningsinstans utbildningsinstansTillStatusPaborjad(String utbildningsinstansUID) {
-		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSTANS).path("status2").path(utbildningsinstansUID);
-		return client
-				.request(MediaType.APPLICATION_XML_TYPE)
-				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-				.accept(responseType)
-				.put(Entity.entity("", ClientUtil.CONTENT_TYPE_HEADER_VALUE), Utbildningsinstans.class);
 	}
 
 	@Override
@@ -201,27 +191,37 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public NivaerInomStudieordning listaNivaerInomStudieordning() {
+	public Organisationslista sokAllaOrganisationer() {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path(RESOURCE_NIVAINOMSTUDIEORDNING);
+		WebTarget client = getClient().path(RESOURCE_ORGANISATION);
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		return client
-			.request()
-			.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-			.accept(responseType)
-			.get(NivaerInomStudieordning.class);
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get(Organisationslista.class);
 	}
 
-    @Override
-    public NivaInomStudieordning hamtaNivaInomStudieordning(String kod) {
+	@Override
+	public Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans) {
+		JAXBElement<Utbildningsinstans> utbildningsinstansJAXBElement = new ObjectFactory().createUtbildningsinstans(utbildningsinstans);
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
-		WebTarget client = getClient()
-			.path(RESOURCE_GRUNDDATA)
-			.path(RESOURCE_NIVAINOMSTUDIEORDNING)
-			.path(RESOURCE_KOD)
-			.path(kod);
+		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSTANS).path(utbildningsinstans.getUid());
+		return client
+				.request(MediaType.APPLICATION_XML_TYPE)
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(utbildningsinstansJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE), Utbildningsinstans.class);
+	}
 
-		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-			.accept(responseType).get(NivaInomStudieordning.class);
-    }
+	@Override
+	public Utbildningsinstans utbildningsinstansTillStatusPaborjad(String utbildningsinstansUID) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSTANS).path("status2").path(utbildningsinstansUID);
+		return client
+				.request(MediaType.APPLICATION_XML_TYPE)
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity("", ClientUtil.CONTENT_TYPE_HEADER_VALUE), Utbildningsinstans.class);
+	}
 }
