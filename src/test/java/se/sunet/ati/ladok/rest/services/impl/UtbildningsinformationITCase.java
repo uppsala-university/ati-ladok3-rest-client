@@ -106,7 +106,7 @@ public class UtbildningsinformationITCase {
 
 	private int getUtbildningstypID(String utbildningstypKod) {
 		Utbildningstyp utbildningstyp = ui
-				.hamtaUtbildningsttyp(utbildningstypKod);
+				.hamtaUtbildningstypViaKod(utbildningstypKod);
 		log.info("Hämtade utbildningstypID " + utbildningstyp.getID() + " för koden " + utbildningstypKod);
 		return Integer.parseInt(utbildningstyp.getID());
 	}
@@ -206,9 +206,9 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaUtbildningsttyp() throws Exception {
+	public void testHamtaUtbildningstypViaKod() throws Exception {
 		Utbildningstyp utbildningstyp = ui
-				.hamtaUtbildningsttyp(UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
+				.hamtaUtbildningstypViaKod(UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
 		assertNotNull(utbildningstyp);
 	}
 

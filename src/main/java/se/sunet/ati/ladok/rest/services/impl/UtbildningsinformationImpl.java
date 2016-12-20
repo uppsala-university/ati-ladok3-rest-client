@@ -96,7 +96,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public Utbildningstyp hamtaUtbildningsttyp(String utbildningstypKod) {
+	public Utbildningstyp hamtaUtbildningstypViaKod(String utbildningstypKod) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path(RESOURCE_UTBILDNINGSTYP).path(RESOURCE_KOD).path(utbildningstypKod);
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
