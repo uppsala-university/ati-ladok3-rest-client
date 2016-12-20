@@ -112,27 +112,6 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testSokAllaOrganisationer() {
-		Organisationslista organisationer = ui.sokAllaOrganisationer();
-		String benamnEn = properties.getProperty("rest.utbildningsinformation.organisation.benamn.en");
-		String benamnSv = properties.getProperty("rest.utbildningsinformation.organisation.benamn.sv");
-		String kod = properties.getProperty("rest.utbildningsinformation.organisation.kod");
-		for (Organisation organisation : organisationer.getOrganisation()) {
-			log.debug("UID=" + organisation.getUid() + "  Namn='" + organisation.getBenamningar().getBenamning().get(0).getText() + "'");
-			if (kod.equals(organisation.getKod())) {
-				for (Benamning benamn : organisation.getBenamningar().getBenamning()) {
-					if (benamn.getSprakkod().equals("en")) {
-						assertEquals(benamnEn, benamn.getText());
-					} else if (benamn.getSprakkod().equals("sv")) {
-						assertEquals(benamnSv, benamn.getText());
-					}
-				}
-				assertEquals(getOrganisationUID(), organisation.getUid());
-			}
-		}
-	}
-
-	@Test
 	public void testHamtaLokalUtbildningsmallKursAvancerad() throws Exception {
 		int utbildningstypID = getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_AVANCERAD_KOD);
 		LokalUtbildningsmall lokalUtbildningsmall = ui
@@ -169,19 +148,16 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaUtbildningsttyp() throws Exception {
-		Utbildningstyp utbildningstyp = ui
-				.hamtaUtbildningsttyp(UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
-		assertNotNull(utbildningstyp);
+	public void testHamtaNivaerInomStudieordning() throws Exception {
+		NivaerInomStudieordning nivaerInomStudieordning = ui.hamtaNivaerInomStudieordning();
+		assertNotNull(nivaerInomStudieordning);
 	}
 
 	@Test
-	public void testHamtaUtbildningstillfalleViaUID() throws Exception {
-
-		Utbildningstillfalle utbildningstillfalle = ui.hamtaUtbildningstillfalleViaUID(getUtbildningstillfalleUID());
-
-		assertEquals(getUtbildningstillfalleUID(), utbildningstillfalle.getUid());
-		assertEquals(getUtbildningsinstansUID(), utbildningstillfalle.getUtbildningsinstansUID());
+	public void testHamtaNivaInomStudieordning() throws Exception {
+		String nivaKod = properties.getProperty("rest.utbildningsinformation.nivainomstudieordning.kod");
+		NivaInomStudieordning nivaInomStudieordning = ui.hamtaNivaInomStudieordning(nivaKod);
+		assertNotNull(nivaInomStudieordning);
 	}
 
 	@Test
@@ -221,7 +197,44 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testSkapaKursAvancerad() {
+	public void testHamtaUtbildningstillfalleViaUID() throws Exception {
+
+		Utbildningstillfalle utbildningstillfalle = ui.hamtaUtbildningstillfalleViaUID(getUtbildningstillfalleUID());
+
+		assertEquals(getUtbildningstillfalleUID(), utbildningstillfalle.getUid());
+		assertEquals(getUtbildningsinstansUID(), utbildningstillfalle.getUtbildningsinstansUID());
+	}
+
+	@Test
+	public void testHamtaUtbildningsttyp() throws Exception {
+		Utbildningstyp utbildningstyp = ui
+				.hamtaUtbildningsttyp(UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
+		assertNotNull(utbildningstyp);
+	}
+
+	@Test
+	public void testSokAllaOrganisationer() {
+		Organisationslista organisationer = ui.sokAllaOrganisationer();
+		String benamnEn = properties.getProperty("rest.utbildningsinformation.organisation.benamn.en");
+		String benamnSv = properties.getProperty("rest.utbildningsinformation.organisation.benamn.sv");
+		String kod = properties.getProperty("rest.utbildningsinformation.organisation.kod");
+		for (Organisation organisation : organisationer.getOrganisation()) {
+			log.debug("UID=" + organisation.getUid() + "  Namn='" + organisation.getBenamningar().getBenamning().get(0).getText() + "'");
+			if (kod.equals(organisation.getKod())) {
+				for (Benamning benamn : organisation.getBenamningar().getBenamning()) {
+					if (benamn.getSprakkod().equals("en")) {
+						assertEquals(benamnEn, benamn.getText());
+					} else if (benamn.getSprakkod().equals("sv")) {
+						assertEquals(benamnSv, benamn.getText());
+					}
+				}
+				assertEquals(getOrganisationUID(), organisation.getUid());
+			}
+		}
+	}
+
+	@Test
+	public void testSkapaUtbildningsinstansKursAvancerad() {
 		Utbildningsinstans uiToSave = new Utbildningsinstans();
 		Benamningar benamningar = new Benamningar();
 		Benamning svenska = new Benamning();
@@ -251,7 +264,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testSkapaKursGrund() {
+	public void testSkapaUtbildningsinstansKursGrund() {
 		Utbildningsinstans uiToSave = new Utbildningsinstans();
 		Benamningar benamningar = new Benamningar();
 		Benamning svenska = new Benamning();
@@ -278,6 +291,65 @@ public class UtbildningsinformationITCase {
 		Utbildningsinstans savedIu = ui.skapaUtbildningsinstans(uiToSave);
 		assertNotNull(savedIu);
 		assertEquals(uiToSave.getUtbildningskod(), savedIu.getUtbildningskod());
+	}
+
+	@Test
+	public void testSkapaUtbildningsinstansOchNyVersion() {
+		Kurs2007GrundAvancerad uiToSave = new Kurs2007GrundAvancerad();
+		Benamningar benamningar = new Benamningar();
+		Benamning svenska = new Benamning();
+		svenska.setSprakkod("sv");
+		svenska.setText("TEST_SVENSKA");
+		Benamning engelska = new Benamning();
+		engelska.setSprakkod("en");
+		engelska.setText("TEST_ENGLISH");
+		benamningar.getBenamning().add(svenska);
+		benamningar.getBenamning().add(engelska);
+		uiToSave.setBenamningar(benamningar);
+		uiToSave.setOmfattning("7.5");
+		uiToSave.setOrganisationUID(getOrganisationUID());
+		uiToSave.setStatus(2);
+		uiToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
+		uiToSave.setUtbildningskod("OST66");
+
+		Versionsinformation vInfo = new Versionsinformation();
+		vInfo.setAnteckning("Hej");
+		vInfo.setArSenasteVersion(true);
+		PeriodID pid = new PeriodID();
+		pid.setValue(getPeriodID());
+		vInfo.setGiltigFranPeriodID(pid);
+
+		uiToSave.setVersionsinformation(vInfo);
+		uiToSave.setUtbildningsmallUID(getUtbildningsmallUIDKursGrund());
+
+		Utbildningsinstans savedIuVer1 = ui.skapaUtbildningsinstans(uiToSave);
+		assertNotNull(savedIuVer1);
+		assertEquals(uiToSave.getUtbildningskod(), savedIuVer1.getUtbildningskod());
+		assertEquals(Integer.valueOf(1), savedIuVer1.getVersionsinformation().getVersionsnummer());
+
+		Utbildningsinstans savedIuVer2 = ui.skapaUtbildningsinstansNyVersion(savedIuVer1.getUid(), vInfo);
+		assertNotNull(savedIuVer2);
+		assertEquals(uiToSave.getUtbildningskod(), savedIuVer2.getUtbildningskod());
+		assertEquals(Integer.valueOf(2), savedIuVer2.getVersionsinformation().getVersionsnummer());
+
+		for (Benamning b : savedIuVer2.getBenamningar().getBenamning()) {
+			b.setText(b.getText() + "2");
+		}
+
+		Utbildningsinstans updatedIuVer2 = ui.uppdateraUtbildningsinstans(savedIuVer2);
+		assertNotNull(updatedIuVer2);
+		assertEquals(uiToSave.getUtbildningskod(), updatedIuVer2.getUtbildningskod());
+
+		for (Benamning b : updatedIuVer2.getBenamningar().getBenamning()) {
+			if (engelska.getSprakkod().equals(b.getSprakkod())) {
+				assertEquals(engelska.getText()+"2", b.getText());
+			} else if (svenska.getSprakkod().equals(b.getSprakkod())) {
+				assertEquals(svenska.getText()+"2", b.getText());
+			}
+		}
+
+		Utbildningsinstans statusPaborjadIuVer2 = ui.utbildningsinstansTillStatusPaborjad(updatedIuVer2.getUid());
+		assertEquals(STATUS_PABORJAD, statusPaborjadIuVer2.getStatus());
 	}
 
 	/**
@@ -339,77 +411,5 @@ public class UtbildningsinformationITCase {
 
 		Utbildningstillfalle utbildningstillfalle = ui.skapaUtbildningstillfalle(utToSave);
 		assertNotNull(utbildningstillfalle);
-	}
-
-	@Test
-	public void testSkapaUtbildningsinstansOchNyVersion() {
-		Kurs2007GrundAvancerad uiToSave = new Kurs2007GrundAvancerad();
-		Benamningar benamningar = new Benamningar();
-		Benamning svenska = new Benamning();
-		svenska.setSprakkod("sv");
-		svenska.setText("TEST_SVENSKA");
-		Benamning engelska = new Benamning();
-		engelska.setSprakkod("en");
-		engelska.setText("TEST_ENGLISH");
-		benamningar.getBenamning().add(svenska);
-		benamningar.getBenamning().add(engelska);
-		uiToSave.setBenamningar(benamningar);
-		uiToSave.setOmfattning("7.5");
-		uiToSave.setOrganisationUID(getOrganisationUID());
-		uiToSave.setStatus(2);
-		uiToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
-		uiToSave.setUtbildningskod("OST66");
-
-		Versionsinformation vInfo = new Versionsinformation();
-		vInfo.setAnteckning("Hej");
-		vInfo.setArSenasteVersion(true);
-		PeriodID pid = new PeriodID();
-		pid.setValue(getPeriodID());
-		vInfo.setGiltigFranPeriodID(pid);
-
-		uiToSave.setVersionsinformation(vInfo);
-		uiToSave.setUtbildningsmallUID(getUtbildningsmallUIDKursGrund());
-
-		Utbildningsinstans savedIuVer1 = ui.skapaUtbildningsinstans(uiToSave);
-		assertNotNull(savedIuVer1);
-		assertEquals(uiToSave.getUtbildningskod(), savedIuVer1.getUtbildningskod());
-		assertEquals(Integer.valueOf(1), savedIuVer1.getVersionsinformation().getVersionsnummer());
-
-		Utbildningsinstans savedIuVer2 = ui.skapaUtbildningsinstansNyVersion(savedIuVer1.getUid(), vInfo);
-		assertNotNull(savedIuVer2);
-		assertEquals(uiToSave.getUtbildningskod(), savedIuVer2.getUtbildningskod());
-		assertEquals(Integer.valueOf(2), savedIuVer2.getVersionsinformation().getVersionsnummer());
-
-		for (Benamning b : savedIuVer2.getBenamningar().getBenamning()) {
-				b.setText(b.getText() + "2");
-		}
-
-		Utbildningsinstans updatedIuVer2 = ui.uppdateraUtbildningsinstans(savedIuVer2);
-		assertNotNull(updatedIuVer2);
-		assertEquals(uiToSave.getUtbildningskod(), updatedIuVer2.getUtbildningskod());
-
-		for (Benamning b : updatedIuVer2.getBenamningar().getBenamning()) {
-			if (engelska.getSprakkod().equals(b.getSprakkod())) {
-				assertEquals(engelska.getText()+"2", b.getText());
-			} else if (svenska.getSprakkod().equals(b.getSprakkod())) {
-				assertEquals(svenska.getText()+"2", b.getText());
-			}
-		}
-
-		Utbildningsinstans statusPaborjadIuVer2 = ui.utbildningsinstansTillStatusPaborjad(updatedIuVer2.getUid());
-		assertEquals(STATUS_PABORJAD, statusPaborjadIuVer2.getStatus());
-	}
-
-	@Test
-	public void testHamtaNivaerInomStudieordning() throws Exception {
-		NivaerInomStudieordning nivaerInomStudieordning = ui.hamtaNivaerInomStudieordning();
-		assertNotNull(nivaerInomStudieordning);
-	}
-
-	@Test
-	public void testHamtaNivaInomStudieordning() throws Exception {
-		String nivaKod = properties.getProperty("rest.utbildningsinformation.nivainomstudieordning.kod");
-		NivaInomStudieordning nivaInomStudieordning = ui.hamtaNivaInomStudieordning(nivaKod);
-		assertNotNull(nivaInomStudieordning);
 	}
 }
