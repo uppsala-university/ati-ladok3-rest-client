@@ -84,7 +84,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public NivaerInomStudieordning listaNivaerInomStudieordning() {
+	public NivaerInomStudieordning hamtaNivaerInomStudieordning() {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path(RESOURCE_NIVAINOMSTUDIEORDNING);
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
@@ -96,7 +96,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public Utbildningstyp hamtaUtbildningsttypID(String utbildningstypKod) {
+	public Utbildningstyp hamtaUtbildningsttyp(String utbildningstypKod) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path(RESOURCE_UTBILDNINGSTYP).path(RESOURCE_KOD).path(utbildningstypKod);
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
@@ -123,7 +123,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public Utbildningsinstans hamtaUtbildningsinstansViaUtbildningsinstansUID(String utbildningsinstansUID) {
+	public Utbildningsinstans hamtaUtbildningsinstansViaUID(String utbildningsinstansUID) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSTANS).path(utbildningsinstansUID);
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
@@ -135,7 +135,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public Utbildningstillfalle hamtaUtbildningstillfalleViaUtbildningstillfalleUID(String utbildningstillfalleUID) {
+	public Utbildningstillfalle hamtaUtbildningstillfalleViaUID(String utbildningstillfalleUID) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSTILFALLE).path(utbildningstillfalleUID);
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
@@ -159,7 +159,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public Utbildningsinstans skapaNyVersionUtbildningsinstans(String utbildningsinstansUID, Versionsinformation versionsinformation) {
+	public Utbildningsinstans skapaUtbildningsinstansNyVersion(String utbildningsinstansUID, Versionsinformation versionsinformation) {
 		JAXBElement<Versionsinformation> versionsinformationJAXBElement = new ObjectFactory().createVersionsinformation(versionsinformation);
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSTANS).path(utbildningsinstansUID).path(RESOURCE_VERSION);
@@ -171,7 +171,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public Utbildningsinstans skapaUnderliggandeUtbildningsinstans(Utbildningsinstans utbildningsinstans, String utbildningsinstansUID) {
+	public Utbildningsinstans skapaUtbildningsinstansUnderliggande(Utbildningsinstans utbildningsinstans, String utbildningsinstansUID) {
 		JAXBElement<Utbildningsinstans> utbildningsinstansJAXBElement = new ObjectFactory().createUtbildningsinstans(utbildningsinstans);
 		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSTANS).path(utbildningsinstansUID).path(RESOURCE_UNDERLIGGANDE);
 		return client

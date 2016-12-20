@@ -28,15 +28,15 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	 *
 	 * @return Nivåer inom studieordning
 	 */
-	NivaerInomStudieordning listaNivaerInomStudieordning();
+	NivaerInomStudieordning hamtaNivaerInomStudieordning();
 
 	List<UtbildningProjektion> hamtaUtbildningsinstansViaKod(String utbildningsinstansKod, int studieordningID, int utbildningstypID);
 
-	Utbildningsinstans hamtaUtbildningsinstansViaUtbildningsinstansUID(String utbildningsinstansUID);
+	Utbildningsinstans hamtaUtbildningsinstansViaUID(String utbildningsinstansUID);
 
-	Utbildningstillfalle hamtaUtbildningstillfalleViaUtbildningstillfalleUID(String utbildningstillfalleUID);
+	Utbildningstillfalle hamtaUtbildningstillfalleViaUID(String utbildningstillfalleUID);
 
-	Utbildningstyp hamtaUtbildningsttypID(String utbildningstypKod);
+	Utbildningstyp hamtaUtbildningsttyp(String utbildningstypKod);
 
 	Utbildningsinstans skapaUtbildningsinstans(Utbildningsinstans utbildningsinstans);
 
@@ -46,9 +46,9 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	 * @param utbildningsinstans versonsinformation
 	 * @return Den nya versionen
 	 */
-	Utbildningsinstans skapaNyVersionUtbildningsinstans(String utbildningsinstansUID, Versionsinformation utbildningsinstans);
+	Utbildningsinstans skapaUtbildningsinstansNyVersion(String utbildningsinstansUID, Versionsinformation utbildningsinstans);
 
-	Utbildningsinstans skapaUnderliggandeUtbildningsinstans(Utbildningsinstans utbildningsinstans, String utbildningsinstansUID);
+	Utbildningsinstans skapaUtbildningsinstansUnderliggande(Utbildningsinstans utbildningsinstans, String utbildningsinstansUID);
 
 	Utbildningstillfalle skapaUtbildningstillfalle(Utbildningstillfalle utbildningstillfalle);
 

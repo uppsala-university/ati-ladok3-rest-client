@@ -106,7 +106,7 @@ public class UtbildningsinformationITCase {
 
 	private int getUtbildningstypID(String utbildningstypKod) {
 		Utbildningstyp utbildningstyp = ui
-				.hamtaUtbildningsttypID(utbildningstypKod);
+				.hamtaUtbildningsttyp(utbildningstypKod);
 		log.info("Hämtade utbildningstypID " + utbildningstyp.getID() + " för koden " + utbildningstypKod);
 		return Integer.parseInt(utbildningstyp.getID());
 	}
@@ -169,16 +169,16 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaUtbildningsttypID() throws Exception {
+	public void testHamtaUtbildningsttyp() throws Exception {
 		Utbildningstyp utbildningstyp = ui
-				.hamtaUtbildningsttypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
+				.hamtaUtbildningsttyp(UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
 		assertNotNull(utbildningstyp);
 	}
 
 	@Test
-	public void testHamtaUtbildningstillfalle() throws Exception {
+	public void testHamtaUtbildningstillfalleViaUID() throws Exception {
 
-		Utbildningstillfalle utbildningstillfalle = ui.hamtaUtbildningstillfalleViaUtbildningstillfalleUID(getUtbildningstillfalleUID());
+		Utbildningstillfalle utbildningstillfalle = ui.hamtaUtbildningstillfalleViaUID(getUtbildningstillfalleUID());
 
 		assertEquals(getUtbildningstillfalleUID(), utbildningstillfalle.getUid());
 		assertEquals(getUtbildningsinstansUID(), utbildningstillfalle.getUtbildningsinstansUID());
@@ -206,8 +206,8 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaUtbildningsinstansViaUtbildningsinstansUID() {
-		Utbildningsinstans utbildningsinstans = ui.hamtaUtbildningsinstansViaUtbildningsinstansUID(getUtbildningsinstansUID());
+	public void testHamtaUtbildningsinstansViaUID() {
+		Utbildningsinstans utbildningsinstans = ui.hamtaUtbildningsinstansViaUID(getUtbildningsinstansUID());
 
 		assertTrue(getUtbildningsinstansUID().equalsIgnoreCase(utbildningsinstans.getUid()));
 
@@ -283,12 +283,12 @@ public class UtbildningsinformationITCase {
 	/**
 	* Test för att skapa en underliggande Utbildningsinstans.
 	* Kräver att den överliggande utbildningsinstansen inte är i komplett status (3).
-	* Förväntat resultat är då att anropet mot {@link Utbildningsinformation#skapaUnderliggandeUtbildningsinstans} kastar {@link BadRequestException}.
+	* Förväntat resultat är då att anropet mot {@link Utbildningsinformation#skapaUtbildningsinstansUnderliggande} kastar {@link BadRequestException}.
 	 *
 	 * @throws Exception
 	 */
 	@Test(expected = BadRequestException.class)
-	public void testSkapaUnderliggandeUtbildningsinstans() throws Exception {
+	public void testSkapaUtbildningsinstansUnderliggande() throws Exception {
 		Utbildningsinstans uiToSave = new Utbildningsinstans();
 		Benamningar benamningar = new Benamningar();
 		Benamning svenska = new Benamning();
@@ -312,7 +312,7 @@ public class UtbildningsinformationITCase {
 		uiToSave.setVersionsinformation(vInfo);
 		uiToSave.setUtbildningsmallUID(getUtbildningsmallUIDModul());
 
-		ui.skapaUnderliggandeUtbildningsinstans(uiToSave, getUtbildningsinstansUID());
+		ui.skapaUtbildningsinstansUnderliggande(uiToSave, getUtbildningsinstansUID());
 	}
 
 	/**
@@ -375,7 +375,7 @@ public class UtbildningsinformationITCase {
 		assertEquals(uiToSave.getUtbildningskod(), savedIuVer1.getUtbildningskod());
 		assertEquals(Integer.valueOf(1), savedIuVer1.getVersionsinformation().getVersionsnummer());
 
-		Utbildningsinstans savedIuVer2 = ui.skapaNyVersionUtbildningsinstans(savedIuVer1.getUid(), vInfo);
+		Utbildningsinstans savedIuVer2 = ui.skapaUtbildningsinstansNyVersion(savedIuVer1.getUid(), vInfo);
 		assertNotNull(savedIuVer2);
 		assertEquals(uiToSave.getUtbildningskod(), savedIuVer2.getUtbildningskod());
 		assertEquals(Integer.valueOf(2), savedIuVer2.getVersionsinformation().getVersionsnummer());
@@ -401,8 +401,8 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testListaNivaerInomStudieordning() throws Exception {
-		NivaerInomStudieordning nivaerInomStudieordning = ui.listaNivaerInomStudieordning();
+	public void testHamtaNivaerInomStudieordning() throws Exception {
+		NivaerInomStudieordning nivaerInomStudieordning = ui.hamtaNivaerInomStudieordning();
 		assertNotNull(nivaerInomStudieordning);
 	}
 
