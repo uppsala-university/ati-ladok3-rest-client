@@ -2,9 +2,10 @@ package se.sunet.ati.ladok.rest.services;
 
 import java.util.List;
 import se.ladok.schemas.Organisationslista;
-import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
-import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
+import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
+import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
+import se.ladok.schemas.utbildningsinformation.Period;
 import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
@@ -29,6 +30,10 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	 * @return Nivåer inom studieordning
 	 */
 	NivaerInomStudieordning hamtaNivaerInomStudieordning();
+
+	List<Period> hamtaPerioder();
+
+	Period hamtaPeriodViaKod(String periodKod);
 
 	List<UtbildningProjektion> hamtaUtbildningsinstansViaKod(String utbildningsinstansKod, int studieordningID, int utbildningstypID);
 

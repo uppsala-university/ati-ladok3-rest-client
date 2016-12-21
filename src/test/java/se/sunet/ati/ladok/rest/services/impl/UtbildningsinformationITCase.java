@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
@@ -12,7 +11,6 @@ import javax.ws.rs.BadRequestException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -24,6 +22,7 @@ import se.ladok.schemas.utbildningsinformation.Kurs2007GrundAvancerad;
 import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
 import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
+import se.ladok.schemas.utbildningsinformation.Period;
 import se.ladok.schemas.utbildningsinformation.PeriodID;
 import se.ladok.schemas.utbildningsinformation.StudietaktID;
 import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
@@ -47,18 +46,19 @@ public class UtbildningsinformationITCase {
 	private static final String UTBILDNINGSTYP_2007_KURSTILLFÄLLE = "2007KTF";
 	private static final String UTBILDNINGSTYP_2007_MODUL_MED_OMFATTNING = "2007MOD";
 
+	private static Period period;
 	private static Properties properties = null;
-
-	private Utbildningsinformation ui;
-
-	@Before
-	public void setUp() {
-		ui = new UtbildningsinformationImpl();
-	}
+	private static Utbildningsinformation ui;
 
 	@BeforeClass
-	public static void beforeClass() throws IOException {
+	public static void beforeClass() throws Exception {
 		properties = TestUtil.getProperties();
+		ui = new UtbildningsinformationImpl();
+		period = ui.hamtaPeriodViaKod(properties.getProperty("rest.utbildningsinformation.grunddata.period.kod"));
+		if(period == null) {
+			throw new Exception("Kunde inte läsa in period");
+		}
+		log.info("Har hämtat grundinformation för testerna");
 	}
 
 	private String getOrganisationUID() {
@@ -66,7 +66,11 @@ public class UtbildningsinformationITCase {
 	}
 
 	private static int getPeriodID() {
-		return Integer.parseInt(properties.getProperty("rest.utbildningsinformation.period.id"));
+		return Integer.parseInt(period.getID());
+	}
+
+	private static String getPeriodKod() {
+		return properties.getProperty("rest.utbildningsinformation.grunddata.period.kod");
 	}
 
 	private String getUtbildningsinstansBenamningEn() {
@@ -166,6 +170,25 @@ public class UtbildningsinformationITCase {
 		String nivaKod = properties.getProperty("rest.utbildningsinformation.nivainomstudieordning.kod");
 		NivaInomStudieordning nivaInomStudieordning = ui.hamtaNivaInomStudieordning(nivaKod);
 		assertNotNull(nivaInomStudieordning);
+	}
+
+	@Test
+	public void testHamtaPerioder() throws Exception {
+		List<Period> perioder = ui.hamtaPerioder();
+		assertNotNull(perioder);
+		log.info("Hämtade " + perioder.size() + " perioder");
+		assertTrue(perioder.size() > 0);
+		for(Period period : perioder) {
+			log.debug("Hämtade perioden " + period.getKod() + " (" + period.getID() + ") - " + period.getBenamningar().getBenamning().get(0).getText());
+		}
+	}
+
+	@Test
+	public void testHamtaPeriodViaKod() throws Exception {
+		Period period = ui.hamtaPeriodViaKod(getPeriodKod());
+		assertNotNull(period);
+		log.info("Hämtade perioden " + period.getKod() + " (" + period.getID() + ") - " + period.getBenamningar().getBenamning().get(0).getText());
+		assertEquals(getPeriodKod(), period.getKod());
 	}
 
 	@Test

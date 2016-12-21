@@ -10,10 +10,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.ladok.schemas.Organisationslista;
-import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
-import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
+import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
+import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.ObjectFactory;
+import se.ladok.schemas.utbildningsinformation.Period;
+import se.ladok.schemas.utbildningsinformation.Perioder;
 import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstansprojektioner;
@@ -38,6 +40,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String RESOURCE_LOKAL = "lokal";
 	private static final String RESOURCE_NIVAINOMSTUDIEORDNING = "nivaInomStudieordning";
 	private static final String RESOURCE_ORGANISATION = "organisation";
+	private static final String RESOURCE_PERIOD = "period";
 	private static final String RESOURCE_UNDERLIGGANDE = "underliggande";
 	private static final String RESOURCE_UTBILDNINGSTYP = "utbildningstyp";
 	private static final String RESOURCE_VERSION = "version";
@@ -93,6 +96,32 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
 				.get(NivaerInomStudieordning.class);
+	}
+
+	@Override
+	public List<Period> hamtaPerioder() {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path(RESOURCE_PERIOD);
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		return client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get(Perioder.class)
+				.getPeriod();
+	}
+
+	@Override
+	public Period hamtaPeriodViaKod(String periodKod) {
+		List<Period> perioder = hamtaPerioder();
+		if(periodKod != null) {
+			for(Period period : perioder) {
+				if(periodKod.equals(period.getKod())) {
+					return period;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override
