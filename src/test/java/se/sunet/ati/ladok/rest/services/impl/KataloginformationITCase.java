@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import se.ladok.schemas.kataloginformation.I18N;
 import se.ladok.schemas.kataloginformation.I18NLista;
+import se.ladok.schemas.kataloginformation.Kommuner;
 import se.ladok.schemas.kataloginformation.Perioder;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
@@ -58,5 +59,12 @@ public class KataloginformationITCase {
 		Kataloginformation ki = new KataloginformationImpl();
 		SvenskaOrter svenskaOrter = ki.listaSvenskaOrter();
 		assertFalse(svenskaOrter.getSvenskOrt().isEmpty());
+	}
+
+	@Test
+	public void listaKommuner() throws Exception {
+		Kataloginformation ki = new KataloginformationImpl();
+		Kommuner kommuner = ki.listaKommuner();
+		assertFalse(kommuner.getKommun().isEmpty());
 	}
 }
