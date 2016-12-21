@@ -73,6 +73,14 @@ public class UtbildningsinformationITCase {
 		return Integer.parseInt(properties.getProperty("rest.utbildningsinformation.period.id"));
 	}
 
+	private String getUtbildningsinstansBenamningEn() {
+		return properties.getProperty("rest.utbildningsinformation.utbildningsinstans.benamn.en");
+	}
+
+	private String getUtbildningsinstansBenamningSv() {
+		return properties.getProperty("rest.utbildningsinformation.utbildningsinstans.benamn.sv");
+	}
+
 	private String getUtbildningsinstansUID() {
 		return properties.getProperty("rest.utbildningsinformation.utbildningsinstans.uid");
 	}
@@ -174,9 +182,9 @@ public class UtbildningsinformationITCase {
 
 		for (Benamning benamn : utbildningsinstans.getBenamningar().getBenamning()) {
 			if (benamn.getSprakkod().equals("en")) {
-				assertEquals("Additive manufacturing", benamn.getText());
+				assertEquals(getUtbildningsinstansBenamningEn(), benamn.getText());
 			} else if (benamn.getSprakkod().equals("sv")) {
-				assertEquals("Additiv tillverkning", benamn.getText());
+				assertEquals(getUtbildningsinstansBenamningSv(), benamn.getText());
 			}
 		}
 	}
@@ -189,9 +197,9 @@ public class UtbildningsinformationITCase {
 
 		for (Benamning benamn : utbildningsinstans.getBenamningar().getBenamning()) {
 			if (benamn.getSprakkod().equals("en")) {
-				assertEquals("Additive manufacturing", benamn.getText());
+				assertEquals(getUtbildningsinstansBenamningEn(), benamn.getText());
 			} else if (benamn.getSprakkod().equals("sv")) {
-				assertEquals("Additiv tillverkning", benamn.getText());
+				assertEquals(getUtbildningsinstansBenamningSv(), benamn.getText());
 			}
 		}
 	}
