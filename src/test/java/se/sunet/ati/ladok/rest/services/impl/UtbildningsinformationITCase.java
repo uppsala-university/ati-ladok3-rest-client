@@ -61,10 +61,6 @@ public class UtbildningsinformationITCase {
 		properties = TestUtil.getProperties();
 	}
 
-	private String getUtbildningsinstansKod() {
-		return properties.getProperty("rest.utbildningsinformation.utbildningsinstans.kod");
-	}
-
 	private String getOrganisationUID() {
 		return properties.getProperty("rest.utbildningsinformation.organisation.uid");
 	}
@@ -79,6 +75,10 @@ public class UtbildningsinformationITCase {
 
 	private String getUtbildningsinstansBenamningSv() {
 		return properties.getProperty("rest.utbildningsinformation.utbildningsinstans.benamn.sv");
+	}
+
+	private String getUtbildningsinstansKod() {
+		return properties.getProperty("rest.utbildningsinformation.utbildningsinstans.kod");
 	}
 
 	private String getUtbildningsinstansUID() {
@@ -218,27 +218,6 @@ public class UtbildningsinformationITCase {
 		Utbildningstyp utbildningstyp = ui
 				.hamtaUtbildningstypViaKod(UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
 		assertNotNull(utbildningstyp);
-	}
-
-	@Test
-	public void testSokAllaOrganisationer() {
-		Organisationslista organisationer = ui.sokAllaOrganisationer();
-		String benamnEn = properties.getProperty("rest.utbildningsinformation.organisation.benamn.en");
-		String benamnSv = properties.getProperty("rest.utbildningsinformation.organisation.benamn.sv");
-		String kod = properties.getProperty("rest.utbildningsinformation.organisation.kod");
-		for (Organisation organisation : organisationer.getOrganisation()) {
-			log.debug("UID=" + organisation.getUid() + "  Namn='" + organisation.getBenamningar().getBenamning().get(0).getText() + "'");
-			if (kod.equals(organisation.getKod())) {
-				for (Benamning benamn : organisation.getBenamningar().getBenamning()) {
-					if (benamn.getSprakkod().equals("en")) {
-						assertEquals(benamnEn, benamn.getText());
-					} else if (benamn.getSprakkod().equals("sv")) {
-						assertEquals(benamnSv, benamn.getText());
-					}
-				}
-				assertEquals(getOrganisationUID(), organisation.getUid());
-			}
-		}
 	}
 
 	@Test
@@ -419,5 +398,26 @@ public class UtbildningsinformationITCase {
 
 		Utbildningstillfalle utbildningstillfalle = ui.skapaUtbildningstillfalle(utToSave);
 		assertNotNull(utbildningstillfalle);
+	}
+
+	@Test
+	public void testSokAllaOrganisationer() {
+		Organisationslista organisationer = ui.sokAllaOrganisationer();
+		String benamnEn = properties.getProperty("rest.utbildningsinformation.organisation.benamn.en");
+		String benamnSv = properties.getProperty("rest.utbildningsinformation.organisation.benamn.sv");
+		String kod = properties.getProperty("rest.utbildningsinformation.organisation.kod");
+		for (Organisation organisation : organisationer.getOrganisation()) {
+			log.debug("UID=" + organisation.getUid() + "  Namn='" + organisation.getBenamningar().getBenamning().get(0).getText() + "'");
+			if (kod.equals(organisation.getKod())) {
+				for (Benamning benamn : organisation.getBenamningar().getBenamning()) {
+					if (benamn.getSprakkod().equals("en")) {
+						assertEquals(benamnEn, benamn.getText());
+					} else if (benamn.getSprakkod().equals("sv")) {
+						assertEquals(benamnSv, benamn.getText());
+					}
+				}
+				assertEquals(getOrganisationUID(), organisation.getUid());
+			}
+		}
 	}
 }
