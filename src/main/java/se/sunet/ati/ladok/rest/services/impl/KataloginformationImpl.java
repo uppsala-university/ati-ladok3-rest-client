@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import se.ladok.schemas.kataloginformation.I18NLista;
 import se.ladok.schemas.kataloginformation.Perioder;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
+import se.ladok.schemas.kataloginformation.SvenskaOrter;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -57,5 +58,13 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		WebTarget client = getClient().path("grunddata").path("successivfordjupning");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 			.accept(responseType).get(SuccessivaFordjupningar.class);
+	}
+
+	@Override
+	public SvenskaOrter listaSvenskaOrter() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path("grunddata").path("svenskort");
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+			.accept(responseType).get(SvenskaOrter.class);
 	}
 }

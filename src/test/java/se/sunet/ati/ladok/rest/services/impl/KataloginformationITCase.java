@@ -12,6 +12,7 @@ import se.ladok.schemas.kataloginformation.I18N;
 import se.ladok.schemas.kataloginformation.I18NLista;
 import se.ladok.schemas.kataloginformation.Perioder;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
+import se.ladok.schemas.kataloginformation.SvenskaOrter;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 
 public class KataloginformationITCase {
@@ -50,5 +51,12 @@ public class KataloginformationITCase {
 		Kataloginformation ki = new KataloginformationImpl();
 		SuccessivaFordjupningar successivaFordjupningar = ki.listaSuccessivaFordjupningar();
 		assertFalse(successivaFordjupningar.getSuccessivFordjupning().isEmpty());
+	}
+
+	@Test
+	public void listaSvenskaOrter() throws Exception {
+		Kataloginformation ki = new KataloginformationImpl();
+		SvenskaOrter svenskaOrter = ki.listaSvenskaOrter();
+		assertFalse(svenskaOrter.getSvenskOrt().isEmpty());
 	}
 }
