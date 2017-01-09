@@ -6,6 +6,7 @@ import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
 import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.Period;
+import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningstillfalleProjektion;
 import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
@@ -62,4 +63,19 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans);
 
 	Utbildningsinstans utbildningsinstansTillStatusPaborjad(String utbildningsinstansUID);
+
+	SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(String utbildningstypID,
+																	   String utbildningstillfallestypID,
+																	   String studieordningID,
+																	   String utbildningstillfalleskod,
+																	   String utbildningskod,
+																	   String benamning,
+																	   String organisationUID,
+																	   String status,
+																	   String studieperiod,
+																	   int page,
+																	   int limit,
+																	   boolean skipCount,
+																	   boolean onlyCount,
+																	   String sprakkod);
 }

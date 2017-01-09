@@ -16,6 +16,7 @@ import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.ObjectFactory;
 import se.ladok.schemas.utbildningsinformation.Period;
 import se.ladok.schemas.utbildningsinformation.Perioder;
+import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningstillfalleProjektion;
 import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstansprojektioner;
@@ -252,5 +253,44 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
 				.put(Entity.entity("", ClientUtil.CONTENT_TYPE_HEADER_VALUE), Utbildningsinstans.class);
+	}
+
+	@Override
+	public SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(String utbildningstypID,
+																			  String utbildningstillfallestypID,
+																			  String studieordningID,
+																			  String utbildningstillfalleskod,
+																			  String utbildningskod,
+																			  String benamning,
+																			  String organisationUID,
+																			  String status,
+																			  String studieperiod,
+																			  int page,
+																			  int limit,
+																			  boolean skipCount,
+																			  boolean onlyCount,
+																			  String sprakkod) {
+		WebTarget client = getClient().path("utbildningstillfalle").path("filtrera").
+			queryParam("utbildningstypID", utbildningstypID).
+			queryParam("utbildningstillfallestypID", utbildningstillfallestypID).
+			queryParam("studieordningID", studieordningID).
+			queryParam("utbildningstillfalleskod", utbildningstillfalleskod).
+			queryParam("utbildningskod", utbildningskod).
+			queryParam("benamning", benamning).
+			queryParam("organisationUID", organisationUID).
+			queryParam("status", status).
+			queryParam("studieperiod", studieperiod).
+			queryParam("page", page).
+			queryParam("limit", limit).
+			queryParam("skipCount", skipCount).
+			queryParam("onlyCount", onlyCount).
+			queryParam("sprakkod", sprakkod);
+
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		return client
+			.request(MediaType.APPLICATION_XML_TYPE)
+			.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+			.accept(responseType)
+			.get(SokresultatUtbildningstillfalleProjektion.class);
 	}
 }

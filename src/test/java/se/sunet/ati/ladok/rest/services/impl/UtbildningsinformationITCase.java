@@ -24,6 +24,7 @@ import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.Period;
 import se.ladok.schemas.utbildningsinformation.PeriodID;
+import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningstillfalleProjektion;
 import se.ladok.schemas.utbildningsinformation.StudietaktID;
 import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
@@ -442,5 +443,12 @@ public class UtbildningsinformationITCase {
 				assertEquals(getOrganisationUID(), organisation.getUid());
 			}
 		}
+	}
+
+	@Test
+	public void testSokUtbildningstillfallen() throws Exception {
+		SokresultatUtbildningstillfalleProjektion resultat =
+			ui.sokUtbildningstillfallen("", "", "", "", "", "", "", "3", "2016-08-29_2017-01-15", 1, 20, true, true, "");
+		assertNotNull(resultat);
 	}
 }
