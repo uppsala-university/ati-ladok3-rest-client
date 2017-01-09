@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.ladok.schemas.Student;
+import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
 import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
@@ -16,6 +17,8 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 	private static final String STUDIEDELTAGANDE_URL = "/studiedeltagande";
 	private static final String STUDIEDELTAGANDE_RESPONSE_TYPE = "application/vnd.ladok-studiedeltagande";
 	private static final String STUDIEDELTAGANDE_MEDIATYPE = "xml;charset=UTF-8";
+	private static final String RESOURCE_DELTAGARE = "deltagare";
+	private static final String RESOURCE_KURSTILLFALLE = "kurstillfalle";
 	private static final String RESOURCE_KURS = "kurs";
 	// OBS Nedanstående resurs är felstavad hos Ladok3
 	private static final String RESOURCE_PABORJAD_UTBILDNING = "paborjadutbilding";
@@ -57,5 +60,16 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
 				.get(TillfallesdeltagandeLista.class);
+	}
+
+	@Override
+	public SokresultatDeltagare sokDeltagareKurstillfalle(String kurstillfalleUID) {
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_DELTAGARE).path(RESOURCE_KURSTILLFALLE).path(kurstillfalleUID);
+		return client
+			.request()
+			.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+			.accept(responseType)
+			.get(SokresultatDeltagare.class);
 	}
 }

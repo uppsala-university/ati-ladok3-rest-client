@@ -25,6 +25,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import se.ladok.schemas.Student;
+import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
 import se.ladok.schemas.studiedeltagande.Tillfallesdeltagande;
 import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
@@ -84,5 +85,14 @@ public class StudiedeltagandeITCase {
 //				String.valueOf("4"));
 //		transformer.transform(xmlInput, xmlOutput);
 //		System.out.println(xmlOutput.getWriter().toString());
+	}
+
+	@Test
+	public void testSokDeltagareKurstillfalle() throws Exception {
+		String kurstillfalleUID = properties.getProperty("rest.utbildningsinformation.utbildningstillfalle.uid");
+
+		Studiedeltagande sd = new StudiedeltagandeImpl();
+		SokresultatDeltagare sokresultatDeltagare = sd.sokDeltagareKurstillfalle(kurstillfalleUID);
+		assertNotNull(sokresultatDeltagare);
 	}
 }
