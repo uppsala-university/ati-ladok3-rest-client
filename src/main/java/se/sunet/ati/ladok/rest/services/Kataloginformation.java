@@ -5,6 +5,7 @@ import se.ladok.schemas.kataloginformation.Kommuner;
 import se.ladok.schemas.kataloginformation.Perioder;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
+import se.ladok.schemas.kataloginformation.Undervisningstider;
 
 public interface Kataloginformation extends LadokServiceProperties {
 	public I18NLista hamtaOversattningarSvenska();
@@ -16,4 +17,6 @@ public interface Kataloginformation extends LadokServiceProperties {
 	public SvenskaOrter listaSvenskaOrter();
 
 	public Kommuner listaKommuner();
+
+	public Undervisningstider listaUndervisningstider();
 }

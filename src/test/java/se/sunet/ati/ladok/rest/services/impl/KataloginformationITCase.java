@@ -14,6 +14,7 @@ import se.ladok.schemas.kataloginformation.Kommuner;
 import se.ladok.schemas.kataloginformation.Perioder;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
+import se.ladok.schemas.kataloginformation.Undervisningstider;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 
 public class KataloginformationITCase {
@@ -66,5 +67,12 @@ public class KataloginformationITCase {
 		Kataloginformation ki = new KataloginformationImpl();
 		Kommuner kommuner = ki.listaKommuner();
 		assertFalse(kommuner.getKommun().isEmpty());
+	}
+
+	@Test
+	public void listaUndervisningstider() throws Exception {
+		Kataloginformation ki = new KataloginformationImpl();
+		Undervisningstider undervisningstider = ki.listaUndervisningstider();
+		assertFalse(undervisningstider.getUndervisningstid().isEmpty());
 	}
 }
