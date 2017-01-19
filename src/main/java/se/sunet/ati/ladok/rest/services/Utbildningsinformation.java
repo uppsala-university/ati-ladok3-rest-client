@@ -2,6 +2,7 @@ package se.sunet.ati.ladok.rest.services;
 
 import java.util.List;
 import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.utbildningsinformation.Huvudomraden;
 import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
 import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
@@ -78,4 +79,11 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 																	   boolean skipCount,
 																	   boolean onlyCount,
 																	   String sprakkod);
+
+	/**
+	 * Hämtar samtliga huvudområden
+	 * @return
+	 */
+	Huvudomraden hamtaHuvudamraden();
+
 }

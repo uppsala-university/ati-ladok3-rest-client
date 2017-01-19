@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.utbildningsinformation.Huvudomraden;
 import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
 import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
@@ -45,6 +46,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String RESOURCE_UNDERLIGGANDE = "underliggande";
 	private static final String RESOURCE_UTBILDNINGSTYP = "utbildningstyp";
 	private static final String RESOURCE_VERSION = "version";
+	private static final String RESOURCE_HUVUDOMRADE = "huvudomrade";
 
 	WebTarget utbildningsinformation;
 
@@ -292,5 +294,17 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 			.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 			.accept(responseType)
 			.get(SokresultatUtbildningstillfalleProjektion.class);
+	}
+
+	@Override
+	public Huvudomraden hamtaHuvudamraden() {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_HUVUDOMRADE);
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		return client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get(Huvudomraden.class);
 	}
 }

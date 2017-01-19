@@ -18,6 +18,7 @@ import se.ladok.schemas.Benamning;
 import se.ladok.schemas.Benamningar;
 import se.ladok.schemas.Organisation;
 import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.utbildningsinformation.Huvudomraden;
 import se.ladok.schemas.utbildningsinformation.Kurs2007GrundAvancerad;
 import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
 import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
@@ -450,5 +451,11 @@ public class UtbildningsinformationITCase {
 		SokresultatUtbildningstillfalleProjektion resultat =
 			ui.sokUtbildningstillfallen("", "", "", "", "", "", "", "3", "2016-08-29_2017-01-15", 1, 20, true, true, "");
 		assertNotNull(resultat);
+	}
+
+	@Test
+	public void hamtaHuvudomraden() {
+		Huvudomraden huvudomraden = ui.hamtaHuvudamraden();
+		assertNotNull(huvudomraden);
 	}
 }
