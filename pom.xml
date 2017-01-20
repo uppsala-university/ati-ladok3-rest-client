@@ -3,16 +3,17 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>se.sunet.ati.ladok</groupId>
-    <artifactId>ladok</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <groupId>se.sunet.ati</groupId>
+    <artifactId>ati-parent</artifactId>
+    <version>1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>ladok3-rest-client</artifactId>
+  <groupId>se.sunet.ati.ladok</groupId>
+  <artifactId>ati-ladok3-rest-client</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
-  <name>Ladok 3 REST Client</name>
+  <name>ATI Ladok 3 REST Client</name>
   <description>A Ladok 3 REST Client as OSGi-bundle.</description>
 
   <dependencies>
@@ -32,7 +33,6 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.2</version>
-      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>javax.ws.rs</groupId>
