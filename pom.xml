@@ -69,7 +69,7 @@
     </dependency>
     <dependency>
       <groupId>se.sunet.ati.ladok</groupId>
-      <artifactId>ladok3-dto</artifactId>
+      <artifactId>ati-ladok3-dto</artifactId>
       <version>1.0.0-SNAPSHOT</version>
       <type>bundle</type>
     </dependency>
