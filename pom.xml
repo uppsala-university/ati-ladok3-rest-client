@@ -6,6 +6,7 @@
     <groupId>se.sunet.ati</groupId>
     <artifactId>ati-parent</artifactId>
     <version>1-SNAPSHOT</version>
+    <relativePath>../ati-parent/pom.xml</relativePath>
   </parent>
 
   <groupId>se.sunet.ati.ladok</groupId>
