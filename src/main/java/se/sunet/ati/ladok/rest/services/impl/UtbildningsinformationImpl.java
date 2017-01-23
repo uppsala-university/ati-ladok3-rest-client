@@ -10,20 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.ladok.schemas.Organisationslista;
-import se.ladok.schemas.utbildningsinformation.Huvudomraden;
-import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
-import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
-import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
-import se.ladok.schemas.utbildningsinformation.ObjectFactory;
-import se.ladok.schemas.utbildningsinformation.Period;
-import se.ladok.schemas.utbildningsinformation.Perioder;
-import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningstillfalleProjektion;
-import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
-import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
-import se.ladok.schemas.utbildningsinformation.Utbildningsinstansprojektioner;
-import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
-import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
-import se.ladok.schemas.utbildningsinformation.Versionsinformation;
+import se.ladok.schemas.utbildningsinformation.*;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -48,6 +35,9 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String RESOURCE_VERSION = "version";
 	private static final String RESOURCE_HUVUDOMRADE = "huvudomrade";
 
+	private static final String RESOURCE_NATIONELL = "nationell";
+	private static final String RESOURCE_ATTRIBUTDEFINITIONER = "attributdefinitioner";
+
 	WebTarget utbildningsinformation;
 
 	/**
@@ -60,6 +50,22 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 			this.utbildningsinformation = ClientUtil.newClient(this, UTBILDNINGSINFORMATION_URL);
 		}
 		return this.utbildningsinformation;
+	}
+
+	@Override
+	public List<Attributdefinition> hamtaAttributdefinitionerViaUtbildningstyp(int utbildningstypID){
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSMALL)
+				.path(RESOURCE_NATIONELL)
+				.path(RESOURCE_ATTRIBUTDEFINITIONER)
+				.queryParam("utbildningstypID", utbildningstypID);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		return client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get(Attributdefinitioner.class).getAttributdefinitioner();
 	}
 
 	@Override
@@ -117,9 +123,9 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	@Override
 	public Period hamtaPeriodViaKod(String periodKod) {
 		List<Period> perioder = hamtaPerioder();
-		if(periodKod != null) {
-			for(Period period : perioder) {
-				if(periodKod.equals(period.getKod())) {
+		if (periodKod != null) {
+			for (Period period : perioder) {
+				if (periodKod.equals(period.getKod())) {
 					return period;
 				}
 			}
@@ -273,27 +279,27 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 																			  boolean onlyCount,
 																			  String sprakkod) {
 		WebTarget client = getClient().path("utbildningstillfalle").path("filtrera").
-			queryParam("utbildningstypID", utbildningstypID).
-			queryParam("utbildningstillfallestypID", utbildningstillfallestypID).
-			queryParam("studieordningID", studieordningID).
-			queryParam("utbildningstillfalleskod", utbildningstillfalleskod).
-			queryParam("utbildningskod", utbildningskod).
-			queryParam("benamning", benamning).
-			queryParam("organisationUID", organisationUID).
-			queryParam("status", status).
-			queryParam("studieperiod", studieperiod).
-			queryParam("page", page).
-			queryParam("limit", limit).
-			queryParam("skipCount", skipCount).
-			queryParam("onlyCount", onlyCount).
-			queryParam("sprakkod", sprakkod);
+				queryParam("utbildningstypID", utbildningstypID).
+				queryParam("utbildningstillfallestypID", utbildningstillfallestypID).
+				queryParam("studieordningID", studieordningID).
+				queryParam("utbildningstillfalleskod", utbildningstillfalleskod).
+				queryParam("utbildningskod", utbildningskod).
+				queryParam("benamning", benamning).
+				queryParam("organisationUID", organisationUID).
+				queryParam("status", status).
+				queryParam("studieperiod", studieperiod).
+				queryParam("page", page).
+				queryParam("limit", limit).
+				queryParam("skipCount", skipCount).
+				queryParam("onlyCount", onlyCount).
+				queryParam("sprakkod", sprakkod);
 
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		return client
-			.request(MediaType.APPLICATION_XML_TYPE)
-			.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-			.accept(responseType)
-			.get(SokresultatUtbildningstillfalleProjektion.class);
+				.request(MediaType.APPLICATION_XML_TYPE)
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get(SokresultatUtbildningstillfalleProjektion.class);
 	}
 
 	@Override

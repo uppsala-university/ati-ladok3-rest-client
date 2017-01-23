@@ -1,9 +1,5 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 import java.util.Properties;
 
@@ -11,6 +7,7 @@ import javax.ws.rs.BadRequestException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,22 +15,11 @@ import se.ladok.schemas.Benamning;
 import se.ladok.schemas.Benamningar;
 import se.ladok.schemas.Organisation;
 import se.ladok.schemas.Organisationslista;
-import se.ladok.schemas.utbildningsinformation.Huvudomraden;
-import se.ladok.schemas.utbildningsinformation.Kurs2007GrundAvancerad;
-import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
-import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
-import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
-import se.ladok.schemas.utbildningsinformation.Period;
-import se.ladok.schemas.utbildningsinformation.PeriodID;
-import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningstillfalleProjektion;
-import se.ladok.schemas.utbildningsinformation.StudietaktID;
-import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
-import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
-import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
-import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
-import se.ladok.schemas.utbildningsinformation.Versionsinformation;
+import se.ladok.schemas.utbildningsinformation.*;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
+
+import static org.junit.Assert.*;
 
 public class UtbildningsinformationITCase {
 	private static Log log = LogFactory.getLog(UtbildningsinformationITCase.class);
@@ -457,5 +443,13 @@ public class UtbildningsinformationITCase {
 	public void hamtaHuvudomraden() {
 		Huvudomraden huvudomraden = ui.hamtaHuvudamraden();
 		assertNotNull(huvudomraden);
+	}
+
+	@Test
+	public void testHamtaAttributdefinitioner() throws Exception {
+		final List<Attributdefinition> attributdefinitioner = ui.hamtaAttributdefinitionerViaUtbildningstyp(getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
+		log.info("Hämtade attributdefinitioner för utbildningstyp " + UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
+		assertNotNull(attributdefinitioner);
+		assertFalse(attributdefinitioner.isEmpty());
 	}
 }
