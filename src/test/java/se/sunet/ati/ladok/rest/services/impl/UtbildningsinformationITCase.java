@@ -15,7 +15,20 @@ import se.ladok.schemas.Benamning;
 import se.ladok.schemas.Benamningar;
 import se.ladok.schemas.Organisation;
 import se.ladok.schemas.Organisationslista;
-import se.ladok.schemas.utbildningsinformation.*;
+import se.ladok.schemas.utbildningsinformation.Attributdefinition;
+import se.ladok.schemas.utbildningsinformation.Huvudomraden;
+import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
+import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
+import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
+import se.ladok.schemas.utbildningsinformation.Period;
+import se.ladok.schemas.utbildningsinformation.PeriodID;
+import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningstillfalleProjektion;
+import se.ladok.schemas.utbildningsinformation.StudietaktID;
+import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
+import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
+import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
+import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
+import se.ladok.schemas.utbildningsinformation.Versionsinformation;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
 
@@ -188,8 +201,8 @@ public class UtbildningsinformationITCase {
 		log.info("Hämtade " + utbildningProjektioner.size() + " utbildningsinstanser för utbildningskod " + utbildningskod);
 
 		UtbildningProjektion utbildningsinstans = utbildningProjektioner.get(0);
-		assertTrue(getUtbildningsinstansUID().equalsIgnoreCase(utbildningsinstans.getUid()));
 		log.info("Hämtade utbildningsinstans med UID " + utbildningsinstans.getUid() + " för utbildningskod " + utbildningskod);
+		assertTrue(getUtbildningsinstansUID().equalsIgnoreCase(utbildningsinstans.getUid()));
 
 		for (Benamning benamn : utbildningsinstans.getBenamningar().getBenamning()) {
 			if (benamn.getSprakkod().equals("en")) {
@@ -293,7 +306,7 @@ public class UtbildningsinformationITCase {
 
 	@Test
 	public void testSkapaUtbildningsinstansOchNyVersion() {
-		Kurs2007GrundAvancerad uiToSave = new Kurs2007GrundAvancerad();
+		Utbildningsinstans uiToSave = new Utbildningsinstans();
 		Benamningar benamningar = new Benamningar();
 		Benamning svenska = new Benamning();
 		svenska.setSprakkod("sv");
