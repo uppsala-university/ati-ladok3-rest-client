@@ -12,6 +12,7 @@ import se.ladok.schemas.kataloginformation.Betygsskalor;
 import se.ladok.schemas.kataloginformation.I18N;
 import se.ladok.schemas.kataloginformation.I18NLista;
 import se.ladok.schemas.kataloginformation.Kommuner;
+import se.ladok.schemas.kataloginformation.Lander;
 import se.ladok.schemas.kataloginformation.Perioder;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
@@ -36,8 +37,7 @@ public class KataloginformationITCase {
 
 		for (I18N i18n : i18nLista.getOversattning()) {
 			assertTrue(!i18n.getI18NNyckel().equals(iaaa18n.getI18NNyckel())
-					|| (i18n.getI18NNyckel().equals(iaaa18n.getI18NNyckel())
-							&& i18n.getText().equals(iaaa18n.getText())));
+					|| (i18n.getI18NNyckel().equals(iaaa18n.getI18NNyckel()) && i18n.getText().equals(iaaa18n.getText())));
 		}
 
 	}
@@ -68,6 +68,13 @@ public class KataloginformationITCase {
 		Kataloginformation ki = new KataloginformationImpl();
 		Kommuner kommuner = ki.listaKommuner();
 		assertFalse(kommuner.getKommun().isEmpty());
+	}
+
+	@Test
+	public void listaLander() {
+		Kataloginformation ki = new KataloginformationImpl();
+		Lander lander = ki.listaLander();
+		assertFalse(lander.getLand().isEmpty());
 	}
 
 	@Test

@@ -3,6 +3,7 @@ package se.sunet.ati.ladok.rest.services;
 import se.ladok.schemas.kataloginformation.Betygsskalor;
 import se.ladok.schemas.kataloginformation.I18NLista;
 import se.ladok.schemas.kataloginformation.Kommuner;
+import se.ladok.schemas.kataloginformation.Lander;
 import se.ladok.schemas.kataloginformation.Perioder;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
@@ -18,6 +19,8 @@ public interface Kataloginformation extends LadokServiceProperties {
 	SvenskaOrter listaSvenskaOrter();
 
 	Kommuner listaKommuner();
+
+	Lander listaLander();
 
 	Undervisningstider listaUndervisningstider();
 
