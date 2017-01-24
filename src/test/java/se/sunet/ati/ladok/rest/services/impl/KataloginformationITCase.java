@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
+import se.ladok.schemas.kataloginformation.Betygsskalor;
 import se.ladok.schemas.kataloginformation.I18N;
 import se.ladok.schemas.kataloginformation.I18NLista;
 import se.ladok.schemas.kataloginformation.Kommuner;
@@ -42,37 +43,44 @@ public class KataloginformationITCase {
 	}
 
 	@Test
-	public void listaLokalaPerioder() throws Exception {
+	public void listaLokalaPerioder() {
 		Kataloginformation ki = new KataloginformationImpl();
 		Perioder perioder = ki.listaLokalaPerioder();
 		assertFalse(perioder.getPeriod().isEmpty());
 	}
 
 	@Test
-	public void listaSuccessivaFordjupningar() throws Exception {
+	public void listaSuccessivaFordjupningar() {
 		Kataloginformation ki = new KataloginformationImpl();
 		SuccessivaFordjupningar successivaFordjupningar = ki.listaSuccessivaFordjupningar();
 		assertFalse(successivaFordjupningar.getSuccessivFordjupning().isEmpty());
 	}
 
 	@Test
-	public void listaSvenskaOrter() throws Exception {
+	public void listaSvenskaOrter() {
 		Kataloginformation ki = new KataloginformationImpl();
 		SvenskaOrter svenskaOrter = ki.listaSvenskaOrter();
 		assertFalse(svenskaOrter.getSvenskOrt().isEmpty());
 	}
 
 	@Test
-	public void listaKommuner() throws Exception {
+	public void listaKommuner() {
 		Kataloginformation ki = new KataloginformationImpl();
 		Kommuner kommuner = ki.listaKommuner();
 		assertFalse(kommuner.getKommun().isEmpty());
 	}
 
 	@Test
-	public void listaUndervisningstider() throws Exception {
+	public void listaUndervisningstider() {
 		Kataloginformation ki = new KataloginformationImpl();
 		Undervisningstider undervisningstider = ki.listaUndervisningstider();
 		assertFalse(undervisningstider.getUndervisningstid().isEmpty());
+	}
+
+	@Test
+	public void listaBetygskalor() {
+		Kataloginformation ki = new KataloginformationImpl();
+		Betygsskalor betygsskalor = ki.listaBetygskalor();
+		assertFalse(betygsskalor.getBetygsskala().isEmpty());
 	}
 }
