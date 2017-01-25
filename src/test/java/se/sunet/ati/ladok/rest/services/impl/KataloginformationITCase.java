@@ -13,6 +13,7 @@ import se.ladok.schemas.kataloginformation.I18N;
 import se.ladok.schemas.kataloginformation.I18NLista;
 import se.ladok.schemas.kataloginformation.Kommuner;
 import se.ladok.schemas.kataloginformation.Lander;
+import se.ladok.schemas.kataloginformation.NivaerInomStudieordning;
 import se.ladok.schemas.kataloginformation.Perioder;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
@@ -90,4 +91,12 @@ public class KataloginformationITCase {
 		Betygsskalor betygsskalor = ki.listaBetygskalor();
 		assertFalse(betygsskalor.getBetygsskala().isEmpty());
 	}
+
+	@Test
+	public void listaNivaInomStudieordning() {
+		Kataloginformation ki = new KataloginformationImpl();
+		NivaerInomStudieordning nivaerInomStudieordning= ki.listaNivaerInomStudieordning();
+		assertFalse(nivaerInomStudieordning.getNivaInomStudieordning().isEmpty());
+	}
+
 }

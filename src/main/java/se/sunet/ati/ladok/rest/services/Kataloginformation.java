@@ -4,6 +4,7 @@ import se.ladok.schemas.kataloginformation.Betygsskalor;
 import se.ladok.schemas.kataloginformation.I18NLista;
 import se.ladok.schemas.kataloginformation.Kommuner;
 import se.ladok.schemas.kataloginformation.Lander;
+import se.ladok.schemas.kataloginformation.NivaerInomStudieordning;
 import se.ladok.schemas.kataloginformation.Perioder;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
@@ -25,4 +26,6 @@ public interface Kataloginformation extends LadokServiceProperties {
 	Undervisningstider listaUndervisningstider();
 
 	Betygsskalor listaBetygskalor();
+
+	NivaerInomStudieordning listaNivaerInomStudieordning();
 }
