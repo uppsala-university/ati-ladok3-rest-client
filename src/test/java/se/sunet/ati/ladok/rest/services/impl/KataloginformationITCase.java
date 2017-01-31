@@ -16,6 +16,7 @@ import se.ladok.schemas.kataloginformation.Kommuner;
 import se.ladok.schemas.kataloginformation.Lander;
 import se.ladok.schemas.kataloginformation.NivaerInomStudieordning;
 import se.ladok.schemas.kataloginformation.Perioder;
+import se.ladok.schemas.kataloginformation.Studietakter;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
 import se.ladok.schemas.kataloginformation.Undervisningstider;
@@ -103,8 +104,15 @@ public class KataloginformationITCase {
 	@Test
 	public void listaAmnesgrupper() {
 		Kataloginformation ki = new KataloginformationImpl();
-		Amnesgrupper amnesgrupper= ki.listaAmnesgrupper();
+		Amnesgrupper amnesgrupper = ki.listaAmnesgrupper();
 		assertFalse(amnesgrupper.getAmnesgrupp().isEmpty());
+	}
+
+	@Test
+	public void listaStudietakter() {
+		Kataloginformation ki = new KataloginformationImpl();
+		Studietakter studietakter = ki.listaStudietakter();
+		assertFalse(studietakter.getStudietakt().isEmpty());
 	}
 
 }
