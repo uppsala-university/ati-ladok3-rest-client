@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
+import se.ladok.schemas.kataloginformation.Amnesgrupper;
 import se.ladok.schemas.kataloginformation.Betygsskalor;
 import se.ladok.schemas.kataloginformation.I18N;
 import se.ladok.schemas.kataloginformation.I18NLista;
@@ -97,6 +98,13 @@ public class KataloginformationITCase {
 		Kataloginformation ki = new KataloginformationImpl();
 		NivaerInomStudieordning nivaerInomStudieordning= ki.listaNivaerInomStudieordning();
 		assertFalse(nivaerInomStudieordning.getNivaInomStudieordning().isEmpty());
+	}
+
+	@Test
+	public void listaAmnesgrupper() {
+		Kataloginformation ki = new KataloginformationImpl();
+		Amnesgrupper amnesgrupper= ki.listaAmnesgrupper();
+		assertFalse(amnesgrupper.getAmnesgrupp().isEmpty());
 	}
 
 }
