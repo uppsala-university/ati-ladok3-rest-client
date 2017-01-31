@@ -7,6 +7,7 @@ import se.ladok.schemas.kataloginformation.Kommuner;
 import se.ladok.schemas.kataloginformation.Lander;
 import se.ladok.schemas.kataloginformation.NivaerInomStudieordning;
 import se.ladok.schemas.kataloginformation.Perioder;
+import se.ladok.schemas.kataloginformation.Studietakter;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
 import se.ladok.schemas.kataloginformation.Undervisningstider;
@@ -31,4 +32,6 @@ public interface Kataloginformation extends LadokServiceProperties {
 	NivaerInomStudieordning listaNivaerInomStudieordning();
 
 	Amnesgrupper listaAmnesgrupper();
+
+	Studietakter listaStudietakter();
 }

@@ -13,6 +13,7 @@ import se.ladok.schemas.kataloginformation.Kommuner;
 import se.ladok.schemas.kataloginformation.Lander;
 import se.ladok.schemas.kataloginformation.NivaerInomStudieordning;
 import se.ladok.schemas.kataloginformation.Perioder;
+import se.ladok.schemas.kataloginformation.Studietakter;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
 import se.ladok.schemas.kataloginformation.Undervisningstider;
@@ -121,5 +122,13 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		WebTarget client = getClient().path("grunddata").path("amnesgrupp");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Amnesgrupper.class);
+	}
+
+	@Override
+	public Studietakter listaStudietakter() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path("grunddata").path("studietakt");
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(Studietakter.class);
 	}
 }
