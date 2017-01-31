@@ -9,6 +9,13 @@ I `src/main/resources` finns en exempelfil för fordrade egenskaper. Använd den
 
 Redigera sedan filen `src/main/resources/restclient.properties` så att den innehåller rätt namn på certifikatfil och lösenord.
 
-Därefter kan du köra integrationstesterna med detta kommando:
+Därefter kan du köra integrationstesterna med detta kommando (se nedan för Uppsala Universitet):
 
     mvn clean verify -Prun-its
+
+
+Uppsala Universitet har restriktioner vilken institution man läser och skriver till.
+Därför finns en särskild profil för att köra integrationstester mot Uppsalas MIT-demo-miljö:
+
+    mvn clean verify -P uu-demo-it
+
