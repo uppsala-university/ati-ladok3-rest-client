@@ -10,19 +10,24 @@ import org.apache.commons.logging.LogFactory;
  * A utility class for tests.
  */
 public class TestUtil {
+	
 	private static final Log log = LogFactory.getLog(TestUtil.class);
 	private static final String TESTDATA_FILE = "restclient.testdata.properties";
 
 	public static Properties getProperties() throws IOException {
-		InputStream in = TestUtil.class.getClassLoader().getResourceAsStream(TESTDATA_FILE);
+		return getProperties(TESTDATA_FILE);
+	}
+	
+	public static Properties getProperties(String file) throws IOException {
+		InputStream in = TestUtil.class.getClassLoader().getResourceAsStream(file);
 		if (in != null) {
 			Properties properties = new Properties();
 			properties.load(in);
-			log.info("Loading test properties from " + TESTDATA_FILE);
+			log.info("Loading test properties from " + file);
 			return properties;
 		}
 		else {
-			throw new RuntimeException("The file " + TESTDATA_FILE + " was not found");
+			throw new RuntimeException("The file " + file + " was not found");
 		}
 	}
 }
