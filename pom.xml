@@ -17,6 +17,12 @@
   <name>ATI Ladok 3 REST Client</name>
   <description>A Ladok 3 REST Client as OSGi-bundle.</description>
 
+  <scm>
+    <connection>scm:git:https://github.com/uppsala-university/ati-ladok3-rest-client.git</connection>
+    <developerConnection>scm:git:https://github.com/uppsala-university/ati-ladok3-rest-client.git</developerConnection>
+    <url>https://github.com/uppsala-university/ati-ladok3-rest-client</url>
+  </scm>
+
   <dependencies>
     <dependency>
       <groupId>com.google.code.gson</groupId>
