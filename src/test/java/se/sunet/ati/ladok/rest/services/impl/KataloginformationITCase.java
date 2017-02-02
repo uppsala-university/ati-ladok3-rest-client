@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import se.ladok.schemas.kataloginformation.Amnesgrupper;
 import se.ladok.schemas.kataloginformation.Betygsskalor;
+import se.ladok.schemas.kataloginformation.Finansieringsformer;
 import se.ladok.schemas.kataloginformation.I18N;
 import se.ladok.schemas.kataloginformation.I18NLista;
 import se.ladok.schemas.kataloginformation.Kommuner;
@@ -97,7 +98,7 @@ public class KataloginformationITCase {
 	@Test
 	public void listaNivaInomStudieordning() {
 		Kataloginformation ki = new KataloginformationImpl();
-		NivaerInomStudieordning nivaerInomStudieordning= ki.listaNivaerInomStudieordning();
+		NivaerInomStudieordning nivaerInomStudieordning = ki.listaNivaerInomStudieordning();
 		assertFalse(nivaerInomStudieordning.getNivaInomStudieordning().isEmpty());
 	}
 
@@ -115,4 +116,10 @@ public class KataloginformationITCase {
 		assertFalse(studietakter.getStudietakt().isEmpty());
 	}
 
+	@Test
+	public void listaFinansieringsformer() {
+		Kataloginformation ki = new KataloginformationImpl();
+		Finansieringsformer finansieringsformer = ki.listaFinansieringsformer();
+		assertFalse(finansieringsformer.getFinansieringsform().isEmpty());
+	}
 }

@@ -8,6 +8,8 @@ import org.apache.commons.logging.LogFactory;
 import se.ladok.schemas.kataloginformation.Amnesgrupp;
 import se.ladok.schemas.kataloginformation.Amnesgrupper;
 import se.ladok.schemas.kataloginformation.Betygsskalor;
+import se.ladok.schemas.kataloginformation.Finansieringsform;
+import se.ladok.schemas.kataloginformation.Finansieringsformer;
 import se.ladok.schemas.kataloginformation.I18NLista;
 import se.ladok.schemas.kataloginformation.Kommuner;
 import se.ladok.schemas.kataloginformation.Lander;
@@ -130,5 +132,13 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		WebTarget client = getClient().path("grunddata").path("studietakt");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Studietakter.class);
+	}
+
+	@Override
+	public Finansieringsformer listaFinansieringsformer() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path("grunddata").path("finansieringsform");
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(Finansieringsformer.class);
 	}
 }
