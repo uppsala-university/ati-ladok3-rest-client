@@ -130,6 +130,7 @@ public class UtbildningsinformationITCase {
 		LokalUtbildningsmall lokalUtbildningsmall = ui
 				.hamtaLokalUtbildningsmall(utbildningstypID, DATUM);
 		assertNotNull(lokalUtbildningsmall);
+		assertNotNull(ui.hamtaLokalUtbildningsmall(lokalUtbildningsmall.getUid()));
 		log.info("Hämtade lokal utbildningsmall med UID " + lokalUtbildningsmall.getUid() + " för utbildningstyp " + utbildningstypID);
 	}
 

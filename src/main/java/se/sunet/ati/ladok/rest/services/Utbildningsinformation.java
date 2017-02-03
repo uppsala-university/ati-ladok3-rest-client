@@ -10,6 +10,8 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	LokalUtbildningsmall hamtaLokalUtbildningsmall(int utbildningstypID, String datum);
 
+	LokalUtbildningsmall hamtaLokalUtbildningsmall(String utbildningsmallUID);
+
 	/**
 	 * Hämtar en nivå inom studieordning.
 	 *
