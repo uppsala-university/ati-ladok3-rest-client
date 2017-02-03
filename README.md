@@ -33,8 +33,7 @@ lägga till två saker i ditt eget projekts ```pom.xml```
 
 Anledningen till att du behöver lägga till ```maven-bundle-plugin``` är att
 denna produkt är av typen ```bundle``` (OSGi-bundle), vilket är en typ som
-normalt inte stöds av Maven. Detta stöd tillhandahålls istället av
-```maven-bundle-plugin```.
+normalt inte stöds av Maven. Detta stöd tillhandahålls istället av ```maven-bundle-plugin```.
 
 ### Använda releaser
 
