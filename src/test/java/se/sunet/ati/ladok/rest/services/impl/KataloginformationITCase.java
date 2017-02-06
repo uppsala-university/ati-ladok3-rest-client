@@ -21,6 +21,7 @@ import se.ladok.schemas.kataloginformation.Studietakter;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
 import se.ladok.schemas.kataloginformation.Undervisningstider;
+import se.ladok.schemas.kataloginformation.Utbildningsomraden;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 
 public class KataloginformationITCase {
@@ -121,5 +122,12 @@ public class KataloginformationITCase {
 		Kataloginformation ki = new KataloginformationImpl();
 		Finansieringsformer finansieringsformer = ki.listaFinansieringsformer();
 		assertFalse(finansieringsformer.getFinansieringsform().isEmpty());
+	}
+
+	@Test
+	public void listaUtbildningsomraden() {
+		Kataloginformation ki = new KataloginformationImpl();
+		Utbildningsomraden utbildningsomraden = ki.listaUtbildningsomraden();
+		assertFalse(utbildningsomraden.getUtbildningsomrade().isEmpty());
 	}
 }

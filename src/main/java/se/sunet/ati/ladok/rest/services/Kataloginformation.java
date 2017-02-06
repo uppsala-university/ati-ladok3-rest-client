@@ -13,6 +13,7 @@ import se.ladok.schemas.kataloginformation.Studietakter;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
 import se.ladok.schemas.kataloginformation.Undervisningstider;
+import se.ladok.schemas.kataloginformation.Utbildningsomraden;
 
 public interface Kataloginformation extends LadokServiceProperties {
 	I18NLista hamtaOversattningarSvenska();
@@ -38,4 +39,6 @@ public interface Kataloginformation extends LadokServiceProperties {
 	Studietakter listaStudietakter();
 
 	Finansieringsformer listaFinansieringsformer();
+
+	Utbildningsomraden listaUtbildningsomraden();
 }

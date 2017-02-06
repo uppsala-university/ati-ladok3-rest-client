@@ -19,6 +19,7 @@ import se.ladok.schemas.kataloginformation.Studietakter;
 import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
 import se.ladok.schemas.kataloginformation.SvenskaOrter;
 import se.ladok.schemas.kataloginformation.Undervisningstider;
+import se.ladok.schemas.kataloginformation.Utbildningsomraden;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -140,5 +141,13 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		WebTarget client = getClient().path("grunddata").path("finansieringsform");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Finansieringsformer.class);
+	}
+
+	@Override
+	public Utbildningsomraden listaUtbildningsomraden() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path("grunddata").path("utbildningsomrade");
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(Utbildningsomraden.class);
 	}
 }
