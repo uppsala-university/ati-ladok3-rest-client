@@ -23,27 +23,26 @@ public class ClientUtil {
 	private static Log log = LogFactory.getLog(ClientUtil.class);
 
 	static public WebTarget newClient(LadokServiceProperties lsp, String path) {
-		try {
-			loadProperties(lsp);
-			checkProperties(lsp);
-		} catch (Exception e) {
-			log.error("Unable to read restclient.properties");
-			throw new RuntimeException(e);
-		}
+		loadProperties(lsp);
+		checkProperties(lsp);
 
 		try {
 			SSLContext sslContext = SSLContext.getInstance(lsp.getRestApiTransportProtcol());
-			KeyManagerFactory kmf = KeyManagerFactory.getInstance( KeyManagerFactory.getDefaultAlgorithm() );
+			KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 
 			// Initiate client certificate key store.
 			KeyStore clientKeystore;
 			clientKeystore = KeyStore.getInstance(lsp.getClientCertificateKeystoreType());
-			clientKeystore.load(new FileInputStream(lsp.getClientCertificateFile()), lsp.getClientCertificatePwd().toCharArray());
+			try (InputStream in = new FileInputStream(lsp.getClientCertificateFile())) {
+				clientKeystore.load(in, lsp.getClientCertificatePwd().toCharArray());
+			}
 			// Initiate optional certificate trust store.
 			KeyStore trustStore = null;
 			if (lsp.getTrustStoreFile() != null) {
 				trustStore = KeyStore.getInstance(lsp.getTrustStoreType());
-				trustStore.load(new FileInputStream(lsp.getTrustStoreFile()), lsp.getTrustStorePwd().toCharArray());
+				try (InputStream in = new FileInputStream(lsp.getTrustStoreFile())) {
+					trustStore.load(in, lsp.getTrustStorePwd().toCharArray());
+				}
 			}
 
 			// Assign and initiate client builder.
@@ -57,17 +56,16 @@ public class ClientUtil {
 
 			return cb.build().target(stripEndSlash(lsp.getRestbase()) + "/" + stripStartSlash(path));
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new IllegalStateException(e);
 		}
 	}
 
-	static private void loadProperties(LadokServiceProperties lsp) throws IOException {
+	static private void loadProperties(LadokServiceProperties lsp) {
 		if (lsp.getClientCertificatePwd() != null) {
 			log.info("Properties already set via setters. Not using restclient.properties");
 			return;
 		}
-		InputStream in = ClientUtil.class.getClassLoader().getResourceAsStream("restclient.properties");
-		if (in != null) {
+		try (InputStream in = ClientUtil.class.getClassLoader().getResourceAsStream("restclient.properties")) {
 			Properties properties = new Properties();
 			properties.load(in);
 			log.info("Loading properties from restclient.properties");
@@ -103,15 +101,15 @@ public class ClientUtil {
 			if (restApiTransportProtcol != null && !restApiTransportProtcol.equals("")) {
 				lsp.setRestApiTransportProtcol(restApiTransportProtcol);
 			}
-		} else {
-			throw new RuntimeException("No restclient.properties found");
+	} catch (IOException e) {
+			throw new IllegalStateException("Failed to open restclient.properties" ,e);
 		}
 	}
 
-	static private void checkProperties(LadokServiceProperties lsp) throws Exception {
+	static private void checkProperties(LadokServiceProperties lsp) {
 		String clientCertificateFile = lsp.getClientCertificateFile();
 		if (clientCertificateFile == null || clientCertificateFile.equals("")) {
-			throw new Exception("Missing property \"clientCertificateFile\".");
+			throw new IllegalArgumentException("Missing property \"clientCertificateFile\".");
 		}
 		if (!clientCertificateFile.substring(0, 1).equalsIgnoreCase("/")) {
 			clientCertificateFile = System.getProperty("user.home") + "/" + clientCertificateFile;
@@ -119,16 +117,16 @@ public class ClientUtil {
 			log.debug("Using client certificate keystore path relative to home directory '" + System.getProperty("user.home")  + "'.");
 		}
 		if (!Files.exists(Paths.get(clientCertificateFile))) {
-			throw new Exception("Property \"clientCertificateFile\" (\"" + clientCertificateFile + "\") does not exist.");
+			throw new IllegalArgumentException("Property \"clientCertificateFile\" (\"" + clientCertificateFile + "\") does not exist.");
 		}
 		log.info("Using client certificate keystore: " + clientCertificateFile);
 		String clientCertificatePwd = lsp.getClientCertificatePwd();
 		if (clientCertificatePwd == null || clientCertificatePwd.equals("")) {
-			throw new Exception("Missing property \"clientCertificatePwd\".");
+			throw new IllegalArgumentException("Missing property \"clientCertificatePwd\".");
 		}
 		String clientCertificateKeystoreType = lsp.getClientCertificateKeystoreType();
 		if (clientCertificateKeystoreType == null || clientCertificateKeystoreType.equals("")) {
-			throw new Exception("Missing property \"clientCertificateKeystoreType\".");
+			throw new IllegalArgumentException("Missing property \"clientCertificateKeystoreType\".");
 		}
 		log.info("Using client certificate key store type: " + clientCertificateKeystoreType);
 
@@ -143,29 +141,29 @@ public class ClientUtil {
 				log.debug("Using certificate trust store path relative to home directory '" + System.getProperty("user.home") + "'.");
 			}
 			if(!Files.exists(Paths.get(trustStoreFile))) {
-				throw new Exception("Property \"trustStoreFile\" have no corresponding resource.");
+				throw new IllegalArgumentException("Property \"trustStoreFile\" have no corresponding resource.");
 			}
 			log.info("Using certificate trust store: " + trustStoreFile);
 
 			String trustStorePwd = lsp.getTrustStorePwd();
 			if(trustStorePwd == null || trustStorePwd.equals("")) {
-				throw new Exception("Missing property \"trustStorePwd\".");
+				throw new IllegalArgumentException("Missing property \"trustStorePwd\".");
 			}
 			String trustStoreType = lsp.getTrustStoreType();
 			if(trustStoreType == null || trustStoreType.equals("")) {
-				throw new Exception("Missing property \"trustStoreType\".");
+				throw new IllegalArgumentException("Missing property \"trustStoreType\".");
 			}
 			log.info("Using trust store type: " + trustStoreType);
 		}
 
 		String restBase = lsp.getRestbase();
 		if (restBase == null || restBase.equals("")) {
-			throw new Exception("Missing property \"restbase\"");
+			throw new IllegalArgumentException("Missing property \"restbase\"");
 		}
 		log.info("Using REST base URL: " + restBase);
 		String restApiTransportProtcol = lsp.getRestApiTransportProtcol();
 		if (restApiTransportProtcol == null || restApiTransportProtcol.equals("")) {
-				throw new Exception("Missing property \"restApiTransportProtcol\"");
+				throw new IllegalArgumentException("Missing property \"restApiTransportProtcol\"");
 		}
 		log.info("Using transport protocol: " + restApiTransportProtcol);
 	}
