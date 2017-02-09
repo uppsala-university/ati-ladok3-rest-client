@@ -8,21 +8,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
-import se.ladok.schemas.kataloginformation.Amnesgrupper;
-import se.ladok.schemas.kataloginformation.Betygsskalor;
-import se.ladok.schemas.kataloginformation.Finansieringsformer;
-import se.ladok.schemas.kataloginformation.I18N;
-import se.ladok.schemas.kataloginformation.I18NLista;
-import se.ladok.schemas.kataloginformation.Kommuner;
-import se.ladok.schemas.kataloginformation.Lander;
-import se.ladok.schemas.kataloginformation.NivaerInomStudieordning;
-import se.ladok.schemas.kataloginformation.Perioder;
-import se.ladok.schemas.kataloginformation.Studietakter;
-import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
-import se.ladok.schemas.kataloginformation.SvenskaOrter;
-import se.ladok.schemas.kataloginformation.Undervisningstider;
-import se.ladok.schemas.kataloginformation.Utbildningsomraden;
+import se.ladok.schemas.kataloginformation.*;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
+
+import java.util.List;
 
 public class KataloginformationITCase {
 
@@ -129,5 +118,11 @@ public class KataloginformationITCase {
 		Kataloginformation ki = new KataloginformationImpl();
 		Utbildningsomraden utbildningsomraden = ki.listaUtbildningsomraden();
 		assertFalse(utbildningsomraden.getUtbildningsomrade().isEmpty());
+
+	@Test
+	public void listaOrganisationer() throws Exception {
+		Kataloginformation ki = new KataloginformationImpl();
+		OrganisationLista organisationLista = ki.listaOrganisationer();
+		assertFalse(organisationLista.getOrganisationer().isEmpty());
 	}
 }

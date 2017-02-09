@@ -1,19 +1,6 @@
 package se.sunet.ati.ladok.rest.services;
 
-import se.ladok.schemas.kataloginformation.Amnesgrupper;
-import se.ladok.schemas.kataloginformation.Betygsskalor;
-import se.ladok.schemas.kataloginformation.Finansieringsform;
-import se.ladok.schemas.kataloginformation.Finansieringsformer;
-import se.ladok.schemas.kataloginformation.I18NLista;
-import se.ladok.schemas.kataloginformation.Kommuner;
-import se.ladok.schemas.kataloginformation.Lander;
-import se.ladok.schemas.kataloginformation.NivaerInomStudieordning;
-import se.ladok.schemas.kataloginformation.Perioder;
-import se.ladok.schemas.kataloginformation.Studietakter;
-import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
-import se.ladok.schemas.kataloginformation.SvenskaOrter;
-import se.ladok.schemas.kataloginformation.Undervisningstider;
-import se.ladok.schemas.kataloginformation.Utbildningsomraden;
+import se.ladok.schemas.kataloginformation.*;
 
 public interface Kataloginformation extends LadokServiceProperties {
 	I18NLista hamtaOversattningarSvenska();
@@ -41,4 +28,6 @@ public interface Kataloginformation extends LadokServiceProperties {
 	Finansieringsformer listaFinansieringsformer();
 
 	Utbildningsomraden listaUtbildningsomraden();
+
+	OrganisationLista listaOrganisationer();
 }
