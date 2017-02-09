@@ -118,6 +118,7 @@ public class KataloginformationITCase {
 		Kataloginformation ki = new KataloginformationImpl();
 		Utbildningsomraden utbildningsomraden = ki.listaUtbildningsomraden();
 		assertFalse(utbildningsomraden.getUtbildningsomrade().isEmpty());
+	}
 
 	@Test
 	public void listaOrganisationer() throws Exception {
