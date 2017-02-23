@@ -126,4 +126,11 @@ public class KataloginformationITCase {
 		OrganisationLista organisationLista = ki.listaOrganisationer();
 		assertFalse(organisationLista.getOrganisationer().isEmpty());
 	}
+
+	@Test
+	public void listaKravPaTidigareStudier() throws Exception {
+		Kataloginformation ki = new KataloginformationImpl();
+		KravPaTidigareStudierLista kravPaTidigareStudierLista = ki.listaKravPaTidigareStudier();
+		assertFalse(kravPaTidigareStudierLista.getKravPaTidigareStudier().isEmpty());
+	}
 }

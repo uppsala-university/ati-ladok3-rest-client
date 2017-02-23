@@ -30,4 +30,6 @@ public interface Kataloginformation extends LadokServiceProperties {
 	Utbildningsomraden listaUtbildningsomraden();
 
 	OrganisationLista listaOrganisationer();
+
+	KravPaTidigareStudierLista listaKravPaTidigareStudier();
 }
