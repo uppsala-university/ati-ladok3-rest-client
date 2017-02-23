@@ -1,7 +1,6 @@
-# Namnet på certifikatfilerna kan antingen innehålla absoluta sökvägar
-# som "/path/to/certificate.jks" eller en relativ sökväg i förhållande
-# till system propertyn 'user.home'. Inledande / avgör hur klienten ska
-# hantera filen.
+# Namnet på certifikatfilerna kan vara en absolut eller relativ sökväg till en fil
+# i filsystemet eller en resurs som finns tillgänglig på classpath.
+# Sökvägarna kan innehålla system properties, t.ex. ${user.home}.
 
 restbase=https://api.mit.ladok.se/
 restApiTransportProtcol=<protocol name>          # Defaults to TLSv1.2 (TLSv1.0, TLSv1.1, SSLv2, SSLv3)
