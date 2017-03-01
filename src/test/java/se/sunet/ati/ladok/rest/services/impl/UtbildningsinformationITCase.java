@@ -1,13 +1,15 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 
 import javax.ws.rs.BadRequestException;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -15,20 +17,7 @@ import se.ladok.schemas.Benamning;
 import se.ladok.schemas.Benamningar;
 import se.ladok.schemas.Organisation;
 import se.ladok.schemas.Organisationslista;
-import se.ladok.schemas.utbildningsinformation.Attributdefinition;
-import se.ladok.schemas.utbildningsinformation.Huvudomraden;
-import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
-import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
-import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
-import se.ladok.schemas.utbildningsinformation.Period;
-import se.ladok.schemas.utbildningsinformation.PeriodID;
-import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningstillfalleProjektion;
-import se.ladok.schemas.utbildningsinformation.StudietaktID;
-import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
-import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
-import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
-import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
-import se.ladok.schemas.utbildningsinformation.Versionsinformation;
+import se.ladok.schemas.utbildningsinformation.*;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
 
@@ -56,7 +45,7 @@ public class UtbildningsinformationITCase {
 		properties = TestUtil.getProperties();
 		ui = new UtbildningsinformationImpl();
 		period = ui.hamtaPeriodViaKod(properties.getProperty("rest.utbildningsinformation.grunddata.period.kod"));
-		if(period == null) {
+		if (period == null) {
 			throw new Exception("Kunde inte läsa in period");
 		}
 		log.info("Har hämtat grundinformation för testerna");
@@ -277,6 +266,39 @@ public class UtbildningsinformationITCase {
 
 	@Test
 	public void testSkapaUtbildningsinstansKursGrund() {
+		Utbildningsinstans uiToSave = generateKursGrund();
+		Utbildningsinstans savedIu = ui.skapaUtbildningsinstans(uiToSave);
+		assertNotNull(savedIu);
+		assertEquals(uiToSave.getUtbildningskod(), savedIu.getUtbildningskod());
+	}
+
+	@Test
+	public void testSkapaOchAvvecklaKursGrund() {
+		Utbildningsinstans uiToSave = generateKursGrund();
+		Utbildningsinstans savedIu = ui.skapaUtbildningsinstans(uiToSave);
+		assertNotNull(savedIu);
+		assertEquals(uiToSave.getUtbildningskod(), savedIu.getUtbildningskod());
+
+		String utbildningID = savedIu.getUtbildningUID();
+		Beslut beslut = new Beslut();
+		beslut.setBeslutstypID(4);
+		beslut.setBeslutsfattare("Integrationstest");
+		beslut.setAnteckning("Integrationstest avvecklar kurs");
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(System.currentTimeMillis());
+
+		try {
+			beslut.setBeslutsdatum(DatatypeFactory.newInstance().newXMLGregorianCalendar(cal));
+		} catch (DatatypeConfigurationException e) {
+			e.printStackTrace();
+		}
+
+		ui.avvecklaUtbildning(utbildningID, beslut);
+		Utbildningsinstans ladokKopia = ui.hamtaUtbildningsinstansViaUID(savedIu.getUid());
+		assertTrue(ladokKopia.isAvvecklad());
+	}
+
+	private Utbildningsinstans generateKursGrund() {
 		Utbildningsinstans uiToSave = new Utbildningsinstans();
 		Benamningar benamningar = new Benamningar();
 		Benamning svenska = new Benamning();
@@ -299,10 +321,7 @@ public class UtbildningsinformationITCase {
 
 		uiToSave.setVersionsinformation(vInfo);
 		uiToSave.setUtbildningsmallUID(getUtbildningsmallUIDKursGrund());
-
-		Utbildningsinstans savedIu = ui.skapaUtbildningsinstans(uiToSave);
-		assertNotNull(savedIu);
-		assertEquals(uiToSave.getUtbildningskod(), savedIu.getUtbildningskod());
+		return uiToSave;
 	}
 
 	@Test

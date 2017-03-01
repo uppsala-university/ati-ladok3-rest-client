@@ -4,7 +4,9 @@ import java.util.List;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
+import javax.xml.datatype.DatatypeConstants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,6 +26,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String RESOURCE_UTBILDNINGSMALL = "utbildningsmall";
 	private static final String RESOURCE_UTBILDNINGSTILFALLE = "utbildningstillfalle";
 	private static final String RESOURCE_UTBILDNINGSINSTANS = "utbildningsinstans";
+	private static final String RESOURCE_AVVECKLA = "avveckla";
 	private static final String RESOURCE_GRUNDDATA = "grunddata";
 	private static final String RESOURCE_KOD = "kod";
 	private static final String RESOURCE_LOKAL = "lokal";
@@ -211,6 +214,39 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.accept(responseType)
 				.post(Entity.entity(utbildningsinstansJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE), Utbildningsinstans.class);
 	}
+
+	@Override
+	public void avvecklaUtbildning(String utbildningUID, Beslut beslut) {
+        String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+        //The date isn't supposed to append timezone information, which it does out of the box. Explicitly tell the object that it is undefined to avoid that.
+	    if (beslut.getBeslutsdatum() != null) {
+            beslut.getBeslutsdatum().setTimezone(DatatypeConstants.FIELD_UNDEFINED);
+        }
+		JAXBElement<Beslut> beslutJAXBElement = new ObjectFactory().createBeslut(beslut);
+
+        WebTarget client = getClient()
+                .path(RESOURCE_UTBILDNINGSINSTANS)
+                .path(RESOURCE_AVVECKLA)
+                .path(utbildningUID);
+
+		log.debug("PUT URL: " + client.getUri());
+        Response r = client
+                .request(MediaType.APPLICATION_XML_TYPE)
+                .header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+                .accept(responseType)
+                .put(Entity.entity(beslutJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+        possiblyLog(r);
+	}
+
+    /*
+     * If the response wasn't successful then get the error message
+     */
+	private static void possiblyLog(Response r) {
+        if (r.getStatus() >= 400) {
+            String msg = r.readEntity(String.class);
+            log.error("[" + r.getStatus() +"] Error was detected, the response body was: " + msg);
+        }
+    }
 
 	@Override
 	public Utbildningsinstans skapaUtbildningsinstansNyVersion(String utbildningsinstansUID, Versionsinformation versionsinformation) {
