@@ -3,6 +3,9 @@ package se.sunet.ati.ladok.rest.util;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyStore;
@@ -20,6 +23,13 @@ import org.apache.commons.logging.LogFactory;
 import se.sunet.ati.ladok.rest.services.LadokServiceProperties;
 
 public class ClientUtil {
+	
+	static {
+		// Global default cookie handler to support session cookies:
+		CookieManager cm = new CookieManager();
+		cm.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+		CookieHandler.setDefault(cm);
+	}
 
 	private static Log log = LogFactory.getLog(ClientUtil.class);
 
@@ -79,7 +89,6 @@ public class ClientUtil {
 			if (trustStore != null) {
 				cb.trustStore(trustStore);
 			}
-
 			return cb.build().target(stripEndSlash(lsp.getRestbase()) + "/" + stripStartSlash(path));
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
