@@ -18,6 +18,7 @@ import se.ladok.schemas.Benamningar;
 import se.ladok.schemas.Organisation;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.*;
+import se.sunet.ati.ladok.rest.services.LadokRestClientException;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
 
@@ -390,7 +391,7 @@ public class UtbildningsinformationITCase {
 	 *
 	 * @throws Exception
 	 */
-	@Test(expected = BadRequestException.class)
+	@Test
 	public void testSkapaUtbildningsinstansUnderliggande() throws Exception {
 		Utbildningsinstans uiToSave = new Utbildningsinstans();
 		Benamningar benamningar = new Benamningar();
@@ -415,7 +416,12 @@ public class UtbildningsinformationITCase {
 		uiToSave.setVersionsinformation(vInfo);
 		uiToSave.setUtbildningsmallUID(getUtbildningsmallUIDModul());
 
-		ui.skapaUtbildningsinstansUnderliggande(uiToSave, getUtbildningsinstansUID());
+		try {
+			ui.skapaUtbildningsinstansUnderliggande(uiToSave, getUtbildningsinstansUID());
+		} catch (LadokRestClientException e) {
+			assertEquals(400, e.getHttpStatusCode());
+			assertNotNull(e.getLadokException());
+		}
 	}
 
 	/**
