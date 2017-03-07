@@ -133,6 +133,11 @@
                 </goals>
               </execution>
             </executions>
+            <configuration>
+              <excludes>
+                <exclude>**/*UUDemoITCase.java</exclude>
+              </excludes>
+            </configuration>
           </plugin>
         </plugins>
       </build>
