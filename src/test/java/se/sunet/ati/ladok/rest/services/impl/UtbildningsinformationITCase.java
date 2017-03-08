@@ -3,6 +3,7 @@ package se.sunet.ati.ladok.rest.services.impl;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.ws.rs.BadRequestException;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -248,7 +249,7 @@ public class UtbildningsinformationITCase {
 		uiToSave.setOrganisationUID(getOrganisationUID());
 		uiToSave.setStatus(1);
 		uiToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_AVANCERAD_KOD));
-		uiToSave.setUtbildningskod("TEST");
+		uiToSave.setUtbildningskod(getRandomUtbildningskod());
 
 		Versionsinformation vInfo = new Versionsinformation();
 		vInfo.setArSenasteVersion(true);
@@ -311,7 +312,7 @@ public class UtbildningsinformationITCase {
 		uiToSave.setOrganisationUID(getOrganisationUID());
 		uiToSave.setStatus(1);
 		uiToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
-		uiToSave.setUtbildningskod("TEST");
+		uiToSave.setUtbildningskod(getRandomUtbildningskod());
 
 		Versionsinformation vInfo = new Versionsinformation();
 		vInfo.setArSenasteVersion(true);
@@ -342,7 +343,7 @@ public class UtbildningsinformationITCase {
 		uiToSave.setOrganisationUID(getOrganisationUID());
 		uiToSave.setStatus(2);
 		uiToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
-		uiToSave.setUtbildningskod("OST66");
+		uiToSave.setUtbildningskod(getRandomUtbildningskod());
 
 		Versionsinformation vInfo = new Versionsinformation();
 		vInfo.setAnteckning("Hej");
@@ -490,5 +491,17 @@ public class UtbildningsinformationITCase {
 		log.info("Hämtade attributdefinitioner för utbildningstyp " + UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
 		assertNotNull(attributdefinitioner);
 		assertFalse(attributdefinitioner.isEmpty());
+	}
+
+	/**
+	 * Slumpar fram en utbildningskod för de tester som behöver en unik kod. Metoden garanterar ej att det blir unikt,
+	 * men chansen för duplikat är liten med drygt 8 miljoner kombinationer.
+	 *
+	 * @return En slumpvis vald utbildningskod på max 6 tecken och börjar med 'Z'
+	 */
+	private String getRandomUtbildningskod() {
+		Random random = new Random();
+		String randomKod = ("Z" + Integer.toString(Math.abs(random.nextInt(Integer.MAX_VALUE / 256)), 26)).toUpperCase();
+		return randomKod;
 	}
 }
