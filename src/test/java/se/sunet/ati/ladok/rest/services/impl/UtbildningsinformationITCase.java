@@ -116,7 +116,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaLokalUtbildningsmallKursAvancerad() throws Exception {
+	public void testHamtaLokalUtbildningsmallKursAvancerad() {
 		int utbildningstypID = getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_AVANCERAD_KOD);
 		LokalUtbildningsmall lokalUtbildningsmall = ui
 				.hamtaLokalUtbildningsmall(utbildningstypID, DATUM);
@@ -126,7 +126,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaLokalUtbildningsmallKursGrund() throws Exception {
+	public void testHamtaLokalUtbildningsmallKursGrund() {
 		int utbildningstypID = getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
 		LokalUtbildningsmall lokalUtbildningsmall = ui
 				.hamtaLokalUtbildningsmall(utbildningstypID, DATUM);
@@ -135,7 +135,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaLokalUtbildningsmallKurstillfalle() throws Exception {
+	public void testHamtaLokalUtbildningsmallKurstillfalle() {
 		int utbildningstypID = getUtbildningstypID(UTBILDNINGSTYP_2007_KURSTILLFÄLLE);
 		LokalUtbildningsmall lokalUtbildningsmall = ui
 				.hamtaLokalUtbildningsmall(utbildningstypID, DATUM);
@@ -144,7 +144,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaLokalUtbildningsmallModulMedOmfattning() throws Exception {
+	public void testHamtaLokalUtbildningsmallModulMedOmfattning() {
 		int utbildningstypID = getUtbildningstypID(UTBILDNINGSTYP_2007_MODUL_MED_OMFATTNING);
 		LokalUtbildningsmall lokalUtbildningsmall = ui
 				.hamtaLokalUtbildningsmall(utbildningstypID, DATUM);
@@ -153,20 +153,20 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaNivaerInomStudieordning() throws Exception {
+	public void testHamtaNivaerInomStudieordning() {
 		NivaerInomStudieordning nivaerInomStudieordning = ui.hamtaNivaerInomStudieordning();
 		assertNotNull(nivaerInomStudieordning);
 	}
 
 	@Test
-	public void testHamtaNivaInomStudieordning() throws Exception {
+	public void testHamtaNivaInomStudieordning() {
 		String nivaKod = properties.getProperty("rest.utbildningsinformation.nivainomstudieordning.kod");
 		NivaInomStudieordning nivaInomStudieordning = ui.hamtaNivaInomStudieordning(nivaKod);
 		assertNotNull(nivaInomStudieordning);
 	}
 
 	@Test
-	public void testHamtaPerioder() throws Exception {
+	public void testHamtaPerioder() {
 		List<Period> perioder = ui.hamtaPerioder();
 		assertNotNull(perioder);
 		log.info("Hämtade " + perioder.size() + " perioder");
@@ -177,7 +177,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaPeriodViaKod() throws Exception {
+	public void testHamtaPeriodViaKod() {
 		Period period = ui.hamtaPeriodViaKod(getPeriodKod());
 		assertNotNull(period);
 		log.info("Hämtade perioden " + period.getKod() + " (" + period.getID() + ") - " + period.getBenamningar().getBenamning().get(0).getText());
@@ -221,7 +221,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaUtbildningstillfalleViaUID() throws Exception {
+	public void testHamtaUtbildningstillfalleViaUID() {
 
 		Utbildningstillfalle utbildningstillfalle = ui.hamtaUtbildningstillfalleViaUID(getUtbildningstillfalleUID());
 
@@ -230,7 +230,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaUtbildningstypViaKod() throws Exception {
+	public void testHamtaUtbildningstypViaKod() {
 		Utbildningstyp utbildningstyp = ui
 				.hamtaUtbildningstypViaKod(UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
 		assertNotNull(utbildningstyp);
@@ -393,7 +393,7 @@ public class UtbildningsinformationITCase {
 	 * @throws Exception
 	 */
 	@Test
-	public void testSkapaUtbildningsinstansUnderliggande() throws Exception {
+	public void testSkapaUtbildningsinstansUnderliggande() {
 		Utbildningsinstans uiToSave = new Utbildningsinstans();
 		Benamningar benamningar = new Benamningar();
 		Benamning svenska = new Benamning();
@@ -430,7 +430,7 @@ public class UtbildningsinformationITCase {
 	 * @throws Exception
 	 */
 	@Test
-	public void testSkapaUtbildningstillfalle() throws Exception {
+	public void testSkapaUtbildningstillfalle() {
 		Utbildningstillfalle utToSave = new Utbildningstillfalle();
 		StudietaktID studietakt = new StudietaktID();
 		// Studietakt på halvfart
@@ -473,7 +473,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testSokUtbildningstillfallen() throws Exception {
+	public void testSokUtbildningstillfallen() {
 		SokresultatUtbildningstillfalleProjektion resultat =
 			ui.sokUtbildningstillfallen("", "", "", "", "", "", "", "3", "2016-08-29_2017-01-15", 1, 20, true, true, "");
 		assertNotNull(resultat);
@@ -486,7 +486,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testHamtaAttributdefinitioner() throws Exception {
+	public void testHamtaAttributdefinitioner() {
 		final List<Attributdefinition> attributdefinitioner = ui.hamtaAttributdefinitionerViaUtbildningstyp(getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
 		log.info("Hämtade attributdefinitioner för utbildningstyp " + UTBILDNINGSTYP_2007_KURS_GRUND_KOD);
 		assertNotNull(attributdefinitioner);
@@ -495,13 +495,13 @@ public class UtbildningsinformationITCase {
 
 	/**
 	 * Slumpar fram en utbildningskod för de tester som behöver en unik kod. Metoden garanterar ej att det blir unikt,
-	 * men chansen för duplikat är liten med drygt 8 miljoner kombinationer.
+	 * men chansen för duplikat är liten med 59652323 kombinationer.
 	 *
 	 * @return En slumpvis vald utbildningskod på max 6 tecken och börjar med 'Z'
 	 */
 	private String getRandomUtbildningskod() {
 		Random random = new Random();
-		String randomKod = ("Z" + Integer.toString(Math.abs(random.nextInt(Integer.MAX_VALUE / 256)), 26)).toUpperCase();
+		String randomKod = ("Z" + Integer.toString(Math.abs(random.nextInt(Integer.MAX_VALUE / 36)), 36)).toUpperCase();
 		return randomKod;
 	}
 }
