@@ -255,7 +255,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public Utbildningsinstans avvecklaUtbildning(String utbildningUID, Beslut beslut) {
+	public void avvecklaUtbildning(String utbildningUID, Beslut beslut) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
         //The date isn't supposed to append timezone information, which it does out of the box. Explicitly tell the object that it is undefined to avoid that.
 		if (beslut.getBeslutsdatum() != null) {
@@ -271,7 +271,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.accept(responseType)
 				.put(Entity.entity(beslutJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
 
-		return validatedResponse(response, Utbildningsinstans.class);
+		validatedResponse(response, String.class);
 	}
 
 	/*

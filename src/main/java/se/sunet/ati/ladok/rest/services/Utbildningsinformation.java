@@ -41,7 +41,7 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	Utbildningsinstans skapaUtbildningsinstans(Utbildningsinstans utbildningsinstans);
 
-	Utbildningsinstans avvecklaUtbildning(String utbildningUID, Beslut beslut);
+	void avvecklaUtbildning(String utbildningUID, Beslut beslut);
 
 	/**
 	 * Skapa en ny version av en utbildningsinstans.

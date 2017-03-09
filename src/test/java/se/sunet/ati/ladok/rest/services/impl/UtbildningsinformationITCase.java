@@ -275,7 +275,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
-	public void testSkapaOchAvvecklaKursGrund() {
+	public void testSkapaOchAvvecklaKursGrund() throws DatatypeConfigurationException {
 		Utbildningsinstans uiToSave = generateKursGrund();
 		Utbildningsinstans savedIu = ui.skapaUtbildningsinstans(uiToSave);
 		assertNotNull(savedIu);
@@ -288,12 +288,7 @@ public class UtbildningsinformationITCase {
 		beslut.setAnteckning("Integrationstest avvecklar kurs");
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(System.currentTimeMillis());
-
-		try {
-			beslut.setBeslutsdatum(DatatypeFactory.newInstance().newXMLGregorianCalendar(cal));
-		} catch (DatatypeConfigurationException e) {
-			e.printStackTrace();
-		}
+		beslut.setBeslutsdatum(DatatypeFactory.newInstance().newXMLGregorianCalendar(cal));
 
 		ui.avvecklaUtbildning(utbildningID, beslut);
 		Utbildningsinstans ladokKopia = ui.hamtaUtbildningsinstansViaUID(savedIu.getUid());
