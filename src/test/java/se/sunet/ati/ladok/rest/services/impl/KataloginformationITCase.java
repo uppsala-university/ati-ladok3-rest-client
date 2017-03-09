@@ -79,6 +79,13 @@ public class KataloginformationITCase {
 	}
 
 	@Test
+	public void listaUndervisningsformer() {
+		Kataloginformation ki = new KataloginformationImpl();
+		Undervisningsformer undervisningsformer = ki.listaUndervisningsformer();
+		assertFalse(undervisningsformer.getUndervisningsform().isEmpty());
+	}
+
+	@Test
 	public void listaBetygskalor() {
 		Kataloginformation ki = new KataloginformationImpl();
 		Betygsskalor betygsskalor = ki.listaBetygskalor();

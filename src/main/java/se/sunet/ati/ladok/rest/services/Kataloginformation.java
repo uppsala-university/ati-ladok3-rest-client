@@ -17,6 +17,8 @@ public interface Kataloginformation extends LadokServiceProperties {
 
 	Undervisningstider listaUndervisningstider();
 
+	Undervisningsformer listaUndervisningsformer();
+
 	Betygsskalor listaBetygskalor();
 
 	NivaerInomStudieordning listaNivaerInomStudieordning();

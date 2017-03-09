@@ -87,7 +87,15 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path("grunddata").path("undervisningstid");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-			.accept(responseType).get(Undervisningstider.class);
+				.accept(responseType).get(Undervisningstider.class);
+	}
+
+	@Override
+	public Undervisningsformer listaUndervisningsformer() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path("grunddata").path("undervisningsform");
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(Undervisningsformer.class);
 	}
 
 	@Override
