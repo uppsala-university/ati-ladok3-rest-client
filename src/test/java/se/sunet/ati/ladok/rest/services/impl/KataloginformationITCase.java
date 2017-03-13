@@ -1,17 +1,31 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
-
-import se.ladok.schemas.kataloginformation.*;
+import se.ladok.schemas.kataloginformation.Amnesgrupper;
+import se.ladok.schemas.kataloginformation.Betygsskalor;
+import se.ladok.schemas.kataloginformation.Finansieringsformer;
+import se.ladok.schemas.kataloginformation.I18N;
+import se.ladok.schemas.kataloginformation.I18NLista;
+import se.ladok.schemas.kataloginformation.Kommuner;
+import se.ladok.schemas.kataloginformation.KravPaTidigareStudierLista;
+import se.ladok.schemas.kataloginformation.Lander;
+import se.ladok.schemas.kataloginformation.NivaerInomStudieordning;
+import se.ladok.schemas.kataloginformation.OrganisationLista;
+import se.ladok.schemas.kataloginformation.Perioder;
+import se.ladok.schemas.kataloginformation.Studielokaliseringar;
+import se.ladok.schemas.kataloginformation.Studietakter;
+import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
+import se.ladok.schemas.kataloginformation.SvenskaOrter;
+import se.ladok.schemas.kataloginformation.Undervisningsformer;
+import se.ladok.schemas.kataloginformation.Undervisningstider;
+import se.ladok.schemas.kataloginformation.Utbildningsomraden;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 
-import java.util.List;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class KataloginformationITCase {
 
@@ -139,5 +153,12 @@ public class KataloginformationITCase {
 		Kataloginformation ki = new KataloginformationImpl();
 		KravPaTidigareStudierLista kravPaTidigareStudierLista = ki.listaKravPaTidigareStudier();
 		assertFalse(kravPaTidigareStudierLista.getKravPaTidigareStudier().isEmpty());
+	}
+
+	@Test
+	public void listaStudielokaliseringar() throws Exception {
+		Kataloginformation ki = new KataloginformationImpl();
+		Studielokaliseringar studielokaliseringar = ki.listaStudielokaliseringar();
+		assertFalse(studielokaliseringar.getStudielokalisering().isEmpty());
 	}
 }

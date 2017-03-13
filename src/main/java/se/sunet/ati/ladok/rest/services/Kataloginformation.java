@@ -34,4 +34,6 @@ public interface Kataloginformation extends LadokServiceProperties {
 	OrganisationLista listaOrganisationer();
 
 	KravPaTidigareStudierLista listaKravPaTidigareStudier();
+
+	Studielokaliseringar listaStudielokaliseringar();
 }

@@ -161,4 +161,12 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(KravPaTidigareStudierLista.class);
 	}
+
+	@Override
+	public Studielokaliseringar listaStudielokaliseringar() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path("grunddata").path("studielokalisering");
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(Studielokaliseringar.class);
+	}
 }
