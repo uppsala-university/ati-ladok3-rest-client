@@ -1,6 +1,7 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
 import java.util.List;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -13,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 import se.ladok.schemas.LadokException;
 import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.utbildningsinformation.Antagningsomgang;
 import se.ladok.schemas.utbildningsinformation.*;
 import se.sunet.ati.ladok.rest.services.LadokRestClientException;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
@@ -39,7 +41,8 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String RESOURCE_UTBILDNINGSTYP = "utbildningstyp";
 	private static final String RESOURCE_VERSION = "version";
 	private static final String RESOURCE_HUVUDOMRADE = "huvudomrade";
-
+	private static final String RESOURCE_STRUKTUR = "struktur";
+	
 	private static final String RESOURCE_NATIONELL = "nationell";
 	private static final String RESOURCE_ATTRIBUTDEFINITIONER = "attributdefinitioner";
 
@@ -144,6 +147,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		return validatedResponse(response, NivaerInomStudieordning.class);
 	}
+	
 
 	@Override
 	public List<Period> hamtaPerioder() {
@@ -313,6 +317,59 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		return validatedResponse(response, Utbildningsinstans.class);
 	}
+	
+	@Override
+	public Utbildningsinstans uppdateraUtbildningsinstansUnderliggande(Utbildningsinstans utbildningsinstans, String utbildningsinstansUID) {
+		JAXBElement<Utbildningsinstans> utbildningsinstansJAXBElement = new ObjectFactory().createUtbildningsinstans(utbildningsinstans);
+		WebTarget client = getClient()
+				.path(RESOURCE_UTBILDNINGSINSTANS).path(utbildningsinstansUID)
+				.path(RESOURCE_UNDERLIGGANDE);
+
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.put(Entity.entity(utbildningsinstansJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, Utbildningsinstans.class);
+	}
+	
+	@Override
+	public Utbildningsinformationsstruktur hamtaStruktur(String utbildningsinformationsstrukturUID) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_STRUKTUR).path(utbildningsinformationsstrukturUID);
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Utbildningsinformationsstruktur.class);
+	}
+
+	
+	@Override
+	public Utbildningsinformationsstruktur uppdateraStruktur(Utbildningsinformationsstruktur utbildningsinformationsstruktur, String strukturUID) {
+		JAXBElement<Utbildningsinformationsstruktur> utbildningsinformationsstrukturJAXBElement = new ObjectFactory().createUtbildningsinformationsstruktur(utbildningsinformationsstruktur);
+		WebTarget client = getClient()
+				.path(RESOURCE_STRUKTUR).path(strukturUID);
+
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.put(Entity.entity(utbildningsinformationsstrukturJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, Utbildningsinformationsstruktur.class);
+	}
+	
+	@Override
+	public Utbildningsinformationsstruktur skapaStruktur(Utbildningsinformationsstruktur utbildningsinformationsstruktur) {
+		JAXBElement<Utbildningsinformationsstruktur> utbildningsinformationsstrukturJAXBElement = new ObjectFactory().createUtbildningsinformationsstruktur(utbildningsinformationsstruktur);
+		WebTarget client = getClient()
+				.path(RESOURCE_STRUKTUR);
+
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.post(Entity.entity(utbildningsinformationsstrukturJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, Utbildningsinformationsstruktur.class);
+	}
 
 	@Override
 	public Utbildningstillfalle skapaUtbildningstillfalle(Utbildningstillfalle utbildningstillfalle) {
@@ -437,4 +494,6 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 			throw new LadokRestClientException(response.getStatus(), response.readEntity(LadokException.class));
 		}
 	}
+	
+	
 }

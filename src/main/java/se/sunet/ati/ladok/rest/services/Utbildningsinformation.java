@@ -1,6 +1,7 @@
 package se.sunet.ati.ladok.rest.services;
 
 import java.util.List;
+
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.*;
 
@@ -52,6 +53,12 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	Utbildningsinstans skapaUtbildningsinstansNyVersion(String utbildningsinstansUID, Versionsinformation utbildningsinstans);
 
 	Utbildningsinstans skapaUtbildningsinstansUnderliggande(Utbildningsinstans utbildningsinstans, String utbildningsinstansUID);
+	
+	Utbildningsinstans uppdateraUtbildningsinstansUnderliggande(Utbildningsinstans utbildningsinstans, String utbildningsinstansUID);
+	
+	Utbildningsinformationsstruktur uppdateraStruktur(Utbildningsinformationsstruktur utbildningsinformationsstruktur, String strukturUID);
+	
+	Utbildningsinformationsstruktur skapaStruktur(Utbildningsinformationsstruktur utbildningsinformationsstruktur);
 
 	Utbildningstillfalle skapaUtbildningstillfalle(Utbildningstillfalle utbildningstillfalle);
 
@@ -81,5 +88,7 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	 * @return
 	 */
 	Huvudomraden hamtaHuvudamraden();
+
+	Utbildningsinformationsstruktur hamtaStruktur(String utbildningsinformationsstrukturUID);
 
 }

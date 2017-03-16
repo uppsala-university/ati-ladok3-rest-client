@@ -1,12 +1,14 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
+import java.util.List;
+
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.ladok.schemas.kataloginformation.*;
-
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -168,5 +170,14 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		WebTarget client = getClient().path("grunddata").path("studielokalisering");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Studielokaliseringar.class);
+	}
+	
+	@Override
+	public Antagningsomgangar hamtaAntagningsomgangar() {	
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path("grunddata").path("antagningsomgang");
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(Antagningsomgangar.class);
+		
 	}
 }
