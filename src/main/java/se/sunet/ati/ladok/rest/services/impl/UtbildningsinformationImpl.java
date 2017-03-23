@@ -1,21 +1,34 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
 import java.util.List;
-
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeConstants;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import se.ladok.schemas.LadokException;
 import se.ladok.schemas.Organisationslista;
-import se.ladok.schemas.utbildningsinformation.Antagningsomgang;
-import se.ladok.schemas.utbildningsinformation.*;
+import se.ladok.schemas.utbildningsinformation.Attributdefinition;
+import se.ladok.schemas.utbildningsinformation.Attributdefinitioner;
+import se.ladok.schemas.utbildningsinformation.Beslut;
+import se.ladok.schemas.utbildningsinformation.Huvudomraden;
+import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
+import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
+import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
+import se.ladok.schemas.utbildningsinformation.ObjectFactory;
+import se.ladok.schemas.utbildningsinformation.Period;
+import se.ladok.schemas.utbildningsinformation.Perioder;
+import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningstillfalleProjektion;
+import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
+import se.ladok.schemas.utbildningsinformation.Utbildningsinformationsstruktur;
+import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
+import se.ladok.schemas.utbildningsinformation.Utbildningsinstansprojektioner;
+import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
+import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
+import se.ladok.schemas.utbildningsinformation.Versionsinformation;
 import se.sunet.ati.ladok.rest.services.LadokRestClientException;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
@@ -204,6 +217,22 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.queryParam("kod", utbildningsinstansKod)
 				.queryParam("studieordningID", studieordningID)
 				.queryParam("utbildningstypID", utbildningstypID);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Utbildningsinstansprojektioner.class).getUtbildningar();
+	}
+
+	@Override
+	public List<UtbildningProjektion> hamtaUtbildningsinstansViaKod(String utbildningsinstansKod) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_UTBILDNINGSINSTANS)
+				.queryParam("kod", utbildningsinstansKod);
 
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		Response response = client.request()

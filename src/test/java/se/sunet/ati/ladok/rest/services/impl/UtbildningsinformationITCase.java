@@ -206,6 +206,26 @@ public class UtbildningsinformationITCase {
 	}
 
 	@Test
+	public void testHamtaUtbildningsinstansViaEndastKod() {
+		String utbildningskod = getUtbildningsinstansKod();
+		List<UtbildningProjektion> utbildningProjektioner = ui.hamtaUtbildningsinstansViaKod(utbildningskod);
+		log.info("Hämtade " + utbildningProjektioner.size() + " utbildningsinstanser för utbildningskod " + utbildningskod);
+
+		UtbildningProjektion utbildningsinstans = utbildningProjektioner.get(0);
+		log.info("Hämtade utbildningsinstans med UID " + utbildningsinstans.getUid() + " för utbildningskod " + utbildningskod);
+		assertTrue(getUtbildningsinstansUID().equalsIgnoreCase(utbildningsinstans.getUid()));
+
+		for (Benamning benamn : utbildningsinstans.getBenamningar().getBenamning()) {
+			if (benamn.getSprakkod().equals("en")) {
+				assertEquals(getUtbildningsinstansBenamningEn(), benamn.getText());
+			} else if (benamn.getSprakkod().equals("sv")) {
+				assertEquals(getUtbildningsinstansBenamningSv(), benamn.getText());
+			}
+		}
+	}
+
+
+	@Test
 	public void testHamtaUtbildningsinstansViaUID() {
 		Utbildningsinstans utbildningsinstans = ui.hamtaUtbildningsinstansViaUID(getUtbildningsinstansUID());
 

@@ -34,6 +34,8 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	List<UtbildningProjektion> hamtaUtbildningsinstansViaKod(String utbildningsinstansKod, int studieordningID, int utbildningstypID);
 
+	List<UtbildningProjektion> hamtaUtbildningsinstansViaKod(String utbildningsinstansKod);
+
 	Utbildningsinstans hamtaUtbildningsinstansViaUID(String utbildningsinstansUID);
 
 	Utbildningstillfalle hamtaUtbildningstillfalleViaUID(String utbildningstillfalleUID);
