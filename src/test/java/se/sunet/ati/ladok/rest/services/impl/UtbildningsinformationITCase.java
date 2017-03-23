@@ -42,6 +42,7 @@ public class UtbildningsinformationITCase {
 	private static Period period;
 	private static Properties properties = null;
 	private static Utbildningsinformation ui;
+	private static UtbildningstillfalleProjektion utbildningstillfalle;
 	private static UtbildningProjektion utbildningsinstans;
 
 	@BeforeClass
@@ -59,6 +60,15 @@ public class UtbildningsinformationITCase {
 		utbildningsinstans = ui.hamtaUtbildningsinstansViaKod(properties.getProperty("rest.utbildningsinformation.utbildningsinstans.kod")).get(0);
 		if (utbildningsinstans == null) {
 			throw new Exception("Kunde inte läsa in utbildningsinstans");
+		}
+		utbildningstillfalle = ui.sokUtbildningstillfallen(null, null, null,
+								   properties.getProperty("rest.utbildningsinformation.utbildningstillfalle.utbildningstillfalleskod"),
+								   properties.getProperty("rest.utbildningsinformation.utbildningsinstans.kod"),
+								   null, null, null,
+								   properties.getProperty("rest.utbildningsinformation.utbildningstillfalle.studieperiod"),
+								   0,0,true, false, null).getResultat().get(0);
+		if (utbildningstillfalle == null) {
+			throw new Exception("Kunde inte läsa in utbildningstillfälle");
 		}
 		log.info("Har hämtat grundinformation för testerna");
 	}
@@ -115,7 +125,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	private String getUtbildningstillfalleUID() {
-		return properties.getProperty("rest.utbildningsinformation.utbildningstillfalle.uid");
+		return utbildningstillfalle.getUid();
 	}
 
 	private int getUtbildningstypID(String utbildningstypKod) {

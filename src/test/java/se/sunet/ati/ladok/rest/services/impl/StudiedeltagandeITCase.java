@@ -16,6 +16,8 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -28,16 +30,36 @@ import se.ladok.schemas.Student;
 import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
 import se.ladok.schemas.studiedeltagande.Tillfallesdeltagande;
 import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
+import se.ladok.schemas.utbildningsinformation.UtbildningstillfalleProjektion;
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
+import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.services.impl.StudiedeltagandeImpl;
 import se.sunet.ati.ladok.rest.util.TestUtil;
 
 public class StudiedeltagandeITCase {
+	private static Log log = LogFactory.getLog(StudiedeltagandeITCase.class);
 	private static Properties properties = null;
+	private static Utbildningsinformation ui;
+	private static UtbildningstillfalleProjektion utbildningstillfalle;
 
 	@BeforeClass
-	public static void beforeClass() throws IOException {
+	public static void beforeClass() throws Exception {
 		properties = TestUtil.getProperties();
+		ui = new UtbildningsinformationImpl();
+		utbildningstillfalle = ui.sokUtbildningstillfallen(null, null, null,
+								   properties.getProperty("rest.utbildningsinformation.utbildningstillfalle.utbildningstillfalleskod"),
+								   properties.getProperty("rest.utbildningsinformation.utbildningsinstans.kod"),
+								   null, null, null,
+								   properties.getProperty("rest.utbildningsinformation.utbildningstillfalle.studieperiod"),
+								   0,0,true, false, null).getResultat().get(0);
+		if (utbildningstillfalle == null) {
+			throw new Exception("Kunde inte läsa in utbildningstillfälle");
+		}
+		log.info("Har hämtat grundinformation för testerna");
+	}
+
+	private String getUtbildningstillfalleUID() {
+		return utbildningstillfalle.getUid();
 	}
 
 	/**
@@ -89,7 +111,7 @@ public class StudiedeltagandeITCase {
 
 	@Test
 	public void testSokDeltagareKurstillfalle() throws Exception {
-		String kurstillfalleUID = properties.getProperty("rest.utbildningsinformation.utbildningstillfalle.uid");
+		String kurstillfalleUID = getUtbildningstillfalleUID();
 
 		Studiedeltagande sd = new StudiedeltagandeImpl();
 		SokresultatDeltagare sokresultatDeltagare = sd.sokDeltagareKurstillfalle(kurstillfalleUID);

@@ -509,6 +509,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.queryParam("sprakkod", sprakkod);
 
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
