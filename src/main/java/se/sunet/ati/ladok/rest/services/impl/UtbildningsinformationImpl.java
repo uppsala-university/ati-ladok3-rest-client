@@ -429,6 +429,22 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
+	public Organisationslista sokOrganisationer(final String kod) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_ORGANISATION)
+				.queryParam("kod", kod);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Organisationslista.class);
+	}
+
+	@Override
 	public Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans) {
 		JAXBElement<Utbildningsinstans> utbildningsinstansJAXBElement = new ObjectFactory().createUtbildningsinstans(utbildningsinstans);
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;

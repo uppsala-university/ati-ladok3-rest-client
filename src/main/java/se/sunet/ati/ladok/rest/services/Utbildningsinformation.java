@@ -66,6 +66,8 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	Organisationslista sokAllaOrganisationer();
 
+	Organisationslista sokOrganisationer(String kod);
+
 	Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans);
 
 	Utbildningsinstans utbildningsinstansTillStatusPaborjad(String utbildningsinstansUID);
