@@ -42,6 +42,7 @@ public class UtbildningsinformationITCase {
 	private static Period period;
 	private static Properties properties = null;
 	private static Utbildningsinformation ui;
+	private static UtbildningProjektion utbildningsinstans;
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {
@@ -54,6 +55,10 @@ public class UtbildningsinformationITCase {
 		period = ui.hamtaPeriodViaKod(properties.getProperty("rest.utbildningsinformation.grunddata.period.kod"));
 		if (period == null) {
 			throw new Exception("Kunde inte läsa in period");
+		}
+		utbildningsinstans = ui.hamtaUtbildningsinstansViaKod(properties.getProperty("rest.utbildningsinformation.utbildningsinstans.kod")).get(0);
+		if (utbildningsinstans == null) {
+			throw new Exception("Kunde inte läsa in utbildningsinstans");
 		}
 		log.info("Har hämtat grundinformation för testerna");
 	}
@@ -83,7 +88,7 @@ public class UtbildningsinformationITCase {
 	}
 
 	private String getUtbildningsinstansUID() {
-		return properties.getProperty("rest.utbildningsinformation.utbildningsinstans.uid");
+		return utbildningsinstans.getUid();
 	}
 
 	private String getUtbildningsmallUID(String utbildningstypKod) {
