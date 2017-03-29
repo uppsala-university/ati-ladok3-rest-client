@@ -1,14 +1,17 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
 import java.util.List;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.DatatypeConstants;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import se.ladok.schemas.LadokException;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.Attributdefinition;
@@ -22,6 +25,7 @@ import se.ladok.schemas.utbildningsinformation.ObjectFactory;
 import se.ladok.schemas.utbildningsinformation.Period;
 import se.ladok.schemas.utbildningsinformation.Perioder;
 import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningstillfalleProjektion;
+import se.ladok.schemas.utbildningsinformation.UtbildningMedUnderliggandeUtbildningar;
 import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinformationsstruktur;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
@@ -58,6 +62,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	
 	private static final String RESOURCE_NATIONELL = "nationell";
 	private static final String RESOURCE_ATTRIBUTDEFINITIONER = "attributdefinitioner";
+	private static final String RESOURCE_MEDUNDERLIGGANDE = "utbildningmedunderliggandeutbildningar";
 
 	WebTarget utbildningsinformation;
 
@@ -278,7 +283,22 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient()
 				.path(RESOURCE_UTBILDNINGSINSTANS);
+		
+		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.post(Entity.entity(utbildningsinstansJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
 
+		return validatedResponse(response, Utbildningsinstans.class);
+	}
+	
+	@Override
+	public Utbildningsinstans skapaUtbildningsinstansMedunderliggandeutbildningar(UtbildningMedUnderliggandeUtbildningar utbildningsinstans) {
+		JAXBElement<UtbildningMedUnderliggandeUtbildningar> utbildningsinstansJAXBElement = new ObjectFactory().createUtbildningMedUnderliggandeUtbildningar(utbildningsinstans);
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_UTBILDNINGSINSTANS).path(RESOURCE_MEDUNDERLIGGANDE);
+		
 		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)

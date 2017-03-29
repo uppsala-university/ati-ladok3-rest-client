@@ -95,4 +95,6 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	Utbildningsinformationsstruktur hamtaStruktur(String utbildningsinformationsstrukturUID);
 
+	Utbildningsinstans skapaUtbildningsinstansMedunderliggandeutbildningar(UtbildningMedUnderliggandeUtbildningar utbildningMedUnderliggandeUtbildningar);
+
 }
