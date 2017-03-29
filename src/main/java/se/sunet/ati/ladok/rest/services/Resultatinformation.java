@@ -1,5 +1,6 @@
 package se.sunet.ati.ladok.rest.services;
 
+import se.ladok.schemas.resultat.Klarmarkera;
 import se.ladok.schemas.resultat.Resultat;
 import se.ladok.schemas.resultat.ResultatLista;
 import se.ladok.schemas.resultat.SkapaResultat;
@@ -18,4 +19,6 @@ public interface Resultatinformation {
 	public Resultat skapaResultatForStudentPakurs(SkapaResultat resultat, String studieresultatUID, String utbildningUID);
 
 	public Resultat updateraResultatForStudentPakurs(Resultat resultat, String resultatUID);
+	
+	public Resultat klarmarkeraResultatForStudentPakurs(Klarmarkera klarmarkera, String resultatUID);
 }
