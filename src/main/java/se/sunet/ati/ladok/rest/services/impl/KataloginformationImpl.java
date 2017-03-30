@@ -180,4 +180,12 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 				.accept(responseType).get(Antagningsomgangar.class);
 		
 	}
+
+	@Override
+	public UndervisningssprakLista listaUndervisningssprak() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path("grunddata").path("undervisningssprak");
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(UndervisningssprakLista.class);
+	}
 }
