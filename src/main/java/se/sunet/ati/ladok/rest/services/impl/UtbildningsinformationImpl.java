@@ -29,6 +29,7 @@ import se.ladok.schemas.utbildningsinformation.UtbildningMedUnderliggandeUtbildn
 import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinformationsstruktur;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
+import se.ladok.schemas.utbildningsinformation.Utbildningsinstansbox;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstansprojektioner;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
 import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
@@ -38,7 +39,7 @@ import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
 public class UtbildningsinformationImpl extends LadokServicePropertiesImpl implements Utbildningsinformation {
-
+	
 	private static Log log = LogFactory.getLog(UtbildningsinformationImpl.class);
 	private static final String UTBILDNINGSINFORMATION_URL = "/utbildningsinformation";
 
@@ -63,6 +64,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String RESOURCE_NATIONELL = "nationell";
 	private static final String RESOURCE_ATTRIBUTDEFINITIONER = "attributdefinitioner";
 	private static final String RESOURCE_MEDUNDERLIGGANDE = "utbildningmedunderliggandeutbildningar";
+	private static final String RESOURCE_UTBILDNINGSINSTANSBOX = "utbildningsinstansbox";
 
 	WebTarget utbildningsinformation;
 
@@ -406,6 +408,25 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		return validatedResponse(response, Utbildningsinformationsstruktur.class);
 	}
+	
+	
+	@Override
+	public Utbildningsinstansbox hamtaUtbildningsinstansbox(int utbildningstypID, String utbildningsinstansUID) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_STRUKTUR)
+				.path(RESOURCE_UTBILDNINGSINSTANSBOX)
+				.path(String.valueOf(utbildningstypID))
+				.path(utbildningsinstansUID);
+
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+	
+		return validatedResponse(response, Utbildningsinstansbox.class);
+	}
+	
 	
 	@Override
 	public Utbildningsinformationsstruktur skapaStruktur(Utbildningsinformationsstruktur utbildningsinformationsstruktur) {
