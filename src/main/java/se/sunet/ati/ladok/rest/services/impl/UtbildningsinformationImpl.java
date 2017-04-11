@@ -463,7 +463,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		WebTarget client = getClient()
 				.path(RESOURCE_UTBILDNINGSTILFALLE)
 				.path("status3")
-				.path(utbildningstillfalleUID.getUid());
+				.path(utbildningstillfalleUID);
 
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
