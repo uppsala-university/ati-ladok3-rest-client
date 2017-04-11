@@ -468,7 +468,7 @@ public class UtbildningsinformationITCase {
 	 * @throws Exception
 	 */
 	@Test
-	public void testSkapaUtbildningstillfalle() {
+	public void testSkapaOchUppdateraUtbildningstillfalle() {
 		Utbildningstillfalle utToSave = new Utbildningstillfalle();
 		StudietaktID studietakt = new StudietaktID();
 		// Studietakt på halvfart
@@ -485,8 +485,11 @@ public class UtbildningsinformationITCase {
 		utToSave.setStartperiodID(pid);
 		utToSave.setUtbildningsmallUID(getUtbildningsmallUIDUtbildningstillfalle());
 
-		Utbildningstillfalle utbildningstillfalle = ui.skapaUtbildningstillfalle(utToSave);
-		assertNotNull(utbildningstillfalle);
+		Utbildningstillfalle utbildningstillfalleSkapat = ui.skapaUtbildningstillfalle(utToSave);
+		assertNotNull(utbildningstillfalleSkapat);
+
+		Utbildningstillfalle utbildningstillfalleUppdaterat = ui.uppdateraUtbildningstillfalle(utbildningstillfalleSkapat);
+		assertNotNull(utbildningstillfalleUppdaterat);
 	}
 
 	@Test

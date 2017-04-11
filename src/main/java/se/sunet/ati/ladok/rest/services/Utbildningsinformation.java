@@ -64,6 +64,8 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	Utbildningstillfalle skapaUtbildningstillfalle(Utbildningstillfalle utbildningstillfalle);
 
+	Utbildningstillfalle uppdateraUtbildningstillfalle(Utbildningstillfalle utbildningstillfalle);
+
 	Organisationslista sokAllaOrganisationer();
 
 	Organisationslista sokOrganisationer(String kod);
