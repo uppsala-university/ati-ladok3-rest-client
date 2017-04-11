@@ -459,6 +459,20 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
+	public Utbildningstillfalle utbildningstillfalleTillStatusKomplett(String utbildningstillfalleUID) {
+		WebTarget client = getClient()
+				.path(RESOURCE_UTBILDNINGSTILFALLE)
+				.path("status3")
+				.path(utbildningstillfalleUID.getUid());
+
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.put(Entity.entity("", ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, Utbildningstillfalle.class);
+	}
+
+	@Override
 	public Organisationslista sokAllaOrganisationer() {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient()
