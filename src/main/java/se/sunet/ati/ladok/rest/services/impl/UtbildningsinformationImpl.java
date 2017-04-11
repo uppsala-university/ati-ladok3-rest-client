@@ -329,16 +329,6 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		validatedResponse(response, String.class);
 	}
 
-	/*
-	 * If the response wasn't successful then get the error message
-	 */
-	private static void possiblyLog(Response r) {
-		if (r.getStatus() >= 400) {
-			String msg = r.readEntity(String.class);
-			log.error("[" + r.getStatus() + "] Error was detected, the response body was: " + msg);
-		}
-	}
-
 	@Override
 	public Utbildningsinstans skapaUtbildningsinstansNyVersion(String utbildningsinstansUID, Versionsinformation versionsinformation) {
 		JAXBElement<Versionsinformation> versionsinformationJAXBElement = new ObjectFactory().createVersionsinformation(versionsinformation);
@@ -521,6 +511,21 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		WebTarget client = getClient()
 				.path(RESOURCE_UTBILDNINGSINSTANS)
 				.path("status2").path(utbildningsinstansUID);
+
+		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity("", ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, Utbildningsinstans.class);
+	}
+
+	@Override
+	public Utbildningsinstans utbildningsinstansTillStatusKomplett(String utbildningsinstansUID) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_UTBILDNINGSINSTANS)
+				.path("status3").path(utbildningsinstansUID);
 
 		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)

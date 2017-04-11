@@ -74,6 +74,8 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	Utbildningsinstans utbildningsinstansTillStatusPaborjad(String utbildningsinstansUID);
 
+	Utbildningsinstans utbildningsinstansTillStatusKomplett(String utbildningsinstansUID);
+
 	SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(String utbildningstypID,
 																	   String utbildningstillfallestypID,
 																	   String studieordningID,
