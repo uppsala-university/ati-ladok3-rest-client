@@ -40,4 +40,6 @@ public interface Kataloginformation extends LadokServiceProperties {
 	Antagningsomgangar hamtaAntagningsomgangar();
 
 	UndervisningssprakLista listaUndervisningssprak();
+
+	Studieordningar listaStudieordningar();
 }

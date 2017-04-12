@@ -1,18 +1,36 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
-import java.util.List;
-
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import se.ladok.schemas.kataloginformation.*;
+import se.ladok.schemas.kataloginformation.Amnesgrupper;
+import se.ladok.schemas.kataloginformation.Antagningsomgangar;
+import se.ladok.schemas.kataloginformation.Betygsskalor;
+import se.ladok.schemas.kataloginformation.Finansieringsformer;
+import se.ladok.schemas.kataloginformation.I18NLista;
+import se.ladok.schemas.kataloginformation.Kommuner;
+import se.ladok.schemas.kataloginformation.KravPaTidigareStudierLista;
+import se.ladok.schemas.kataloginformation.Lander;
+import se.ladok.schemas.kataloginformation.NivaerInomStudieordning;
+import se.ladok.schemas.kataloginformation.OrganisationLista;
+import se.ladok.schemas.kataloginformation.Perioder;
+import se.ladok.schemas.kataloginformation.Studielokaliseringar;
+import se.ladok.schemas.kataloginformation.Studieordningar;
+import se.ladok.schemas.kataloginformation.Studietakter;
+import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
+import se.ladok.schemas.kataloginformation.SvenskaOrter;
+import se.ladok.schemas.kataloginformation.Undervisningsformer;
+import se.ladok.schemas.kataloginformation.UndervisningssprakLista;
+import se.ladok.schemas.kataloginformation.Undervisningstider;
+import se.ladok.schemas.kataloginformation.Utbildningsomraden;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
 public class KataloginformationImpl extends LadokServicePropertiesImpl implements Kataloginformation {
+
+	private static final String RESOURCE_GRUNDDATA = "grunddata";
 
 	private static Log log = LogFactory.getLog(KataloginformationImpl.class);
 
@@ -47,7 +65,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public Perioder listaLokalaPerioder() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("period");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("period");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 			.accept(responseType).get(Perioder.class);
 	}
@@ -55,7 +73,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public SuccessivaFordjupningar listaSuccessivaFordjupningar() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("successivfordjupning");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("successivfordjupning");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 			.accept(responseType).get(SuccessivaFordjupningar.class);
 	}
@@ -63,7 +81,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public SvenskaOrter listaSvenskaOrter() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("svenskort");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("svenskort");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 			.accept(responseType).get(SvenskaOrter.class);
 	}
@@ -71,7 +89,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public Kommuner listaKommuner() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("kommun");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("kommun");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 			.accept(responseType).get(Kommuner.class);
 	}
@@ -79,7 +97,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public Lander listaLander() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("land");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("land");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Lander.class);
 	}
@@ -87,7 +105,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public Undervisningstider listaUndervisningstider() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("undervisningstid");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("undervisningstid");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Undervisningstider.class);
 	}
@@ -95,7 +113,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public Undervisningsformer listaUndervisningsformer() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("undervisningsform");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("undervisningsform");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Undervisningsformer.class);
 	}
@@ -103,7 +121,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public Betygsskalor listaBetygskalor() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("betygsskala");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("betygsskala");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Betygsskalor.class);
 	}
@@ -111,7 +129,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public NivaerInomStudieordning listaNivaerInomStudieordning() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("nivainomstudieordning");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("nivainomstudieordning");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(NivaerInomStudieordning.class);
 	}
@@ -119,7 +137,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public Amnesgrupper listaAmnesgrupper() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("amnesgrupp");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("amnesgrupp");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Amnesgrupper.class);
 	}
@@ -127,7 +145,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public Studietakter listaStudietakter() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("studietakt");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("studietakt");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Studietakter.class);
 	}
@@ -135,7 +153,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public Finansieringsformer listaFinansieringsformer() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("finansieringsform");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("finansieringsform");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Finansieringsformer.class);
 	}
@@ -143,7 +161,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public Utbildningsomraden listaUtbildningsomraden() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("utbildningsomrade");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("utbildningsomrade");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Utbildningsomraden.class);
 	}
@@ -159,15 +177,23 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public KravPaTidigareStudierLista listaKravPaTidigareStudier(){
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("kravpatidigarestudier");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("kravpatidigarestudier");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(KravPaTidigareStudierLista.class);
 	}
 
 	@Override
+	public Studieordningar listaStudieordningar() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("studieordning");
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(Studieordningar.class);
+	}
+	
+	@Override
 	public Studielokaliseringar listaStudielokaliseringar() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("studielokalisering");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("studielokalisering");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Studielokaliseringar.class);
 	}
@@ -175,7 +201,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public Antagningsomgangar hamtaAntagningsomgangar() {	
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("antagningsomgang");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("antagningsomgang");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Antagningsomgangar.class);
 		
@@ -184,7 +210,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	@Override
 	public UndervisningssprakLista listaUndervisningssprak() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient().path("grunddata").path("undervisningssprak");
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("undervisningssprak");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(UndervisningssprakLista.class);
 	}
