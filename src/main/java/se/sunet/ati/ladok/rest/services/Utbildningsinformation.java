@@ -66,9 +66,6 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	Utbildningstillfalle uppdateraUtbildningstillfalle(Utbildningstillfalle utbildningstillfalle);
 
-	@Deprecated
-	Utbildningsinstans utbildningstillfalleTillStatusKomplett(String utbildningstillfalleUID);
-
 	Utbildningstillfalle utbildningstillfalleTillStatusKomplett(String utbildningstillfalleUID, Beslut beslut);
 
 	Organisationslista sokAllaOrganisationer();
@@ -78,9 +75,6 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans);
 
 	Utbildningsinstans utbildningsinstansTillStatusPaborjad(String utbildningsinstansUID);
-
-	@Deprecated
-	Utbildningsinstans utbildningsinstansTillStatusKomplett(String utbildningsinstansUID);
 
 	Utbildningsinstans utbildningsinstansTillStatusKomplett(String utbildningsinstansUID, Beslut beslut);
 

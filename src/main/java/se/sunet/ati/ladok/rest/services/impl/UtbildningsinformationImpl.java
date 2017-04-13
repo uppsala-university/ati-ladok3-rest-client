@@ -456,11 +456,6 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public Utbildningsinstans utbildningstillfalleTillStatusKomplett(String utbildningstillfalleUID) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public Utbildningstillfalle utbildningstillfalleTillStatusKomplett(String utbildningstillfalleUID, Beslut beslut) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		JAXBElement<Beslut> beslutJAXBElement = getBeslutJAXBElement(beslut);
@@ -538,11 +533,6 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.put(Entity.entity("", ClientUtil.CONTENT_TYPE_HEADER_VALUE));
 
 		return validatedResponse(response, Utbildningsinstans.class);
-	}
-
-	@Override
-	public Utbildningsinstans utbildningsinstansTillStatusKomplett(String utbildningsinstansUID) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
