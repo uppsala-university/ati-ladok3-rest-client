@@ -313,10 +313,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	public void avvecklaUtbildning(String utbildningUID, Beslut beslut) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
         //The date isn't supposed to append timezone information, which it does out of the box. Explicitly tell the object that it is undefined to avoid that.
-		if (beslut.getBeslutsdatum() != null) {
-			beslut.getBeslutsdatum().setTimezone(DatatypeConstants.FIELD_UNDEFINED);
-		}
-		JAXBElement<Beslut> beslutJAXBElement = new ObjectFactory().createBeslut(beslut);
+		JAXBElement<Beslut> beslutJAXBElement = getBeslutJAXBElement(beslut);
 
 		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSTANS).path(RESOURCE_AVVECKLA).path(utbildningUID);
 
@@ -459,7 +456,15 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public Utbildningstillfalle utbildningstillfalleTillStatusKomplett(String utbildningstillfalleUID) {
+	public Utbildningsinstans utbildningstillfalleTillStatusKomplett(String utbildningstillfalleUID) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Utbildningstillfalle utbildningstillfalleTillStatusKomplett(String utbildningstillfalleUID, Beslut beslut) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		JAXBElement<Beslut> beslutJAXBElement = getBeslutJAXBElement(beslut);
+
 		WebTarget client = getClient()
 				.path(RESOURCE_UTBILDNINGSTILFALLE)
 				.path("status3")
@@ -467,7 +472,8 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-				.put(Entity.entity("", ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+				.accept(responseType)
+				.put(Entity.entity(beslutJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
 
 		return validatedResponse(response, Utbildningstillfalle.class);
 	}
@@ -536,7 +542,14 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 	@Override
 	public Utbildningsinstans utbildningsinstansTillStatusKomplett(String utbildningsinstansUID) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Utbildningsinstans utbildningsinstansTillStatusKomplett(String utbildningsinstansUID, Beslut beslut) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		JAXBElement<Beslut> beslutJAXBElement = getBeslutJAXBElement(beslut);
+
 		WebTarget client = getClient()
 				.path(RESOURCE_UTBILDNINGSINSTANS)
 				.path("status3").path(utbildningsinstansUID);
@@ -544,9 +557,17 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
-				.put(Entity.entity("", ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+				.put(Entity.entity(beslutJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
 
 		return validatedResponse(response, Utbildningsinstans.class);
+	}
+
+	private JAXBElement<Beslut> getBeslutJAXBElement(Beslut beslut) {
+		//The date isn't supposed to append timezone information, which it does out of the box. Explicitly tell the object that it is undefined to avoid that.
+		if (beslut.getBeslutsdatum() != null) {
+			beslut.getBeslutsdatum().setTimezone(DatatypeConstants.FIELD_UNDEFINED);
+		}
+		return new ObjectFactory().createBeslut(beslut);
 	}
 
 	@Override
