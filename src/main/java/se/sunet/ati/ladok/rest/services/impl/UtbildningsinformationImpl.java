@@ -12,7 +12,6 @@ import javax.xml.datatype.DatatypeConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import se.ladok.schemas.LadokException;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.Attributdefinition;
 import se.ladok.schemas.utbildningsinformation.Attributdefinitioner;
@@ -34,9 +33,10 @@ import se.ladok.schemas.utbildningsinformation.Utbildningsinstansprojektioner;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
 import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
 import se.ladok.schemas.utbildningsinformation.Versionsinformation;
-import se.sunet.ati.ladok.rest.services.LadokRestClientException;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
+
+import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
 
 public class UtbildningsinformationImpl extends LadokServicePropertiesImpl implements Utbildningsinformation {
 	
@@ -618,13 +618,4 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		return validatedResponse(response, Huvudomraden.class);
 	}
 
-	private <T> T validatedResponse(Response response, Class<T> responseType) {
-		if (response.getStatus()/100 == 2) {
-			return response.readEntity(responseType);
-		} else {
-			throw new LadokRestClientException(response.getStatus(), response.readEntity(LadokException.class));
-		}
-	}
-	
-	
 }

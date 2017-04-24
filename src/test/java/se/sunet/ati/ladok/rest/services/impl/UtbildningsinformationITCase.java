@@ -460,6 +460,7 @@ public class UtbildningsinformationITCase {
 		} catch (LadokRestClientException e) {
 			assertEquals(400, e.getHttpStatusCode());
 			assertNotNull(e.getLadokException());
+			e.printStackTrace();
 		}
 	}
 

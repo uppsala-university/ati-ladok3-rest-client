@@ -16,14 +16,14 @@ import se.ladok.schemas.resultat.SokresultatAktivitetstillfallesmojlighetResulta
 import se.ladok.schemas.resultat.Studielokaliseringar;
 import se.ladok.schemas.resultat.Studieresultat;
 import se.ladok.schemas.resultat.Utbildningsinstans;
-import se.ladok.schemas.LadokException;
 import se.ladok.schemas.resultat.Aktivitetstillfalle;
 import se.ladok.schemas.resultat.Aktivitetstillfallestyp;
 import se.ladok.schemas.resultat.Klarmarkera;
 import se.ladok.schemas.resultat.ObjectFactory;
-import se.sunet.ati.ladok.rest.services.LadokRestClientException;
 import se.sunet.ati.ladok.rest.services.Resultatinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
+
+import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
 
 public class ResultatinformationImpl extends LadokServicePropertiesImpl implements Resultatinformation {
 	private static Log log = LogFactory.getLog(ResultatinformationImpl.class);
@@ -292,11 +292,4 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		return validatedResponse(response, Studielokaliseringar.class);
 	}
 
-	private <T> T validatedResponse(Response response, Class<T> responseType) {
-		if (response.getStatus()/100 == 2) {
-			return response.readEntity(responseType);
-		} else {
-			throw new LadokRestClientException(response.getStatus(), response.readEntity(LadokException.class));
-		}
-	}
 }
