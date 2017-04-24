@@ -62,7 +62,7 @@ public class UtbildningsinformationITCase {
 			throw new Exception("Kunde inte läsa in utbildningsinstans");
 		}
 		utbildningstillfalle = ui.sokUtbildningstillfallen(null, null, null,
-								   properties.getProperty("rest.utbildningsinformation.utbildningstillfalle.utbildningstillfalleskod"),
+						properties.getProperty("rest.utbildningsinformation.utbildningstillfalle.utbildningstillfalleskod"),
 								   properties.getProperty("rest.utbildningsinformation.utbildningsinstans.kod"),
 								   null, null, null,
 								   properties.getProperty("rest.utbildningsinformation.utbildningstillfalle.studieperiod"),
@@ -191,7 +191,7 @@ public class UtbildningsinformationITCase {
 		assertNotNull(perioder);
 		log.info("Hämtade " + perioder.size() + " perioder");
 		assertTrue(perioder.size() > 0);
-		for(Period period : perioder) {
+		for (Period period : perioder) {
 			log.debug("Hämtade perioden " + period.getKod() + " (" + period.getID() + ") - " + period.getBenamningar().getBenamning().get(0).getText());
 		}
 	}
@@ -209,12 +209,12 @@ public class UtbildningsinformationITCase {
 		String utbildningskod = getUtbildningsinstansKod();
 		List<UtbildningProjektion> utbildningProjektioner = ui.hamtaUtbildningsinstansViaKod(utbildningskod,
 												     STUDIEORDNING_ID,
-												     getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
+				getUtbildningstypID(UTBILDNINGSTYP_2007_KURS_GRUND_KOD));
 		log.info("Hämtade " + utbildningProjektioner.size() + " utbildningsinstanser för utbildningskod " + utbildningskod);
 
 		UtbildningProjektion utbildningsinstans = utbildningProjektioner.get(0);
 		log.info("Hämtade utbildningsinstans med UID " + utbildningsinstans.getUid() + " för utbildningskod " + utbildningskod);
-//		assertTrue(getUtbildningsinstansUID().equalsIgnoreCase(utbildningsinstans.getUid()));
+		// assertTrue(getUtbildningsinstansUID().equalsIgnoreCase(utbildningsinstans.getUid()));
 
 		log.info("Utbildningsinstansens (språkoberoende) benämning: " + utbildningsinstans.getBenamning());
 		for (Benamning benamn : utbildningsinstans.getBenamningar().getBenamning()) {
@@ -413,9 +413,9 @@ public class UtbildningsinformationITCase {
 
 		for (Benamning b : updatedIuVer2.getBenamningar().getBenamning()) {
 			if (engelska.getSprakkod().equals(b.getSprakkod())) {
-				assertEquals(engelska.getText()+"2", b.getText());
+				assertEquals(engelska.getText() + "2", b.getText());
 			} else if (svenska.getSprakkod().equals(b.getSprakkod())) {
-				assertEquals(svenska.getText()+"2", b.getText());
+				assertEquals(svenska.getText() + "2", b.getText());
 			}
 		}
 
@@ -491,6 +491,18 @@ public class UtbildningsinformationITCase {
 
 		Utbildningstillfalle utbildningstillfalleUppdaterat = ui.uppdateraUtbildningstillfalle(utbildningstillfalleSkapat);
 		assertNotNull(utbildningstillfalleUppdaterat);
+	}
+
+	@Test
+	public void utannonseraUtbildningstillfalle() {
+		try {
+			ui.utannonseraUtbildningstillfalle(getUtbildningstillfalleUID());
+			fail();
+		} catch (LadokRestClientException e) {
+			assertEquals(403, e.getHttpStatusCode());
+			assertNotNull(e.getLadokException());
+			assertEquals("commons.fel.kategori.sakerhetsovertradelse", e.getLadokException().getFelkategori());
+		}
 	}
 
 	@Test
