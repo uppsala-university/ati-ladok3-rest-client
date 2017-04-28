@@ -469,7 +469,7 @@ public class UtbildningsinformationITCase {
 	 * @throws Exception
 	 */
 	@Test
-	public void testSkapaOchUppdateraUtbildningstillfalle() {
+	public void testSkapaOchUppdateraOchBytUtbildningstillfalle() {
 		Utbildningstillfalle utToSave = new Utbildningstillfalle();
 		StudietaktID studietakt = new StudietaktID();
 		// Studietakt på halvfart
@@ -491,6 +491,13 @@ public class UtbildningsinformationITCase {
 
 		Utbildningstillfalle utbildningstillfalleUppdaterat = ui.uppdateraUtbildningstillfalle(utbildningstillfalleSkapat);
 		assertNotNull(utbildningstillfalleUppdaterat);
+
+		try {
+			ui.bytUtbildningsinstansForUtbildningstillfalle(utbildningstillfalleUppdaterat.getUid(), getUtbildningsinstansUID());
+			fail();
+		} catch (LadokRestClientException e) {
+			assertEquals(403, e.getHttpStatusCode());
+		}
 	}
 
 	@Test

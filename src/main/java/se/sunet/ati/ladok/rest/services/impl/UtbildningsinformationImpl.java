@@ -7,6 +7,10 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.datatype.DatatypeConstants;
 
 import org.apache.commons.logging.Log;
@@ -39,7 +43,7 @@ import se.sunet.ati.ladok.rest.util.ClientUtil;
 import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
 
 public class UtbildningsinformationImpl extends LadokServicePropertiesImpl implements Utbildningsinformation {
-	
+
 	private static Log log = LogFactory.getLog(UtbildningsinformationImpl.class);
 	private static final String UTBILDNINGSINFORMATION_URL = "/utbildningsinformation";
 
@@ -285,7 +289,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient()
 				.path(RESOURCE_UTBILDNINGSINSTANS);
-		
+
 		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -453,6 +457,58 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.put(Entity.entity(utbildningstillfalleJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
 
 		return validatedResponse(response, Utbildningstillfalle.class);
+	}
+
+	@Override
+	public Utbildningstillfalle bytUtbildningsinstansForUtbildningstillfalle(String utbildningstillfalleUID, String utbildningsinstansUID) {
+		WebTarget client = getClient()
+				.path(RESOURCE_UTBILDNINGSTILFALLE)
+				.path(utbildningstillfalleUID)
+				.path("bytutbildningsinstans");
+
+		IdentitetRepresentation identitetRepresentation = new IdentitetRepresentation(utbildningsinstansUID);
+
+		final String LADOK_UTBILDNINGSINFORMATION_JSON = "application/vnd.ladok-utbildningsinformation+json";
+		Response response = client.request()
+				.header("Content-Type", LADOK_UTBILDNINGSINFORMATION_JSON)
+				.accept(LADOK_UTBILDNINGSINFORMATION_JSON)
+				.put(Entity.entity(identitetRepresentation, LADOK_UTBILDNINGSINFORMATION_JSON));
+
+		return validatedResponse(response, Utbildningstillfalle.class);
+	}
+
+	/**
+	 * Den här klassen ska vara privat eftersom detta är en nödlösning eftersom
+	 * XSDerna från Ladok missar att inkludera typen IdentitetRepresentation.
+	 *
+	 * I väntan på att Ladoks XSDer innehåller typen ska DTO-projektet utökas till att
+	 * innehålla IdentitetRepresentation.
+	 *
+	 * Se ärende https://jira.its.umu.se/browse/LADOKSUPP-416
+	 */
+	@XmlAccessorType(XmlAccessType.FIELD)
+	@XmlRootElement(name = "IdentitetRepresentation",
+			        namespace = "http://schemas.ladok.se/utbildningsinformation" )
+	private static class IdentitetRepresentation {
+
+		@XmlElement(name = "Uid", namespace = "http://schemas.ladok.se/utbildningsinformation")
+		private String uid;
+
+		public IdentitetRepresentation(String uid) {
+			this.uid = uid;
+		}
+
+		public IdentitetRepresentation() {
+			// Behövs för serializering
+		}
+
+		public String getUid() {
+			return uid;
+		}
+
+		public void setUid(String uid) {
+			this.uid = uid;
+		}
 	}
 
 	@Override
