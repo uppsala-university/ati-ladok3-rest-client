@@ -11,6 +11,7 @@ import se.ladok.schemas.resultat.SokresultatAktivitetstillfallesmojlighetResulta
 import se.ladok.schemas.resultat.Studielokaliseringar;
 import se.ladok.schemas.resultat.Studieresultat;
 import se.ladok.schemas.resultat.Utbildningsinstans;
+import se.ladok.schemas.resultat.SokresultatStudieresultatResultat;
 
 public interface Resultatinformation {
 
@@ -62,4 +63,13 @@ public interface Resultatinformation {
 	);
 	
 	public Studielokaliseringar sokAllaStudielokaliseringar();
+
+	public SokresultatStudieresultatResultat sokStudieResultat(String utbildningsinstansUID,
+			String[] kurstillfalleUIDn,
+			String filtrering,
+			String grupp,
+			int page,
+			int limit,
+			String orderby);
+
 }

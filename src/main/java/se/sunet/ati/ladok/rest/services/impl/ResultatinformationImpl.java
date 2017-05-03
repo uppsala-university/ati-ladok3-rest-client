@@ -20,6 +20,7 @@ import se.ladok.schemas.resultat.Aktivitetstillfalle;
 import se.ladok.schemas.resultat.Aktivitetstillfallestyp;
 import se.ladok.schemas.resultat.Klarmarkera;
 import se.ladok.schemas.resultat.ObjectFactory;
+import se.ladok.schemas.resultat.SokresultatStudieresultatResultat;
 import se.sunet.ati.ladok.rest.services.Resultatinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -36,6 +37,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	private static final String RESOURCE_STUDENT_CRITERIA = "student";
 	private static final String RESOURCE_KURS = "utbildningstillfalle";
 	private static final String RESOURCE_UTBILDNINGSINSTANS = "utbildningsinstans";
+	private static final String RESOURCE_RAPPORTERA = "rapportera";
 	private static final String MODULER = "moduler";
 	private static final String RESOURCE_UTBILDNING = "utbildning";
 	private static final String RESOURCE_KLARMARKERA = "klarmarkera";
@@ -47,6 +49,8 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	private static final String RESOURCE_STUDIELOKALISERING = "studielokalisering";
 	
 	private static final String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+	public static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
+	public static final String CONTENT_TYPE_HEADER_VALUE = "application/vnd.ladok+xml";
 
 	WebTarget resultat;
 
@@ -155,6 +159,45 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
 
 		return validatedResponse(response, Resultat.class);
+	}
+
+	
+	/**
+	 * utbildningsinstansUID - uid for a modul gives results on that modul; uid for a kursinstans gives results on the course 
+	 * filtrering 
+	 */
+	public SokresultatStudieresultatResultat sokStudieResultat(String utbildningsinstansUID,
+			String[] kurstillfalleUIDs,
+			String filtrering,
+			String grupp,
+			int page,
+			int limit,
+			String orderby) {
+		WebTarget client = getClient().path(RESOURCE_STUDIERESULTAT)
+				.path(RESOURCE_RAPPORTERA)
+				.path(RESOURCE_UTBILDNINGSINSTANS)
+				.path(utbildningsinstansUID)
+				//.queryParam("filtrering", "KLARMARKERADE", "OBEHANDLADE_UTKAST_KLARMARKERADE", "OBEHANDLADE", "UTKAST", "OBEHANDLADE_UTKAST")
+				.queryParam("filtrering", filtrering)
+				.queryParam("grupp", grupp)
+				.queryParam("page", page)
+				.queryParam("limit", limit)
+				.queryParam("orderby", orderby);
+
+
+		for (String kurstillfalleUID : kurstillfalleUIDs) {
+			client = client.queryParam("kurstillfallen", kurstillfalleUID);
+		}
+		log.info("Query URL : " + client.getUri());
+
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+				
+		return validatedResponse(response, SokresultatStudieresultatResultat.class);
 	}
 	
 	@Override

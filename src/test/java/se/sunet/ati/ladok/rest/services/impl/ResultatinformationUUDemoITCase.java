@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import se.ladok.schemas.resultat.Aktivitetstillfalle;
 import se.ladok.schemas.resultat.Aktivitetstillfallestyp;
+import se.ladok.schemas.Student;
 import se.ladok.schemas.resultat.Benamning;
 import se.ladok.schemas.resultat.Resultat;
 import se.ladok.schemas.resultat.ResultatLista;
@@ -21,6 +22,7 @@ import se.ladok.schemas.resultat.SokresultatAktivitetstillfallesmojlighetResulta
 import se.ladok.schemas.resultat.Studielokaliseringar;
 import se.ladok.schemas.resultat.Studieresultat;
 import se.ladok.schemas.resultat.Utbildningsinstans;
+import se.ladok.schemas.resultat.SokresultatStudieresultatResultat;
 import se.sunet.ati.ladok.rest.services.Resultatinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
 
@@ -127,7 +129,7 @@ public class ResultatinformationUUDemoITCase {
 		assertNotNull(aktivitetstillfalle);			
 	}
 	
-	@Test
+//	@Test
 	public void testHamtaAktivitetstillfallestyp() throws Exception {
 		int aktivitetstillfallestypId =
 				Integer.parseInt(properties.getProperty("rest.resultat.aktivitetstillfallestyp.id"));
@@ -138,7 +140,7 @@ public class ResultatinformationUUDemoITCase {
 		assertNotNull(aktivitetstillfallestyp);
 	}
 	
-	@Test
+//	@Test
 	public void testSokAktivitetstillfallesmojligheter() throws Exception {
 		String aktivitetestillfalleUid = 
 				properties.getProperty("rest.resultat.resultat.uid");
@@ -160,7 +162,7 @@ public class ResultatinformationUUDemoITCase {
 		assertNotNull(sokAktivitetstillfallesmojligheter);
 	}
 	
-	@Test
+//	@Test
 	public void testSokAktivitetstillfallen() throws Exception {
 		String aktivitetstillfallestypId =
 				properties.getProperty("rest.resultat.aktivitetstillfallestyp.id");
@@ -186,11 +188,54 @@ public class ResultatinformationUUDemoITCase {
 		assertNotNull(sokresultatAktivitetstillfalleResultat);
 	}
 	
-	@Test
+//	@Test
 	public void testSokAllaStudielokaliseringar() throws Exception {
 		Studielokaliseringar studielokaliseringar = 
 				ri.sokAllaStudielokaliseringar();
 		
 		assertNotNull(studielokaliseringar);
+	}
+
+
+	@Test
+	public void testSokResultat() throws Exception {
+		System.out.println("UTKAST");
+		testSokResultat("01010101-2222-3333-0043-000000000949", new String[]{"01010101-2222-3333-0043-000000002094"}, "UTKAST");
+	}	
+	
+	
+	public void testSokResultat(String kursinstansUid, String[] kurstillfallen, String filtrering) throws Exception {
+		System.out.println("............ 0");
+		//String[] kurstillfallen2 = new String[]{"01010101-2222-3333-0043-000000002094"};
+		SokresultatStudieresultatResultat s = ri.sokStudieResultat(kursinstansUid,   //"01010101-2222-3333-0043-000000000949", 
+				kurstillfallen,
+				//"KLARMARKERADE,OBEHANDLADE_UTKAST_KLARMARKERADE",
+				//"KLARMARKERADE",
+				//"OBEHANDLADE_UTKAST",
+				//"UTKAST",
+				filtrering,
+				"", 
+				1, 
+				45,
+				"EFTERNAMN_ASC");
+		System.out.println("totalt antal poster: " +  s.getTotaltAntalPoster());
+		assertNotNull(s);
+		List<Studieresultat> resultat = s.getResultat();
+		System.out.println("längd på Resultatlistan: " + resultat.size());
+		for (Studieresultat r : resultat) {
+			//System.out.println("aktuell kursinstans: " + r.getAktuellKursinstans() + " anonymkod: " + r.getAnonymiseringskod());
+			Student student = r.getStudent();
+			System.out.println("Student " + student.getFornamn()  + " " + student.getEfternamn());
+			Studieresultat.ResultatPaUtbildningar resultatPaUtbildningar = r.getResultatPaUtbildningar();
+			for (ResultatPaUtbildning resultatPaUtbildning : resultatPaUtbildningar.getResultatPaUtbildning()) {
+				Resultat arbetsunderlag = resultatPaUtbildning.getArbetsunderlag();
+				if (arbetsunderlag == null) {
+					System.out.println("   Arbetsunderlag null");
+				} else {
+					System.out.println("   ProcessStatus: " + arbetsunderlag.getProcessStatus());
+				}
+			}
+			
+		}
 	}
 }
