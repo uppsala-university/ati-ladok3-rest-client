@@ -38,6 +38,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	private static final String RESOURCE_KURS = "utbildningstillfalle";
 	private static final String RESOURCE_UTBILDNINGSINSTANS = "utbildningsinstans";
 	private static final String RESOURCE_RAPPORTERA = "rapportera";
+	private static final String RESOURCE_ATTESTERA = "attestera";
 	private static final String MODULER = "moduler";
 	private static final String RESOURCE_UTBILDNING = "utbildning";
 	private static final String RESOURCE_KLARMARKERA = "klarmarkera";
@@ -164,8 +165,9 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	
 	/**
 	 * utbildningsinstansUID - uid for a modul gives results on that modul; uid for a kursinstans gives results on the course 
-	 * filtrering 
+	 * 
 	 */
+	@Override
 	public SokresultatStudieresultatResultat sokStudieResultat(String utbildningsinstansUID,
 			String[] kurstillfalleUIDs,
 			String filtrering,
@@ -177,13 +179,11 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_RAPPORTERA)
 				.path(RESOURCE_UTBILDNINGSINSTANS)
 				.path(utbildningsinstansUID)
-				//.queryParam("filtrering", "KLARMARKERADE", "OBEHANDLADE_UTKAST_KLARMARKERADE", "OBEHANDLADE", "UTKAST", "OBEHANDLADE_UTKAST")
 				.queryParam("filtrering", filtrering)
 				.queryParam("grupp", grupp)
 				.queryParam("page", page)
 				.queryParam("limit", limit)
 				.queryParam("orderby", orderby);
-
 
 		for (String kurstillfalleUID : kurstillfalleUIDs) {
 			client = client.queryParam("kurstillfallen", kurstillfalleUID);
@@ -196,9 +196,46 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
 				.get();
-				
+
 		return validatedResponse(response, SokresultatStudieresultatResultat.class);
 	}
+	
+	/**
+	 * utbildningsinstansUID - uid for a modul gives results on that modul; uid for a kursinstans gives results on the course 
+	 * 
+	 */
+	@Override
+	public SokresultatStudieresultatResultat sokAttesteradeStudieResultat(String utbildningsinstansUID,
+			String[] kurstillfalleUIDs,
+			String filtrering,
+			String grupp,
+			int page,
+			int limit,
+			String orderby) {
+		WebTarget client = getClient().path(RESOURCE_STUDIERESULTAT)
+				.path(RESOURCE_ATTESTERA)
+				.path(RESOURCE_UTBILDNINGSINSTANS)
+				.path(utbildningsinstansUID)
+				.queryParam("filtrering", filtrering)
+				.queryParam("grupp", grupp)
+				.queryParam("page", page)
+				.queryParam("limit", limit)
+				.queryParam("orderby", orderby);
+
+		for (String kurstillfalleUID : kurstillfalleUIDs) {
+			client = client.queryParam("kurstillfallen", kurstillfalleUID);
+		}
+		log.info("Query URL : " + client.getUri());
+
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, SokresultatStudieresultatResultat.class);
+	}	
 	
 	@Override
 	public Aktivitetstillfalle hamtaAktivitetstillfalle(String aktivitetstillfalleUID) {

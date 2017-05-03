@@ -205,14 +205,8 @@ public class ResultatinformationUUDemoITCase {
 	
 	
 	public void testSokResultat(String kursinstansUid, String[] kurstillfallen, String filtrering) throws Exception {
-		System.out.println("............ 0");
-		//String[] kurstillfallen2 = new String[]{"01010101-2222-3333-0043-000000002094"};
-		SokresultatStudieresultatResultat s = ri.sokStudieResultat(kursinstansUid,   //"01010101-2222-3333-0043-000000000949", 
+		SokresultatStudieresultatResultat s = ri.sokStudieResultat(kursinstansUid,   
 				kurstillfallen,
-				//"KLARMARKERADE,OBEHANDLADE_UTKAST_KLARMARKERADE",
-				//"KLARMARKERADE",
-				//"OBEHANDLADE_UTKAST",
-				//"UTKAST",
 				filtrering,
 				"", 
 				1, 
@@ -223,7 +217,6 @@ public class ResultatinformationUUDemoITCase {
 		List<Studieresultat> resultat = s.getResultat();
 		System.out.println("längd på Resultatlistan: " + resultat.size());
 		for (Studieresultat r : resultat) {
-			//System.out.println("aktuell kursinstans: " + r.getAktuellKursinstans() + " anonymkod: " + r.getAnonymiseringskod());
 			Student student = r.getStudent();
 			System.out.println("Student " + student.getFornamn()  + " " + student.getEfternamn());
 			Studieresultat.ResultatPaUtbildningar resultatPaUtbildningar = r.getResultatPaUtbildningar();
@@ -235,7 +228,40 @@ public class ResultatinformationUUDemoITCase {
 					System.out.println("   ProcessStatus: " + arbetsunderlag.getProcessStatus());
 				}
 			}
-			
 		}
 	}
+	
+	@Test
+	public void testAttesteradeSokResultat() throws Exception {
+		System.out.println("ATTESTERADE");
+		testAttesteradeSokResultat("01010101-2222-3333-0043-000000000949", new String[]{"01010101-2222-3333-0043-000000002094"}, "ATTESTERADE");
+	}	
+	
+	public void testAttesteradeSokResultat(String kursinstansUid, String[] kurstillfallen, String filtrering) throws Exception {
+		SokresultatStudieresultatResultat s = ri.sokAttesteradeStudieResultat(kursinstansUid,    
+				kurstillfallen,
+				filtrering,
+				"", 
+				1, 
+				45,
+				"EFTERNAMN_ASC");
+		System.out.println("totalt antal poster: " +  s.getTotaltAntalPoster());
+		assertNotNull(s);
+		List<Studieresultat> resultat = s.getResultat();
+		System.out.println("längd på Resultatlistan: " + resultat.size());
+		for (Studieresultat r : resultat) {
+			Student student = r.getStudent();
+			System.out.println("Student " + student.getFornamn()  + " " + student.getEfternamn());
+			Studieresultat.ResultatPaUtbildningar resultatPaUtbildningar = r.getResultatPaUtbildningar();
+			for (ResultatPaUtbildning resultatPaUtbildning : resultatPaUtbildningar.getResultatPaUtbildning()) {
+				Resultat arbetsunderlag = resultatPaUtbildning.getArbetsunderlag();
+				if (arbetsunderlag == null) {
+					System.out.println("   Arbetsunderlag null");
+				} else {
+					System.out.println("   ProcessStatus: " + arbetsunderlag.getProcessStatus());
+				}
+			}
+		}
+	}
+	
 }

@@ -72,4 +72,11 @@ public interface Resultatinformation {
 			int limit,
 			String orderby);
 
+	public SokresultatStudieresultatResultat sokAttesteradeStudieResultat(String utbildningsinstansUID,
+			String[] kurstillfalleUIDn,
+			String filtrering,
+			String grupp,
+			int page,
+			int limit,
+			String orderby);
 }
