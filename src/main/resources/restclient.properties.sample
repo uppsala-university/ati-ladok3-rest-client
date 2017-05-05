@@ -2,9 +2,8 @@
 # i filsystemet eller en resurs som finns tillgänglig på classpath.
 # Sökvägarna kan innehålla system properties, t.ex. ${user.home}.
 
-restbase=https://api.mit-integration.ladok.se/
+restbase=https://api.mit.ladok.se/
 restApiTransportProtcol=<protocol name>          # Defaults to TLSv1.2 (TLSv1.0, TLSv1.1, SSLv2, SSLv3)
-
 clientCertificateFile=<filename>
 clientCertificatePwd=<password>
 clientCertificateKeystoreType=<key store format> # Defaults to PKCS12
@@ -14,3 +13,9 @@ clientCertificateKeystoreType=<key store format> # Defaults to PKCS12
 trustStoreFile=<filename>
 trustStorePwd=<password>
 trustStoreType=<trust store format>              # Defaults to JKS
+
+# HTTP timeouts. Namn beroende på implemenation. Nedan Jersey. För infinity använd 0 annars heltal i mSec
+readTimeOutValue=0
+readTimeOutName=jersey.config.client.readTimeout
+connectTimeOutName=jersey.config.client.connectTimeout
+connectTimeOutValue=0

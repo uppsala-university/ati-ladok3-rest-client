@@ -12,6 +12,10 @@ public class LadokServicePropertiesImpl implements LadokServiceProperties {
 	String trustStoreFile;
 	String trustStorePwd = "changeit";
 	String trustStoreType = "JKS";
+	String readTimeOutName = "jersey.config.client.readTimeout"; // jersey
+	String connectTimeOutName = "jersey.config.client.connectTimeout"; 
+	int connectTimeOutValue = 0; // Infinity
+	int readTimeOutValue = 0;
 
 	public String getRestbase() {
 		return restbase;
@@ -62,4 +66,30 @@ public class LadokServicePropertiesImpl implements LadokServiceProperties {
 	public void setTrustStoreType(String trustStoreType) {
 		this.trustStoreType = trustStoreType;
 	}
+	public String getReadTimeOutName() {
+		return readTimeOutName;
+	}
+	public void setReadTimeOutName(String readTimeOutName) {
+		this.readTimeOutName = readTimeOutName;
+	}
+	public String getConnectTimeOutName() {
+		return connectTimeOutName;
+	}
+	public void setConnectTimeOutName(String connectTimeOutName) {
+		this.connectTimeOutName = connectTimeOutName;
+	}
+	public int getConnectTimeOutValue() {
+		return connectTimeOutValue;
+	}
+	public void setConnectTimeOutValue(int connectTimeOutValue) {
+		this.connectTimeOutValue = connectTimeOutValue;
+	}
+	public int getReadTimeOutValue() {
+		return readTimeOutValue;
+	}
+	public void setReadTimeOutValue(int readTimeOutValue) {
+		this.readTimeOutValue = readTimeOutValue;
+	}
+
+	
 }

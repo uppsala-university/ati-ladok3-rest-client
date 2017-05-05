@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
@@ -44,17 +45,12 @@ public class ClientUtil {
 			// Try to find the keystore as a classpath resource
 			keystoreInputStream = ClientUtil.class.getClassLoader().getResourceAsStream(filePath);
 			if (keystoreInputStream == null) {
-				String message = "Unable to find the " + fileType
-						+ " '" + filePath + "' as a classpath resource";
+				String message = "Unable to find the " + fileType + " '" + filePath + "' as a classpath resource";
 				log.debug(message);
 				throw new IOException(message);
 			}
 			log.info("Found the " + fileType + " '" + filePath + "' as a classpath resource");
-		}
-		if (keystoreInputStream == null) {
-			throw new IOException("Unable to find the " + fileType
-							      + " '" + filePath + "'");
-		}
+		}		
 		return keystoreInputStream;
 	}
 
@@ -89,7 +85,13 @@ public class ClientUtil {
 			if (trustStore != null) {
 				cb.trustStore(trustStore);
 			}
-			return cb.build().target(stripEndSlash(lsp.getRestbase()) + "/" + stripStartSlash(path));
+			
+			Client client = cb.build();
+			// Assign timeouts
+			client.property(lsp.getConnectTimeOutName(), lsp.getConnectTimeOutValue());
+		    client.property(lsp.getReadTimeOutName(), lsp.getReadTimeOutValue());
+		    
+			return client.target(stripEndSlash(lsp.getRestbase()) + "/" + stripStartSlash(path));
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		} finally {
@@ -152,9 +154,28 @@ public class ClientUtil {
 			String restApiTransportProtcol = properties.getProperty("restApiTransportProtcol");
 			if (restApiTransportProtcol != null && !restApiTransportProtcol.equals("")) {
 				lsp.setRestApiTransportProtcol(restApiTransportProtcol);
+			}			
+			String connectTimeOutName = properties.getProperty("connectTimeOutName");
+			if (connectTimeOutName != null && !connectTimeOutName.equals("")) {
+				lsp.setConnectTimeOutName(connectTimeOutName);
+			}					
+			String connectTimeOutValue = properties.getProperty("connectTimeOutValue");			
+			if (connectTimeOutValue != null && !connectTimeOutValue.isEmpty()) {
+				lsp.setConnectTimeOutValue(Integer.parseInt(connectTimeOutValue.trim()));			
 			}
-	} catch (IOException e) {
-			throw new IllegalStateException("Failed to open restclient.properties" ,e);
+			String readTimeOutName = properties.getProperty("readTimeOutName");
+			if (readTimeOutName != null && !readTimeOutName.equals("")) {
+				lsp.setReadTimeOutName(readTimeOutName);
+			}					
+			String readTimeOutValue = properties.getProperty("readTimeOutValue");			
+			if (readTimeOutValue != null && !readTimeOutValue.isEmpty()) {
+				lsp.setReadTimeOutValue(Integer.parseInt(readTimeOutValue.trim()));			
+			}
+			
+		} catch (IOException e) {
+			throw new IllegalStateException("Failed to open restclient.properties", e);
+		} catch (Exception e) {
+			throw new IllegalStateException("Can not load properties from restclient.properties", e);
 		}
 	}
 
@@ -201,7 +222,9 @@ public class ClientUtil {
 		if (restApiTransportProtcol == null || restApiTransportProtcol.equals("")) {
 				throw new IllegalArgumentException("Missing property \"restApiTransportProtcol\"");
 		}
-		log.info("Using transport protocol: " + restApiTransportProtcol);
+		log.info("Using transport protocol: " + restApiTransportProtcol);		
+		log.info("Using http connection timeout property: " + lsp.getConnectTimeOutName() +"=" +lsp.getConnectTimeOutValue());
+		log.info("Using http read timeout property: " + lsp.getReadTimeOutName()+"=" +lsp.getReadTimeOutValue());		
 	}
 
 	static private String stripEndSlash(String path) {

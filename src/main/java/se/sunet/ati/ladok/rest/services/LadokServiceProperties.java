@@ -24,4 +24,16 @@ public interface LadokServiceProperties {
 
 	public String getTrustStoreType();
 	public void setTrustStoreType(String trustStoreType);
+	
+	public String getReadTimeOutName();
+	public void setReadTimeOutName(String readTimeOutName) ;
+	
+	public String getConnectTimeOutName() ;
+	public void setConnectTimeOutName(String connectTimeOutName);
+	
+	public int getConnectTimeOutValue();
+	public void setConnectTimeOutValue(int connectTimeOutValue) ;
+	
+	public int getReadTimeOutValue();
+	public void setReadTimeOutValue(int readTimeOutValue);
 }
