@@ -40,6 +40,8 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	Utbildningstillfalle hamtaUtbildningstillfalleViaUID(String utbildningstillfalleUID);
 
+	Utbildningstillfalle stallInTillfalle(String utbildningstillfalleUID, Beslut beslut);
+
 	Utbildningstyp hamtaUtbildningstypViaKod(String utbildningstypKod);
 
 	Utbildningsinstans skapaUtbildningsinstans(Utbildningsinstans utbildningsinstans);

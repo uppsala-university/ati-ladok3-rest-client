@@ -7,7 +7,9 @@ import java.util.Random;
 
 import javax.ws.rs.BadRequestException;
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -470,21 +472,7 @@ public class UtbildningsinformationITCase {
 	 */
 	@Test
 	public void testSkapaOchUppdateraOchBytUtbildningstillfalle() {
-		Utbildningstillfalle utToSave = new Utbildningstillfalle();
-		StudietaktID studietakt = new StudietaktID();
-		// Studietakt på halvfart
-		studietakt.setValue(4);
-		utToSave.setStudietaktID(studietakt);
-		utToSave.setOrganisationUID(getOrganisationUID());
-		utToSave.setStatus(1);
-		utToSave.setUtbildningsinstansUID(getUtbildningsinstansUID());
-		utToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURSTILLFÄLLE));
-		utToSave.setTillfalleskod("12345");
-
-		PeriodID pid = new PeriodID();
-		pid.setValue(getPeriodID());
-		utToSave.setStartperiodID(pid);
-		utToSave.setUtbildningsmallUID(getUtbildningsmallUIDUtbildningstillfalle());
+		Utbildningstillfalle utToSave = generateNewTillfalle();
 
 		Utbildningstillfalle utbildningstillfalleSkapat = ui.skapaUtbildningstillfalle(utToSave);
 		assertNotNull(utbildningstillfalleSkapat);
@@ -510,6 +498,27 @@ public class UtbildningsinformationITCase {
 			assertNotNull(e.getLadokException());
 			assertEquals("commons.fel.kategori.sakerhetsovertradelse", e.getLadokException().getFelkategori());
 		}
+	}
+
+	@Test
+	public void stallInTillfalle() throws DatatypeConfigurationException {
+		// Create a tillfalle that we can ställa in
+		Utbildningstillfalle utbildningstillfalleSkapat = ui.skapaUtbildningstillfalle( generateNewTillfalle() );
+		assertNotNull(utbildningstillfalleSkapat);
+
+		Beslut beslut = new Beslut();
+		beslut.setBeslutstypID(4); //??
+		beslut.setBeslutsfattare("Integrationstest");
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTimeInMillis(System.currentTimeMillis());
+		XMLGregorianCalendar xmlGreg = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
+		xmlGreg.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
+		beslut.setBeslutsdatum(xmlGreg);
+		beslut.setAnteckning("Integrationstest ställer in tillfälle");
+
+		Utbildningstillfalle installt = ui.stallInTillfalle(utbildningstillfalleSkapat.getUid(), beslut);
+		assertNotNull("Object should have been returned with status inställt", installt);
+		assertTrue(installt.isInstallt());
 	}
 
 	@Test
@@ -585,5 +594,25 @@ public class UtbildningsinformationITCase {
 		Random random = new Random();
 		String randomKod = ("Z" + Integer.toString(Math.abs(random.nextInt(Integer.MAX_VALUE / 36)), 36)).toUpperCase();
 		return randomKod;
+	}
+
+	private Utbildningstillfalle generateNewTillfalle() {
+		Utbildningstillfalle utToSave = new Utbildningstillfalle();
+		StudietaktID studietakt = new StudietaktID();
+		// Studietakt på halvfart
+		studietakt.setValue(4);
+		utToSave.setStudietaktID(studietakt);
+		utToSave.setOrganisationUID(getOrganisationUID());
+		utToSave.setStatus(1);
+		utToSave.setUtbildningsinstansUID(getUtbildningsinstansUID());
+		utToSave.setUtbildningstypID(getUtbildningstypID(UTBILDNINGSTYP_2007_KURSTILLFÄLLE));
+		utToSave.setTillfalleskod("12345");
+
+		PeriodID pid = new PeriodID();
+		pid.setValue(getPeriodID());
+		utToSave.setStartperiodID(pid);
+		utToSave.setUtbildningsmallUID(getUtbildningsmallUIDUtbildningstillfalle());
+
+		return utToSave;
 	}
 }
