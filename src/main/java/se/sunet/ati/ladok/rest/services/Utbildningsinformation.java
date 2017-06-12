@@ -111,4 +111,6 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	Utbildningsinstansbox hamtaUtbildningsinstansbox(int utbildningstypID, String utbildningsinstansUID);
 
+	Utbildningstillfallesbox hamtaUtbildningstillfallesbox(int utbildningstypID, String utbildningstillfalleUID);
+
 }

@@ -35,6 +35,7 @@ import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstansbox;
 import se.ladok.schemas.utbildningsinformation.Utbildningsinstansprojektioner;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
+import se.ladok.schemas.utbildningsinformation.Utbildningstillfallesbox;
 import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
 import se.ladok.schemas.utbildningsinformation.Versionsinformation;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
@@ -69,6 +70,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String RESOURCE_ATTRIBUTDEFINITIONER = "attributdefinitioner";
 	private static final String RESOURCE_MEDUNDERLIGGANDE = "utbildningmedunderliggandeutbildningar";
 	private static final String RESOURCE_UTBILDNINGSINSTANSBOX = "utbildningsinstansbox";
+	private static final String RESOURCE_UTBILDNINGSTILLFALLESSBOX = "utbildningstillfallesbox";
 
 	WebTarget utbildningsinformation;
 
@@ -418,6 +420,22 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		return validatedResponse(response, Utbildningsinstansbox.class);
 	}
 	
+	@Override
+	public Utbildningstillfallesbox hamtaUtbildningstillfallesbox(int utbildningstypID, String utbildningstillfalleUID) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_STRUKTUR)
+				.path(RESOURCE_UTBILDNINGSTILLFALLESSBOX)
+				.path(String.valueOf(utbildningstypID))
+				.path(utbildningstillfalleUID);
+
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+	
+		return validatedResponse(response, Utbildningstillfallesbox.class);
+	}
 	
 	@Override
 	public Utbildningsinformationsstruktur skapaStruktur(Utbildningsinformationsstruktur utbildningsinformationsstruktur) {
