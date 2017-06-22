@@ -333,7 +333,7 @@ public class UtbildningsinformationITCase {
 		beslut.setAnteckning("Integrationstest avvecklar kurs");
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(System.currentTimeMillis());
-		beslut.setBeslutsdatum(DatatypeFactory.newInstance().newXMLGregorianCalendar(cal));
+		beslut.setBeslutsdatum(cal.getTime());
 
 		ui.avvecklaUtbildning(utbildningID, beslut);
 		Utbildningsinstans ladokKopia = ui.hamtaUtbildningsinstansViaUID(savedIu.getUid());
@@ -511,9 +511,7 @@ public class UtbildningsinformationITCase {
 		beslut.setBeslutsfattare("Integrationstest");
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(System.currentTimeMillis());
-		XMLGregorianCalendar xmlGreg = DatatypeFactory.newInstance().newXMLGregorianCalendar(cal);
-		xmlGreg.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
-		beslut.setBeslutsdatum(xmlGreg);
+		beslut.setBeslutsdatum(cal.getTime());
 		beslut.setAnteckning("Integrationstest ställer in tillfälle");
 
 		Utbildningstillfalle installt = ui.stallInTillfalle(utbildningstillfalleSkapat.getUid(), beslut);
