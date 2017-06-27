@@ -13,14 +13,23 @@ import se.ladok.schemas.resultat.ResultatLista;
 import se.ladok.schemas.resultat.SkapaResultat;
 import se.ladok.schemas.resultat.SokresultatAktivitetstillfalleResultat;
 import se.ladok.schemas.resultat.SokresultatAktivitetstillfallesmojlighetResultat;
+import se.ladok.schemas.resultat.SokresultatKurstillfalleResultat;
+import se.ladok.schemas.resultat.SokresultatResultatuppfoljning;
 import se.ladok.schemas.resultat.Studielokaliseringar;
 import se.ladok.schemas.resultat.Studieresultat;
 import se.ladok.schemas.resultat.Utbildningsinstans;
+import se.ladok.schemas.Identiteter;
+import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.resultat.Aktivitetstillfalle;
+import se.ladok.schemas.resultat.Aktivitetstillfallesmojlighet;
 import se.ladok.schemas.resultat.Aktivitetstillfallestyp;
+import se.ladok.schemas.resultat.Aktivitetstillfallestyper;
+import se.ladok.schemas.resultat.Anmalan;
 import se.ladok.schemas.resultat.Klarmarkera;
 import se.ladok.schemas.resultat.ObjectFactory;
+import se.ladok.schemas.resultat.Perioder;
 import se.ladok.schemas.resultat.SokresultatStudieresultatResultat;
+
 import se.sunet.ati.ladok.rest.services.Resultatinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -48,6 +57,17 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	private static final String RESOURCE_AKTIVITETSTILLFALLESTYP = "aktivitetstillfallestyp";
 	private static final String RESOURCE_FILTRERA ="filtrera";
 	private static final String RESOURCE_STUDIELOKALISERING = "studielokalisering";
+	private static final String RESOURCE_ORGANISATION = "organisation";
+	private static final String RESOURCE_AKTIVITETSTILLFALLESTYPER = "aktivitetstillfallestyper";
+	private static final String RESOURCE_STALLIN = "stallin";
+	private static final String RESOURCE_AKTIVERA = "aktivera";
+	private static final String RESOURCE_KURSTILLFALLE = "kurstillfalle";
+	private static final String RESOURCE_PERIOD = "period";
+	private static final String RESOURCE_RESULTATUPPFOLJNING = "resultatuppfoljning";
+	private static final String RESOURCE_KURSINSTANS = "kursinstans";
+	private static final String RESOURCE_AVANMAL = "avanmal";
+	private static final String RESOURCE_ANMAL = "anmal";
+	private static final String RESOURCE_STUDENTIDENTITETER = "studentidentiteter";
 	
 	private static final String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 	public static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
@@ -188,7 +208,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		for (String kurstillfalleUID : kurstillfalleUIDs) {
 			client = client.queryParam("kurstillfallen", kurstillfalleUID);
 		}
-		log.info("Query URL : " + client.getUri());
+		log.info("Query URL: " + client.getUri());
 
 		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 		Response response = client
@@ -196,7 +216,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
 				.get();
-
+		
 		return validatedResponse(response, SokresultatStudieresultatResultat.class);
 	}
 	
@@ -205,7 +225,8 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	 * 
 	 */
 	@Override
-	public SokresultatStudieresultatResultat sokAttesteradeStudieResultat(String utbildningsinstansUID,
+	public SokresultatStudieresultatResultat sokAttesteradeStudieResultat(
+			String utbildningsinstansUID,
 			String[] kurstillfalleUIDs,
 			String filtrering,
 			String grupp,
@@ -225,7 +246,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		for (String kurstillfalleUID : kurstillfalleUIDs) {
 			client = client.queryParam("kurstillfallen", kurstillfalleUID);
 		}
-		log.info("Query URL : " + client.getUri());
+		log.info("Query URL: " + client.getUri());
 
 		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 		Response response = client
@@ -252,7 +273,107 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.accept(responseType)
 				.get();
 		
-		return validatedResponse(response,Aktivitetstillfalle.class);
+		return validatedResponse(response, Aktivitetstillfalle.class);
+	}
+	
+	@Override
+	public void taBortAktivitetstillfalle(String aktivitesttillfalleUID) {
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_AKTIVITETSTILLFALLE)
+				.path(aktivitesttillfalleUID);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		
+		Response response = 
+				client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.delete();
+		
+		validatedResponse(response,  String.class);
+	}
+	
+	@Override
+	public Aktivitetstillfalle skapaAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle) {
+		JAXBElement<Aktivitetstillfalle> resultatJAXBElement = new ObjectFactory().createAktivitetstillfalle(aktivitetstillfalle);
+		
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_AKTIVITETSTILLFALLE);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.post(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+		
+		return validatedResponse(response, Aktivitetstillfalle.class);
+	}
+	
+	@Override
+	public Aktivitetstillfalle updateraAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle) {
+		JAXBElement<Aktivitetstillfalle> resultatJAXBElement = new ObjectFactory().createAktivitetstillfalle(aktivitetstillfalle);
+		
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_AKTIVITETSTILLFALLE)
+				.path(aktivitetstillfalle.getUid());
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+		
+		return validatedResponse(response, Aktivitetstillfalle.class);
+	}
+	
+	@Override
+	public Aktivitetstillfalle stallInAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle) {
+		JAXBElement<Aktivitetstillfalle> resultatJAXBElement = new ObjectFactory().createAktivitetstillfalle(aktivitetstillfalle);
+		
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_AKTIVITETSTILLFALLE)
+				.path(aktivitetstillfalle.getUid())
+				.path(RESOURCE_STALLIN);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+				
+		return validatedResponse(response, Aktivitetstillfalle.class);
+
+	}
+
+	@Override
+	public Aktivitetstillfalle aktiveraAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle) {
+		JAXBElement<Aktivitetstillfalle> resultatJAXBElement = new ObjectFactory().createAktivitetstillfalle(aktivitetstillfalle);
+		
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_AKTIVITETSTILLFALLE)
+				.path(aktivitetstillfalle.getUid())
+				.path(RESOURCE_AKTIVERA);
+				
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE)); 
+				
+		return validatedResponse(response, Aktivitetstillfalle.class);
+
 	}
 
 	@Override
@@ -272,16 +393,32 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				
 		return validatedResponse(response, Aktivitetstillfallestyp.class);
 	}
-
+	
 	@Override
+	public Aktivitetstillfallestyper listaAktivitetstillfallestyper() {
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_GRUNDDATA)
+				.path(RESOURCE_AKTIVITETSTILLFALLESTYPER);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get(); 
+				
+		return validatedResponse(response, Aktivitetstillfallestyper.class);
+	}
+	
 	public SokresultatAktivitetstillfalleResultat sokAktivitetstillfallen(
 			String aktivitetstillfallestypID,
 			String benamning, 
-			String kurstillfalleUID, 
-			String kurstillfalleskod, 
-			String aktivitetUID, 
-			String kurskod,
-			String organisation, 
+			String[] kurstillfalleUID, 
+			String[] kurstillfalleskod, 
+			String[] aktivitetUID, 
+			String[] kurskod,
+			String[] organisation, 
 			String datumperiod, 
 			String orderby, 
 			boolean skipCount, 
@@ -289,7 +426,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 			String sprakkod, 
 			int page, 
 			int limit) {
-	
+		
 		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 		WebTarget client = getClient()
 				.path(RESOURCE_AKTIVITETSTILLFALLE)
@@ -310,11 +447,13 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.queryParam("page",page);
 
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
-		return client
+		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
-				.get(SokresultatAktivitetstillfalleResultat.class);
+				.get();
+		
+		return validatedResponse(response, SokresultatAktivitetstillfalleResultat.class);
 	}
 
 	@Override
@@ -372,4 +511,256 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		return validatedResponse(response, Studielokaliseringar.class);
 	}
 
+	@Override
+	public Organisationslista listaOrganisatoriskaDelar() {
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_ORGANISATION);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+		
+		return validatedResponse(response, Organisationslista.class);
+	}
+
+	@Override
+	public SokresultatKurstillfalleResultat sokresultatKurstillfalle(
+			String benamning, 
+			String kurskod,
+			String tillfalleskod, 
+			String[] organisationer, 
+			String datumperiod, 
+			String utbildningstypID,
+			String utbildningsgrundtypID, 
+			boolean skipCount, 
+			boolean onlyCount, 
+			int limit,
+			int page,
+			String sprakkod) {
+	
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_KURSTILLFALLE)
+				.path(RESOURCE_FILTRERA)
+				.queryParam("benamning",benamning)
+				.queryParam("kurskod",kurskod)
+				.queryParam("tillfalleskod",tillfalleskod)
+				.queryParam("organisationer",organisationer)
+				.queryParam("datumperiod",datumperiod)
+				.queryParam("utbildningstypID",utbildningstypID)
+				.queryParam("utbildningsgrundtypID",utbildningsgrundtypID)
+				.queryParam("skipCount",skipCount)
+				.queryParam("onlyCount",onlyCount)
+				.queryParam("limit",limit)
+				.queryParam("page",page)
+				.queryParam("sprakkod",sprakkod);
+		
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+		
+		return validatedResponse(response, SokresultatKurstillfalleResultat.class);
+	}
+
+	@Override
+	public Perioder listaPerioder() {
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_GRUNDDATA)
+				.path(RESOURCE_PERIOD);
+				
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+		
+		return validatedResponse(response, Perioder.class);
+	}
+
+	@Override
+	public SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(
+			String kursinstansUID,
+			String[] kurstillfallen, 
+			String grupp, 
+			String tillstand, 
+			int page, 
+			int limit, 
+			String orderby,
+			String orderBetygsgradAvserUtbildningUID, 
+			String orderExaminationsdatumAvserUtbildningUID) {
+		
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_RESULTATUPPFOLJNING)
+				.path(RESOURCE_KURSINSTANS)
+				.path(kursinstansUID)
+				.queryParam("kurstillfallen",kurstillfallen)
+				.queryParam("grupp",grupp)
+				.queryParam("tillstand",tillstand)
+				.queryParam("page",page)
+				.queryParam("limit",limit)
+				.queryParam("orderby",orderby)
+				.queryParam("orderBetygsgradAvserUtbildningUID",orderBetygsgradAvserUtbildningUID)
+				.queryParam("orderExaminationsdatumAvserUtbildningUID",orderExaminationsdatumAvserUtbildningUID);
+				
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+		
+		return validatedResponse(response, SokresultatResultatuppfoljning.class);
+	}
+	
+	@Override
+	public SokresultatStudieresultatResultat sokStudieresultatForRapporteringsunderlag(
+			String aktivitetstillfalleUID,
+			String[] kurstillfallen,
+			String filtrering,
+			String filtreringAnmalda,
+			String[] student,
+			int page,
+			int limit,
+			String orderby) {
+		
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_STUDIERESULTAT)
+				.path(RESOURCE_RAPPORTERA)
+				.path(RESOURCE_AKTIVITETSTILLFALLE)
+				.path(aktivitetstillfalleUID)
+				.queryParam("kurstillfallen",kurstillfallen)
+				.queryParam("filtrering",filtrering)
+				.queryParam("filtreringAnmalda",filtreringAnmalda)
+				.queryParam("student",student)
+				.queryParam("page",page)
+				.queryParam("limit",limit)
+				.queryParam("orderby",orderby);
+		
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+		
+		return validatedResponse(response, SokresultatStudieresultatResultat.class);
+	}
+
+	@Override
+	public Aktivitetstillfallesmojlighet avanmalStudentFranAktivitetstillfalle(
+			String aktivitetstillfallesmojlighetUID, Anmalan anmalan) {
+		
+		JAXBElement<Anmalan> resultatJAXBElement = new ObjectFactory().createAnmalan(anmalan);
+		
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_AKTIVITETSTILLFALLESMOJLIGHET)
+				.path(aktivitetstillfallesmojlighetUID)
+				.path(RESOURCE_AVANMAL);
+		
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+		
+		return validatedResponse(response, Aktivitetstillfallesmojlighet.class);
+		
+	}
+
+	@Override
+	public Aktivitetstillfallesmojlighet anmalStudentTillAktivitetstillfalle(
+			String aktivitetstillfallesmojlighetUID, Anmalan anmalan) {
+		
+		JAXBElement<Anmalan> resultatJAXBElement = new ObjectFactory().createAnmalan(anmalan);
+		
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_AKTIVITETSTILLFALLESMOJLIGHET)
+				.path(aktivitetstillfallesmojlighetUID)
+				.path(RESOURCE_ANMAL);
+		
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+		
+		return validatedResponse(response, Aktivitetstillfallesmojlighet.class);
+	}
+
+	@Override
+	public void avanmalOchTaBortAktivitetstillfallesmojlighet(String aktivitetstillfallesmojlighetUID) {
+		
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_AKTIVITETSTILLFALLESMOJLIGHET)
+				.path(aktivitetstillfallesmojlighetUID)
+				.path(RESOURCE_ANMAL);
+		
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.delete();
+		
+		validatedResponse(response, String.class);
+	}
+
+	@Override
+	public Aktivitetstillfallesmojlighet skapaAktivitetstillfallesmojlighet(
+			String studieresultatUID, Aktivitetstillfalle aktivitetstillfalle) {
+		
+		JAXBElement<Aktivitetstillfalle> resultatJAXBElement = new ObjectFactory().createAktivitetstillfalle(aktivitetstillfalle);
+		
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_AKTIVITETSTILLFALLESMOJLIGHET)
+				.path(RESOURCE_STUDIERESULTAT)
+				.path(studieresultatUID);
+		
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+		
+		return validatedResponse(response, Aktivitetstillfallesmojlighet.class);
+	}
+
+	@Override
+	public Identiteter sokStudentidentiteter(String aktivitetstillfalleUID) {
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_AKTIVITETSTILLFALLESMOJLIGHET)
+				.path(RESOURCE_FILTRERA)
+				.path(RESOURCE_STUDENTIDENTITETER)
+				.queryParam("aktivitetstillfalleUID", aktivitetstillfalleUID);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+		
+		return validatedResponse(response, Identiteter.class);
+	}
+	
+	
 }

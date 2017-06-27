@@ -1,32 +1,54 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
+import se.ladok.schemas.Benamningar;
+import se.ladok.schemas.Datumperiod;
+import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.Student;
 import se.ladok.schemas.resultat.Aktivitetstillfalle;
 import se.ladok.schemas.resultat.Aktivitetstillfallestyp;
-import se.ladok.schemas.Student;
+import se.ladok.schemas.resultat.Aktivitetstillfallestyper;
 import se.ladok.schemas.resultat.Benamning;
 import se.ladok.schemas.resultat.Resultat;
 import se.ladok.schemas.resultat.ResultatLista;
 import se.ladok.schemas.resultat.ResultatPaUtbildning;
+import se.ladok.schemas.resultat.ResultatuppfoljningOrderByEnum;
 import se.ladok.schemas.resultat.SkapaResultat;
 import se.ladok.schemas.resultat.SokresultatAktivitetstillfalleResultat;
 import se.ladok.schemas.resultat.SokresultatAktivitetstillfallesmojlighetResultat;
+import se.ladok.schemas.resultat.SokresultatKurstillfalleResultat;
+import se.ladok.schemas.resultat.SokresultatResultatuppfoljning;
+import se.ladok.schemas.resultat.SokresultatStudieresultatResultat;
 import se.ladok.schemas.resultat.Studielokaliseringar;
 import se.ladok.schemas.resultat.Studieresultat;
+import se.ladok.schemas.resultat.StudieresultatOrderByEnum;
+import se.ladok.schemas.resultat.TillstandEnum;
 import se.ladok.schemas.resultat.Utbildningsinstans;
-import se.ladok.schemas.resultat.SokresultatStudieresultatResultat;
 import se.sunet.ati.ladok.rest.services.Resultatinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
 
 public class ResultatinformationUUDemoITCase {
+	private static Log log = LogFactory.getLog(ResultatinformationUUDemoITCase.class);
 	private static Properties properties = null;
 	static final String TEST_DATA_FILE = "restclient.testdata.uudemo.properties"; 
 	private static Resultatinformation ri;
@@ -120,34 +142,59 @@ public class ResultatinformationUUDemoITCase {
 	
 	@Test
 	public void testHamtaAktivitetstillfalle() throws Exception {
-		String aktivitetestillfalleUid = 
-				properties.getProperty("rest.resultat.aktivitetstillfalle.uid");
+		SokresultatAktivitetstillfalleResultat sokresultatAktivitetstillfalleResultat
+		 = ri.sokAktivitetstillfallen(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,	
+				null,	
+				false,
+				false,
+				"sv",
+				1,
+				25
+		);
+		
+		assertFalse(sokresultatAktivitetstillfalleResultat.getResultat().isEmpty());
+		
+		String aktivitetestillfalleUid =
+				sokresultatAktivitetstillfalleResultat.getResultat().get(0).getUid();
 		
 		Aktivitetstillfalle aktivitetstillfalle = 
 				ri.hamtaAktivitetstillfalle(aktivitetestillfalleUid);
 		
-		assertNotNull(aktivitetstillfalle);			
+		assertNotNull(aktivitetstillfalle);	
 	}
 	
-//	@Test
+	@Test
 	public void testHamtaAktivitetstillfallestyp() throws Exception {
-		int aktivitetstillfallestypId =
-				Integer.parseInt(properties.getProperty("rest.resultat.aktivitetstillfallestyp.id"));
+		Aktivitetstillfallestyper aktivitetstillfallestyper = 
+				ri.listaAktivitetstillfallestyper();
 		
+		assertFalse(aktivitetstillfallestyper.getAktivitetstillfallestyp().isEmpty());
+		
+		int aktivitetstillfallestypId = 
+				Integer.parseInt(
+						aktivitetstillfallestyper.getAktivitetstillfallestyp().get(0).getID()
+				);
+				
 		Aktivitetstillfallestyp aktivitetstillfallestyp =
 				ri.hamtaAktivitetstillfallestyp(aktivitetstillfallestypId);
 		
 		assertNotNull(aktivitetstillfallestyp);
 	}
 	
-//	@Test
+	@Test
 	public void testSokAktivitetstillfallesmojligheter() throws Exception {
-		String aktivitetestillfalleUid = 
-				properties.getProperty("rest.resultat.resultat.uid");
-		
+				
 		SokresultatAktivitetstillfallesmojlighetResultat sokAktivitetstillfallesmojligheter =
 			ri.sokAktivitetstillfallesmojligheter(
-					aktivitetestillfalleUid, 
+					null, 
 					true, //anmalda
 					null, 
 					null, 
@@ -159,43 +206,104 @@ public class ResultatinformationUUDemoITCase {
 					20
 			);
 		
-		assertNotNull(sokAktivitetstillfallesmojligheter);
+		assertFalse(sokAktivitetstillfallesmojligheter.getResultat().isEmpty());
 	}
 	
-//	@Test
-	public void testSokAktivitetstillfallen() throws Exception {
-		String aktivitetstillfallestypId =
-				properties.getProperty("rest.resultat.aktivitetstillfallestyp.id");
+	@Test
+	public void testSkapaAktivitetstillfalle() throws Exception {
+		Aktivitetstillfalle aktivitetstillfalle = new Aktivitetstillfalle();
 		
-		SokresultatAktivitetstillfalleResultat sokresultatAktivitetstillfalleResultat
-		 = ri.sokAktivitetstillfallen(
-				aktivitetstillfallestypId,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,	
-				null,	
-				false,
-				false,
-				null,
-				1,
-				25
+		aktivitetstillfalle.setAktivitetstillfallestypID(
+				Integer.parseInt(
+						ri.listaAktivitetstillfallestyper().getAktivitetstillfallestyp().get(0).getID()
+				)
 		);
 		
-		assertNotNull(sokresultatAktivitetstillfalleResultat);
+		aktivitetstillfalle.setAnmalan(false);
+		aktivitetstillfalle.setAnonymt(true);
+		aktivitetstillfalle.setBorttagen(false);
+		aktivitetstillfalle.setInstalld(false);
+		
+		Date now = new Date();
+		
+		Benamningar benamningar = new Benamningar();
+		
+		se.ladok.schemas.Benamning benamning = new se.ladok.schemas.Benamning();
+		benamning.setSprakkod("sv");
+		benamning.setText(properties.getProperty("rest.resultat.aktivitetstillfalle.benaming.sv"));
+		benamningar.getBenamning().add(benamning);
+		
+		benamning = new se.ladok.schemas.Benamning();
+		benamning.setSprakkod("en");
+		benamning.setText(properties.getProperty("rest.resultat.aktivitetstillfalle.benaming.en"));
+		benamningar.getBenamning().add(benamning);
+		
+		aktivitetstillfalle.setBenamningar(benamningar);
+		
+		//aktivitetstillfalle.setAnmalningsperiod(value);
+		
+		Datumperiod datumperiod = new Datumperiod();
+		
+		datumperiod.setStartdatum(new Date(2017,9,1,12,0,0));
+		datumperiod.setSlutdatum(new Date(2017,9,1,17,0,0));
+		
+		aktivitetstillfalle.setDatumperiod(datumperiod);
+		
+		//aktivitetstillfalle.setLarosateID(value);
+		
+		aktivitetstillfalle.setLank("http://www.uu.se");
+		aktivitetstillfalle.setOrt("Uppsala");
+		aktivitetstillfalle.setOvrigInformation("");
+		aktivitetstillfalle.setPlats("Allianshallen");
+		
+		//aktivitetstillfalle.setSenastAndradAv(value);
+		//aktivitetstillfalle.setSenastSparad(value);
+		
+		GregorianCalendar gregorianCalendar = new GregorianCalendar();
+		
+		gregorianCalendar.setTime(new Date(2017,8,1,12,0,0));
+		XMLGregorianCalendar xmlGregorianDateStart = 
+				DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+		
+		gregorianCalendar.setTime(new Date(2017,8,31,12,0,0));
+		XMLGregorianCalendar xmlGregorianDateSlut = 
+				DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar);
+
+		aktivitetstillfalle.setStarttid(xmlGregorianDateStart);
+		
+		aktivitetstillfalle.setSluttid(xmlGregorianDateSlut);
 	}
 	
-//	@Test
+	@Test
+	public void testSokAktivitetstillfallen() throws Exception {		
+		SokresultatAktivitetstillfalleResultat sokresultatAktivitetstillfalleResultat = 
+				ri.sokAktivitetstillfallen(
+					null,
+					properties.getProperty("rest.resultat.aktivitetstillfalle.benaming.sv"),
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,	
+					null,	
+					false,
+					false,
+					"sv",
+					1,
+					25
+				);
+		
+		assertFalse(sokresultatAktivitetstillfalleResultat.getResultat().isEmpty());
+	}
+	
+	@Test
 	public void testSokAllaStudielokaliseringar() throws Exception {
 		Studielokaliseringar studielokaliseringar = 
 				ri.sokAllaStudielokaliseringar();
 		
-		assertNotNull(studielokaliseringar);
+		assertFalse(studielokaliseringar.getStudielokalisering().isEmpty());
 	}
-
 
 	@Test
 	public void testSokResultat() throws Exception {
@@ -264,4 +372,232 @@ public class ResultatinformationUUDemoITCase {
 		}
 	}
 	
+	@Test
+	public void testListaOrganisatoriskaDelar() throws Exception {
+		Organisationslista organisationslista = ri.listaOrganisatoriskaDelar();
+		
+		assertFalse(organisationslista.getOrganisation().isEmpty());
+	}
+	
+	@Test
+	public void testSokresultatKurstillfalle() throws Exception {
+		SokresultatKurstillfalleResultat sokresultatKurstillfalleResultat =
+				ri.sokresultatKurstillfalle(
+						null, 
+						null, 
+						null, 
+						null, 
+						null, 
+						null, 
+						null, 
+						false, 
+						false, 
+						20, 
+						1, 
+						null
+				);
+		
+		assertFalse(sokresultatKurstillfalleResultat.getResultat().isEmpty());
+	}
+	
+	@Test
+	public void testSokStudieresultatForResultatuppfoljningAvKurs() throws Exception {
+		SokresultatResultatuppfoljning sokresultatResultatuppfoljning = 
+				ri.sokStudieresultatForResultatuppfoljningAvKurs(
+					null,
+					null,
+					null,
+					TillstandEnum.AVKLARAD.name(),
+					1,
+					25,
+					ResultatuppfoljningOrderByEnum.EFTERNAMN_ASC.name(),
+					null,
+					null
+				);
+		
+		assertFalse(sokresultatResultatuppfoljning.getResultat().isEmpty());
+	}
+	
+	@Test
+	public void testSokStudieresultatForRapporteringsunderlag() throws Exception {
+		SokresultatStudieresultatResultat sokresultatStudieresultatResultat = 
+			ri.sokStudieresultatForRapporteringsunderlag(
+				null,
+				null,
+				null,
+				"ANMALDA", //FIXME 
+				null,
+				1,
+				20,
+				StudieresultatOrderByEnum.EFTERNAMN_ASC.name()
+			);
+		
+		assertFalse(sokresultatStudieresultatResultat.getResultat().isEmpty());
+	}
+	
+	@Test
+	public void testUpdateraAktivitetstillfalle() throws Exception {
+		SokresultatAktivitetstillfalleResultat sokresultatAktivitetstillfalleResultat = 
+				ri.sokAktivitetstillfallen(
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,	
+					null,	
+					false,
+					false,
+					"sv",
+					1,
+					25
+				);
+		
+		assertFalse(sokresultatAktivitetstillfalleResultat.getResultat().isEmpty());
+		
+		Aktivitetstillfalle aktivitetstillfalle = 
+				sokresultatAktivitetstillfalleResultat.getResultat().get(0);
+
+		assertNotNull(aktivitetstillfalle);
+		
+		aktivitetstillfalle.setAnmalan(false);
+		
+		Aktivitetstillfalle updateratAktivitetstillfalle = 
+				ri.updateraAktivitetstillfalle(aktivitetstillfalle);
+		
+		assertNotNull(updateratAktivitetstillfalle);
+		
+		assertFalse(aktivitetstillfalle.isAnmalan());
+		assertFalse(updateratAktivitetstillfalle.isAnmalan());
+		
+	}
+	
+	@Test
+	public void testTaBortAktivitetstillfalle() throws Exception {
+		SokresultatAktivitetstillfalleResultat sokresultatAktivitetstillfalleResultat = 
+				ri.sokAktivitetstillfallen(
+						null, 
+						properties.getProperty("rest.resultat.aktivitetstillfalle.benaming.sv"), 
+						null, 
+						null, 
+						null, 
+						null, 
+						null, 
+						null, 
+						null, 
+						false, 
+						false, 
+						null, 
+						1, 
+						20
+				);
+		
+		assertFalse(sokresultatAktivitetstillfalleResultat.getResultat().isEmpty());
+		
+		Aktivitetstillfalle aktivitetstillfalle = 
+				sokresultatAktivitetstillfalleResultat.getResultat().get(0);
+		
+		ri.taBortAktivitetstillfalle(aktivitetstillfalle.getUid());
+		
+		aktivitetstillfalle = ri.hamtaAktivitetstillfalle(aktivitetstillfalle.getUid());
+		
+		log.info(aktivitetstillfalle);
+		
+		assertNull(aktivitetstillfalle);
+	}
+	
+	@Test
+	public void testStallInAktivitetstillfalle() throws Exception {
+		SokresultatAktivitetstillfalleResultat sokresultatAktivitetstillfalleResultat = 
+				ri.sokAktivitetstillfallen(
+						null, 
+						properties.getProperty("rest.resultat.aktivitetstillfalle.benaming.sv"), 
+						null, 
+						null, 
+						null, 
+						null, 
+						null, 
+						null, 
+						null, 
+						false, 
+						false, 
+						null, 
+						1, 
+						20
+				);
+		
+		assertFalse(sokresultatAktivitetstillfalleResultat.getResultat().isEmpty());
+		
+		Aktivitetstillfalle aktivitetstillfalle = 
+				sokresultatAktivitetstillfalleResultat.getResultat().get(0);
+		
+		Aktivitetstillfalle installedAktivitetstillfalle = 
+				ri.stallInAktivitetstillfalle(aktivitetstillfalle);
+		
+		
+		assertTrue(installedAktivitetstillfalle.isInstalld());		
+	}
+	
+	@Test
+	public void testAktiveraAktivitetstillfalle() throws Exception {
+		SokresultatAktivitetstillfalleResultat sokresultatAktivitetstillfalleResultat = 
+				ri.sokAktivitetstillfallen(
+						null, 
+						properties.getProperty("rest.resultat.aktivitetstillfalle.benaming.sv"), 
+						null, 
+						null, 
+						null, 
+						null, 
+						null, 
+						null, 
+						null, 
+						false, 
+						false, 
+						null, 
+						1, 
+						20
+				);
+		
+		assertFalse(sokresultatAktivitetstillfalleResultat.getResultat().isEmpty());
+		
+		Aktivitetstillfalle aktivitetstillfalle = 
+				sokresultatAktivitetstillfalleResultat.getResultat().get(0);
+		
+		Aktivitetstillfalle installtAktivitetstillfalle = 
+				ri.stallInAktivitetstillfalle(aktivitetstillfalle);
+		
+		assertTrue(installtAktivitetstillfalle.isInstalld() == true);
+		
+		Aktivitetstillfalle aktiveratAktivitetstillfalle = 
+				ri.aktiveraAktivitetstillfalle(aktivitetstillfalle);
+		
+		assertTrue(aktiveratAktivitetstillfalle.isInstalld() == false);
+	}
+	
+	@Test
+	public void testAvanmalStudentFranAktivitetstillfalle() throws Exception {
+		throw new UnsupportedOperationException("Not implemented.");
+	}
+	
+	@Test
+	public void testAnmalStudentTillAktivitetstillfalle() throws Exception {
+		throw new UnsupportedOperationException("Not implemented.");
+	}
+	
+	@Test
+	public void testAvanmalOchTaBortAktivitetstillfallesmojlighet() throws Exception {
+		throw new UnsupportedOperationException("Not implemented.");
+	}
+	
+	@Test
+	public void testSkapaAktivitetstillfallesmojlighet() throws Exception {
+		throw new UnsupportedOperationException("Not implemented.");
+	}
+	
+	@Test
+	public void testSokStudentidentiteter() throws Exception {
+		throw new UnsupportedOperationException("Not implemented.");
+	}
 }
