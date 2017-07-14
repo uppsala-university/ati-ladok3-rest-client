@@ -10,4 +10,8 @@ public interface Studiedeltagande extends LadokServiceProperties {
 	public Student hamtaStudentViaPersonnummer(String personnummer);
 
 	public SokresultatDeltagare sokDeltagareKurstillfalle(String kurstillfalleUID);
+	
+	public TillfallesdeltagandeLista hamtaKommandeKurstillfallesdeltaganden(String studentUid);
+	
+	public void registreraStudentPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
 }
