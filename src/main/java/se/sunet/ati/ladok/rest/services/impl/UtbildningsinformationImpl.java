@@ -20,6 +20,7 @@ import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.Attributdefinition;
 import se.ladok.schemas.utbildningsinformation.Attributdefinitioner;
 import se.ladok.schemas.utbildningsinformation.Beslut;
+import se.ladok.schemas.utbildningsinformation.Box;
 import se.ladok.schemas.utbildningsinformation.Huvudomraden;
 import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
 import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
@@ -65,7 +66,9 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String RESOURCE_VERSION = "version";
 	private static final String RESOURCE_HUVUDOMRADE = "huvudomrade";
 	private static final String RESOURCE_STRUKTUR = "struktur";
-	
+	private static final String RESOURCE_PUBLICERA = "publicera";
+	private static final String RESOURCE_BOX = "box";
+
 	private static final String RESOURCE_NATIONELL = "nationell";
 	private static final String RESOURCE_ATTRIBUTDEFINITIONER = "attributdefinitioner";
 	private static final String RESOURCE_MEDUNDERLIGGANDE = "utbildningmedunderliggandeutbildningar";
@@ -435,6 +438,24 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.get();
 	
 		return validatedResponse(response, Utbildningstillfallesbox.class);
+	}
+
+	@Override
+	public Box publiceraBox(String strukturUID, String boxUID) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_STRUKTUR)
+				.path(strukturUID)
+				.path(RESOURCE_PUBLICERA)
+				.path(RESOURCE_BOX)
+				.path(boxUID);
+
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity("", ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, Box.class);
 	}
 	
 	@Override
