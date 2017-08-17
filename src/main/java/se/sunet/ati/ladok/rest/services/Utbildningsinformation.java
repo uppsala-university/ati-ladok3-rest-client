@@ -114,4 +114,7 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	Utbildningstillfallesbox hamtaUtbildningstillfallesbox(int utbildningstypID, String utbildningstillfalleUID);
 
 	Box publiceraBox(String strukturUID, String boxUID);
+
+	SokresultatUtbildningsinstans sokUtbildningsinstans(String utbildningstypID, String studieordningID,
+			String utbildningskod, String benamning, String status, int page, int limit, boolean skipCount, String sprakkod);
 }

@@ -28,6 +28,7 @@ import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.ObjectFactory;
 import se.ladok.schemas.utbildningsinformation.Period;
 import se.ladok.schemas.utbildningsinformation.Perioder;
+import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningsinstans;
 import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningstillfalleProjektion;
 import se.ladok.schemas.utbildningsinformation.UtbildningMedUnderliggandeUtbildningar;
 import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
@@ -739,6 +740,44 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.get();
 
 		return validatedResponse(response, Huvudomraden.class);
+	}
+
+	@Override
+	public SokresultatUtbildningsinstans sokUtbildningsinstans( 
+																String utbildningstypID,
+																String studieordningID,	
+															 	String utbildningskod,
+															 	String benamning,
+																String status,
+																int page, 
+																int limit, 
+																boolean skipCount, 																
+																String sprakkod) {	
+	
+		WebTarget client = getClient()
+				.path("utbildningsinstans")
+				.path("filtrera")
+				.queryParam("utbildningstypID", utbildningstypID)
+				.queryParam("benamning", benamning)
+				.queryParam("studieordningID", studieordningID)
+				.queryParam("utbildningskod", utbildningskod)
+				.queryParam("page", page)
+				.queryParam("limit", limit)
+				.queryParam("skipCount", false)
+				.queryParam("sprakkod", sprakkod);	
+		
+		if (status != null && !status.isEmpty()) {
+			client.queryParam("status", status);
+		}
+				
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, SokresultatUtbildningsinstans.class);
 	}
 
 }

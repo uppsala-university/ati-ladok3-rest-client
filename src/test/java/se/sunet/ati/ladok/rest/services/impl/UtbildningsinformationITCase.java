@@ -582,6 +582,18 @@ public class UtbildningsinformationITCase {
 		assertFalse(attributdefinitioner.isEmpty());
 	}
 
+	@Test
+	public void sokUtbildningsinstans() {
+		String utbildningskod = utbildningsinstans.getUtbildningskod();
+		Integer utbildningstypID = utbildningsinstans.getUtbildningstypID();
+		Integer studieordningID = utbildningsinstans.getStudieordningID();
+		String sprak = utbildningsinstans.getSprakkod();
+		
+		SokresultatUtbildningsinstans utbildningsinstans = ui.sokUtbildningsinstans(utbildningstypID.toString(), studieordningID.toString(), utbildningskod, "", "", 1, 20, true, sprak);
+		assertNotNull(utbildningsinstans);
+		assertFalse(utbildningsinstans.getTotaltAntalPoster() == 0);
+	}
+	
 	/**
 	 * Slumpar fram en utbildningskod för de tester som behöver en unik kod. Metoden garanterar ej att det blir unikt,
 	 * men chansen för duplikat är liten med 59652323 kombinationer.
@@ -613,4 +625,6 @@ public class UtbildningsinformationITCase {
 
 		return utToSave;
 	}
+	
+	
 }
