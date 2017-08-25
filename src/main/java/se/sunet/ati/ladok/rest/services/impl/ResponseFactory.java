@@ -5,6 +5,12 @@ import se.sunet.ati.ladok.rest.services.LadokRestClientException;
 
 import javax.ws.rs.core.Response;
 
+/**
+ * Hanterar ett svarsobjekt och översätter det till object av önskad klass ifall anropet gick bra (dvs har svarskod 2xx).
+ * Vid annan svarkod kommer ett LadokRestClientException kastas.
+ *
+ * TODO hantering av redirects (dvs 3xx) ska hanteras här.
+ */
 public class ResponseFactory {
 
 	private ResponseFactory() {

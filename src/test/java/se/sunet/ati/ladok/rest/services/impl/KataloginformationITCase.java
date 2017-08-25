@@ -150,6 +150,12 @@ public class KataloginformationITCase {
 		Kataloginformation ki = new KataloginformationImpl();
 		UndervisningssprakLista undervisningssprak = ki.listaUndervisningssprak();
 		assertFalse(undervisningssprak.getUndervisningssprak().isEmpty());
-		assertFalse(undervisningssprak.getUndervisningssprak().isEmpty());
+	}
+
+	@Test
+	public void listaOmradesbehorigheter()  {
+		Kataloginformation ki = new KataloginformationImpl();
+		Omradesbehorigheter undervisningssprak = ki.listaOmradesbehorigheter();
+		assertFalse(undervisningssprak.getOmradesbehorighet().isEmpty());
 	}
 }

@@ -1,6 +1,9 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
+import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
+
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,6 +17,7 @@ import se.ladok.schemas.kataloginformation.Kommuner;
 import se.ladok.schemas.kataloginformation.KravPaTidigareStudierLista;
 import se.ladok.schemas.kataloginformation.Lander;
 import se.ladok.schemas.kataloginformation.NivaerInomStudieordning;
+import se.ladok.schemas.kataloginformation.Omradesbehorigheter;
 import se.ladok.schemas.kataloginformation.OrganisationLista;
 import se.ladok.schemas.kataloginformation.Perioder;
 import se.ladok.schemas.kataloginformation.Studielokaliseringar;
@@ -189,7 +193,20 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Studieordningar.class);
 	}
-	
+
+	@Override
+	public Omradesbehorigheter listaOmradesbehorigheter() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("omradesbehorighet");
+
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get();
+
+		return validatedResponse(response, Omradesbehorigheter.class);
+	}
+
 	@Override
 	public Studielokaliseringar listaStudielokaliseringar() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;

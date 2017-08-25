@@ -42,4 +42,6 @@ public interface Kataloginformation extends LadokServiceProperties {
 	UndervisningssprakLista listaUndervisningssprak();
 
 	Studieordningar listaStudieordningar();
+
+	Omradesbehorigheter listaOmradesbehorigheter();
 }
