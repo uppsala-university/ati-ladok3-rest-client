@@ -594,6 +594,19 @@ public class UtbildningsinformationITCase {
 		assertFalse(utbildningsinstans.getTotaltAntalPoster() == 0);
 	}
 	
+	@Test
+	public void hamtaMarkningsnycklar() {	
+		List<Markningsnyckel> markningsnycklar = ui.hamtaMarkningsnycklar();
+		assertNotNull(markningsnycklar);		
+		for (Markningsnyckel m : markningsnycklar) {	
+			Markningsvarden narkningsvarden = ui.hamtaMarkningsvarden(m.getID());
+			assertNotNull(narkningsvarden);
+			for (Markningsvarde mv : narkningsvarden.getMarkningsvarde()) {
+				assertNotNull(mv);
+			}		
+		}
+	}
+	
 	/**
 	 * Slumpar fram en utbildningskod för de tester som behöver en unik kod. Metoden garanterar ej att det blir unikt,
 	 * men chansen för duplikat är liten med 59652323 kombinationer.

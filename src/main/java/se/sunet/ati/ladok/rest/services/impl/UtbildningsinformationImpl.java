@@ -23,6 +23,10 @@ import se.ladok.schemas.utbildningsinformation.Beslut;
 import se.ladok.schemas.utbildningsinformation.Box;
 import se.ladok.schemas.utbildningsinformation.Huvudomraden;
 import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
+import se.ladok.schemas.utbildningsinformation.Markningsnyckel;
+import se.ladok.schemas.utbildningsinformation.Markningsnycklar;
+import se.ladok.schemas.utbildningsinformation.Markningsvarde;
+import se.ladok.schemas.utbildningsinformation.Markningsvarden;
 import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
 import se.ladok.schemas.utbildningsinformation.ObjectFactory;
@@ -46,6 +50,7 @@ import se.sunet.ati.ladok.rest.util.ClientUtil;
 import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
 
 public class UtbildningsinformationImpl extends LadokServicePropertiesImpl implements Utbildningsinformation {
+
 
 	private static Log log = LogFactory.getLog(UtbildningsinformationImpl.class);
 	private static final String UTBILDNINGSINFORMATION_URL = "/utbildningsinformation";
@@ -75,6 +80,9 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String RESOURCE_MEDUNDERLIGGANDE = "utbildningmedunderliggandeutbildningar";
 	private static final String RESOURCE_UTBILDNINGSINSTANSBOX = "utbildningsinstansbox";
 	private static final String RESOURCE_UTBILDNINGSTILLFALLESSBOX = "utbildningstillfallesbox";
+	private static final String RESOURCE_MARKNINGSNYCKEL = "markningsnyckel";
+	private static final String RESOURCE_MARKNINGSVARDE = "markningsvarde";
+	private static final String RESOURCE_VARDEN = "varden";
 
 	WebTarget utbildningsinformation;
 
@@ -146,6 +154,47 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
+	public List<Markningsnyckel> hamtaMarkningsnycklar() {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_GRUNDDATA)
+				.path(RESOURCE_MARKNINGSNYCKEL);
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+		return validatedResponse(response, Markningsnycklar.class).getMarkningsnyckel();
+	}
+	
+	@Override
+	public Markningsvarde hamtaMarkningsvarde(String kod) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_GRUNDDATA)
+				.path(RESOURCE_MARKNINGSVARDE).path(kod);
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+		return validatedResponse(response, Markningsvarde.class);
+	}
+	
+	@Override
+	public Markningsvarden hamtaMarkningsvarden(String kod) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_GRUNDDATA)
+				.path(RESOURCE_MARKNINGSNYCKEL).path(kod).path(RESOURCE_VARDEN);
+		System.out.println(client.getUri().getPath());
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+		return validatedResponse(response, Markningsvarden.class);
+	}
+
+	
+	@Override
 	public NivaInomStudieordning hamtaNivaInomStudieordning(String kod) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient()
@@ -161,7 +210,6 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		return validatedResponse(response, NivaInomStudieordning.class);
 	}
-
 	@Override
 	public NivaerInomStudieordning hamtaNivaerInomStudieordning() {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
@@ -763,7 +811,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.queryParam("utbildningskod", utbildningskod)
 				.queryParam("page", page)
 				.queryParam("limit", limit)
-				.queryParam("skipCount", false)
+				.queryParam("skipCount", skipCount)
 				.queryParam("sprakkod", sprakkod);	
 		
 		if (status != null && !status.isEmpty()) {
