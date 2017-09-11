@@ -158,4 +158,11 @@ public class KataloginformationITCase {
 		Omradesbehorigheter undervisningssprak = ki.listaOmradesbehorigheter();
 		assertFalse(undervisningssprak.getOmradesbehorighet().isEmpty());
 	}
+	
+	@Test
+	public void hamtAutentiserad()  {
+		Kataloginformation ki = new KataloginformationImpl();
+		Anvandare a = ki.hamtAutentiserad();
+		assertFalse(a.getAnvandarnamn() == null);
+	}
 }

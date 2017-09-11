@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 import se.ladok.schemas.kataloginformation.Amnesgrupper;
 import se.ladok.schemas.kataloginformation.Antagningsomgangar;
+import se.ladok.schemas.kataloginformation.Anvandare;
 import se.ladok.schemas.kataloginformation.Betygsskalor;
 import se.ladok.schemas.kataloginformation.Finansieringsformer;
 import se.ladok.schemas.kataloginformation.I18NLista;
@@ -35,6 +36,7 @@ import se.sunet.ati.ladok.rest.util.ClientUtil;
 public class KataloginformationImpl extends LadokServicePropertiesImpl implements Kataloginformation {
 
 	private static final String RESOURCE_GRUNDDATA = "grunddata";
+	private static final String RESOURCE_ANVANDARE = "anvandare";
 
 	private static Log log = LogFactory.getLog(KataloginformationImpl.class);
 
@@ -231,4 +233,13 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(UndervisningssprakLista.class);
 	}
+	
+	@Override
+	public Anvandare hamtAutentiserad() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_ANVANDARE).path("autentiserad");
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(Anvandare.class);
+	}
+
 }
