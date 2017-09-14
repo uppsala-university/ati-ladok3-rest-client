@@ -1,5 +1,7 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.ws.rs.client.Entity;
@@ -11,7 +13,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.datatype.DatatypeConstants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -736,34 +737,32 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	public SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(String utbildningstypID,
 																			  String utbildningstillfallestypID,
 																			  String studieordningID,
-																			  String utbildningstillfalleskod,
-																			  String utbildningskod,
+																			  Collection<String> utbildningstillfalleskod,
+																			  Collection<String> utbildningskod,
 																			  String benamning,
-																			  String organisationUID,
-																			  String status,
+																			  Collection<String> organisationUID,
+																			  Collection<String> status,
 																			  String studieperiod,
-																			  int page,
-																			  int limit,
-																			  boolean skipCount,
-																			  boolean onlyCount,
-																			  String sprakkod) {
+																			  int page, int limit, boolean skipCount, boolean onlyCount, String sprakkod) {
+
 		WebTarget client = getClient()
 				.path("utbildningstillfalle")
 				.path("filtrera")
 				.queryParam("utbildningstypID", utbildningstypID)
 				.queryParam("utbildningstillfallestypID", utbildningstillfallestypID)
 				.queryParam("studieordningID", studieordningID)
-				.queryParam("utbildningstillfalleskod", utbildningstillfalleskod)
-				.queryParam("utbildningskod", utbildningskod)
 				.queryParam("benamning", benamning)
-				.queryParam("organisationUID", organisationUID)
-				.queryParam("status", status)
 				.queryParam("studieperiod", studieperiod)
 				.queryParam("page", page)
 				.queryParam("limit", limit)
 				.queryParam("skipCount", skipCount)
 				.queryParam("onlyCount", onlyCount)
 				.queryParam("sprakkod", sprakkod);
+		client = addQueryParam("utbildningstillfalleskod", utbildningstillfalleskod, client);
+		client = addQueryParam("utbildningskod", utbildningskod, client);
+		client = addQueryParam("organisationUID", organisationUID, client);
+		client = addQueryParam("status", status, client);
+
 
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
@@ -775,6 +774,50 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		return validatedResponse(response, SokresultatUtbildningstillfalleProjektion.class);
 	}
 
+	private WebTarget addQueryParam(final String parameterName, Collection<String> values, WebTarget client ) {
+		if (values == null) {
+			return client;
+		}
+
+		WebTarget newClient = client;
+		for (String val: values) {
+			newClient = newClient.queryParam(parameterName, val);
+		}
+		return newClient;
+	}
+
+	@Override
+	public SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(String utbildningstypID,
+																			  String utbildningstillfallestypID,
+																			  String studieordningID,
+																			  String utbildningstillfalleskod,
+																			  String utbildningskod,
+																			  String benamning,
+																			  String organisationUID,
+																			  String status,
+																			  String studieperiod,
+																			  int page,
+																			  int limit,
+																			  boolean skipCount,
+																			  boolean onlyCount,
+																			  String sprakkod) {
+		return sokUtbildningstillfallen(
+				utbildningstypID,
+				utbildningstillfallestypID,
+				studieordningID,
+				asListOrNull(utbildningstillfalleskod),
+				asListOrNull(utbildningskod),
+				benamning,
+				asListOrNull(organisationUID),
+				asListOrNull(status),
+				studieperiod,
+				page, limit, skipCount, onlyCount, sprakkod);
+	}
+
+	private Collection<String> asListOrNull(String ... val) {
+		List<String> list = Arrays.asList(val);
+		return list.contains(null) ? null : list;
+	}
 	@Override
 	public Huvudomraden hamtaHuvudamraden() {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;

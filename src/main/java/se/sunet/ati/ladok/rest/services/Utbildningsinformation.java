@@ -1,5 +1,6 @@
 package se.sunet.ati.ladok.rest.services;
 
+import java.util.Collection;
 import java.util.List;
 
 import se.ladok.schemas.Organisationslista;
@@ -83,6 +84,26 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	Utbildningsinstans utbildningsinstansTillStatusPaborjad(String utbildningsinstansUID);
 
 	Utbildningsinstans utbildningsinstansTillStatusKomplett(String utbildningsinstansUID, Beslut beslut);
+
+	/**
+	 * Overloaded method that reflects that some of the parameters can in fact be multi-value/list of values.
+	 * These are represented by taking in a Collection instead of a single String argument.
+	 */
+	SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(String utbildningstypID,
+																	   String utbildningstillfallestypID,
+																	   String studieordningID,
+																	   Collection<String> utbildningstillfalleskod,
+																	   Collection<String> utbildningskod,
+																	   String benamning,
+																	   Collection<String> organisationUID,
+																	   Collection<String> status,
+																	   String studieperiod,
+																	   int page,
+																	   int limit,
+																	   boolean skipCount,
+																	   boolean onlyCount,
+																	   String sprakkod);
+
 
 	SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(String utbildningstypID,
 																	   String utbildningstillfallestypID,

@@ -1,21 +1,9 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
-
-import javax.ws.rs.BadRequestException;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeConstants;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import se.ladok.schemas.Benamning;
 import se.ladok.schemas.Benamningar;
 import se.ladok.schemas.Organisation;
@@ -24,6 +12,10 @@ import se.ladok.schemas.utbildningsinformation.*;
 import se.sunet.ati.ladok.rest.services.LadokRestClientException;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
+
+import javax.ws.rs.BadRequestException;
+import javax.xml.datatype.DatatypeConfigurationException;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -563,8 +555,20 @@ public class UtbildningsinformationITCase {
 
 	@Test
 	public void testSokUtbildningstillfallen() {
+		List<String> statuses = Arrays.asList("2", "3");
 		SokresultatUtbildningstillfalleProjektion resultat =
-			ui.sokUtbildningstillfallen("", "", "", "", "", "", "", "3", "2016-08-29_2017-01-15", 1, 20, true, true, "");
+				ui.sokUtbildningstillfallen(
+						"",
+						"",
+						"",
+						Collections.EMPTY_LIST,
+						Collections.EMPTY_LIST,
+						"",
+						Collections.EMPTY_LIST,
+						statuses,
+						"2016-08-29_2017-01-15",
+						1, 20, true, true, "");
+
 		assertNotNull(resultat);
 	}
 
