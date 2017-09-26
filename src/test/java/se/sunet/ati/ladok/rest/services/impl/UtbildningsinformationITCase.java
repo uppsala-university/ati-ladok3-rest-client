@@ -197,6 +197,16 @@ public class UtbildningsinformationITCase {
 		log.info("Hämtade perioden " + period.getKod() + " (" + period.getID() + ") - " + period.getBenamningar().getBenamning().get(0).getText());
 		assertEquals(getPeriodKod(), period.getKod());
 	}
+	
+	/*
+	@Test
+	public void testSokStrukturMedutbildningsbasUID() {
+		String utbildningsbasUID = "331a38c9-9f86-11e7-9dab-04ba983f4df5"; 
+		Utbildningsinformationsstruktur struktur = ui.sokStruktur(utbildningsbasUID);
+		log.info("struktur " + struktur);
+		assertNotNull(struktur);
+	}
+	*/
 
 	@Test
 	public void testHamtaUtbildningsinstansViaKod() {

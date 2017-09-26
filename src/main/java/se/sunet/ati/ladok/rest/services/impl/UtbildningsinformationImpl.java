@@ -53,6 +53,7 @@ import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedRes
 public class UtbildningsinformationImpl extends LadokServicePropertiesImpl implements Utbildningsinformation {
 
 
+	
 	private static Log log = LogFactory.getLog(UtbildningsinformationImpl.class);
 	private static final String UTBILDNINGSINFORMATION_URL = "/utbildningsinformation";
 
@@ -84,6 +85,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String RESOURCE_MARKNINGSNYCKEL = "markningsnyckel";
 	private static final String RESOURCE_MARKNINGSVARDE = "markningsvarde";
 	private static final String RESOURCE_VARDEN = "varden";
+	private static final String UTBILDNINGSBAS_UID = "utbildningsbasUID";
 
 	WebTarget utbildningsinformation;
 
@@ -433,6 +435,18 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	public Utbildningsinformationsstruktur hamtaStruktur(String utbildningsinformationsstrukturUID) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_STRUKTUR).path(utbildningsinformationsstrukturUID);
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Utbildningsinformationsstruktur.class);
+	}
+	
+	@Override
+	public Utbildningsinformationsstruktur sokStruktur(String utbildningsbasUID) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_STRUKTUR).queryParam(UTBILDNINGSBAS_UID, utbildningsbasUID);
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)

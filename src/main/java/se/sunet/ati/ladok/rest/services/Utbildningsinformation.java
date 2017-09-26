@@ -144,4 +144,6 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	Markningsvarde hamtaMarkningsvarde(String kod);
 
 	Markningsvarden hamtaMarkningsvarden(String kod);
+
+	Utbildningsinformationsstruktur sokStruktur(String utbildningsbasUID);
 }
