@@ -11,7 +11,7 @@
 
   <groupId>se.sunet.ati.ladok</groupId>
   <artifactId>ati-ladok3-rest-client</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>bundle</packaging>
 
   <name>ATI Ladok 3 REST Client</name>
@@ -22,7 +22,7 @@
     <connection>scm:git:https://github.com/uppsala-university/ati-ladok3-rest-client.git</connection>
     <developerConnection>scm:git:https://github.com/uppsala-university/ati-ladok3-rest-client.git</developerConnection>
     <url>https://github.com/uppsala-university/ati-ladok3-rest-client</url>
-    <tag>HEAD</tag>
+    <tag>ati-ladok3-rest-client-1.0.0</tag>
   </scm>
 
   <dependencies>
