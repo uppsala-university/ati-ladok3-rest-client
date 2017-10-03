@@ -3,16 +3,14 @@ package se.sunet.ati.ladok.rest.services.impl;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.ladok.schemas.Student;
-import se.ladok.schemas.resultat.Aktivitetstillfalle;
-import se.ladok.schemas.resultat.ObjectFactory;
 import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
 import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
+import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQuery;
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -99,10 +97,24 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 		return validatedResponse(response, TillfallesdeltagandeLista.class);
 	}
 	
+	@Deprecated
 	@Override
 	public SokresultatDeltagare sokDeltagareKurstillfalle(String kurstillfalleUID) {
+		SokDeltagareKurstillfalleQuery sokDeltagareKurstillfalleQuery = SokDeltagareKurstillfalleQuery.builder()
+				.kurstillfalleUID(kurstillfalleUID)
+				.build();
+		return sokDeltagareKurstillfalle(sokDeltagareKurstillfalleQuery);
+	}
+	
+	@Override
+	public SokresultatDeltagare sokDeltagareKurstillfalle(SokDeltagareKurstillfalleQuery sokDeltagareKurstillfalleQuery) {
 		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
-		WebTarget client = getClient().path(RESOURCE_DELTAGARE).path(RESOURCE_KURSTILLFALLE).path(kurstillfalleUID);
+		WebTarget client = getClient().path(RESOURCE_DELTAGARE).path(RESOURCE_KURSTILLFALLE).path(sokDeltagareKurstillfalleQuery.getKurstillfalleUID())
+				.queryParam("kanRegistreraPaPeriod" ,sokDeltagareKurstillfalleQuery.getKanRegistreraPaPeriod())
+				.queryParam("page", sokDeltagareKurstillfalleQuery.getPage())
+				.queryParam("limit", sokDeltagareKurstillfalleQuery.getLimit())
+				.queryParam("orderBy", sokDeltagareKurstillfalleQuery.getOrderBy())
+				.queryParam("deltagaretillstand", sokDeltagareKurstillfalleQuery.getDeltagareTillstand());
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		Response response =  client
 			.request()

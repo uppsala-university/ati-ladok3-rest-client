@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import se.ladok.schemas.Student;
 import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
+import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQuery;
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
 import se.sunet.ati.ladok.rest.util.TestUtil;
 
@@ -36,8 +37,13 @@ public class StudiedeltagandeUUDemoITCase {
 	public void testSokDeltagareKurstillfalle() throws Exception {
 		String kurstillfalleUID = properties.getProperty(
 				"rest.studiedeltagande.kurstillfalle.uid");
+
+		SokDeltagareKurstillfalleQuery sokDeltagareKurstillfalleQuery = SokDeltagareKurstillfalleQuery.builder()
+				.kurstillfalleUID(kurstillfalleUID)
+				.build();
+
 		Studiedeltagande sd = new StudiedeltagandeImpl();
-		SokresultatDeltagare deltagare = sd.sokDeltagareKurstillfalle(kurstillfalleUID);
+		SokresultatDeltagare deltagare = sd.sokDeltagareKurstillfalle(sokDeltagareKurstillfalleQuery);
 		System.out.println("Deltagare: " + deltagare.getTotaltAntalPoster());
 		assertNotNull(deltagare);
 	}

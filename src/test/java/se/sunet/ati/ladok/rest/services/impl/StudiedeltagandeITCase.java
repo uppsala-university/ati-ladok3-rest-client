@@ -2,38 +2,21 @@ package se.sunet.ati.ladok.rest.services.impl;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.Properties;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
 import se.ladok.schemas.Student;
 import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
 import se.ladok.schemas.studiedeltagande.Tillfallesdeltagande;
 import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
 import se.ladok.schemas.utbildningsinformation.UtbildningstillfalleProjektion;
+import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQuery;
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
-import se.sunet.ati.ladok.rest.services.impl.StudiedeltagandeImpl;
 import se.sunet.ati.ladok.rest.util.TestUtil;
 
 public class StudiedeltagandeITCase {
@@ -113,8 +96,12 @@ public class StudiedeltagandeITCase {
 	public void testSokDeltagareKurstillfalle() throws Exception {
 		String kurstillfalleUID = getUtbildningstillfalleUID();
 
+		SokDeltagareKurstillfalleQuery sokDeltagareKurstillfalleQuery = SokDeltagareKurstillfalleQuery.builder()
+				.kurstillfalleUID(kurstillfalleUID)
+				.build();
+
 		Studiedeltagande sd = new StudiedeltagandeImpl();
-		SokresultatDeltagare sokresultatDeltagare = sd.sokDeltagareKurstillfalle(kurstillfalleUID);
+		SokresultatDeltagare sokresultatDeltagare = sd.sokDeltagareKurstillfalle(sokDeltagareKurstillfalleQuery);
 		assertNotNull(sokresultatDeltagare);
 	}
 }
