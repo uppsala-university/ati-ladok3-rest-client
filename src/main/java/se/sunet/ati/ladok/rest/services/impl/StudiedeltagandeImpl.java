@@ -1,18 +1,19 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Student;
+import se.ladok.schemas.studiedeltagande.BehorighetsvillkorLista;
 import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
 import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
 import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQuery;
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
 
@@ -28,6 +29,9 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 	private static final String RESOURCE_TILLFALLESDELTAGANDE ="tillfallesdeltagande";
 	private static final String RESOURCE_KOMMANDE = "kommande";
 	private static final String RESOURCE_REGISTRERING = "registrering";
+	private static final String RESOURCE_HINDER = "hinder";
+	private static final String RESOURCE_BEHORIGHETSVILLKOR = "behorighetsvillkor";
+	private static final String RESOURCE_TILLFALLESANTAGNING = "tillfallesantagning";
 	private static final String RESOURCE_KURSTILLFALLESANTAGNING = "kurstillfallesantagning";
 	private static final String RESOURCE_KURSTILLFALLESANTAGNINGUID = "kurstillfallesantagninguid";
 	private static final String RESOURCE_PERIODINDEX = "periodindex";
@@ -145,5 +149,48 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.post(Entity.entity(null, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
 		
 		validatedResponse(response, String.class);
+	}
+
+	@Override
+	public Hinderlista hamtaHinderMotStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex) {
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+
+		WebTarget client = getClient()
+				.path(RESOURCE_REGISTRERING)
+				.path(RESOURCE_HINDER)
+				.path(RESOURCE_KURSTILLFALLESANTAGNING)
+				.path(kurstillfallesantagningUid)
+				.path(RESOURCE_PERIODINDEX)
+				.path(periodIndex);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Hinderlista.class);
+	}
+
+	@Override
+	public BehorighetsvillkorLista hamtaBehorighetsVillkorForTillfallesantagning(String tillfallesantagningUid) {
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+
+		WebTarget client = getClient()
+				.path(RESOURCE_BEHORIGHETSVILLKOR)
+				.path(RESOURCE_TILLFALLESANTAGNING)
+				.path(tillfallesantagningUid);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, BehorighetsvillkorLista.class);
 	}
 }
