@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 import se.ladok.schemas.resultat.Resultat;
 import se.ladok.schemas.resultat.ResultatLista;
+import se.ladok.schemas.resultat.SkapaFlera;
 import se.ladok.schemas.resultat.SkapaResultat;
 import se.ladok.schemas.resultat.SokresultatAktivitetstillfalleResultat;
 import se.ladok.schemas.resultat.SokresultatAktivitetstillfallesmojlighetResultat;
@@ -17,6 +18,7 @@ import se.ladok.schemas.resultat.SokresultatKurstillfalleResultat;
 import se.ladok.schemas.resultat.SokresultatResultatuppfoljning;
 import se.ladok.schemas.resultat.Studielokaliseringar;
 import se.ladok.schemas.resultat.Studieresultat;
+import se.ladok.schemas.resultat.UppdateraFlera;
 import se.ladok.schemas.resultat.Utbildningsinstans;
 import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
@@ -68,10 +70,13 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	private static final String RESOURCE_AVANMAL = "avanmal";
 	private static final String RESOURCE_ANMAL = "anmal";
 	private static final String RESOURCE_STUDENTIDENTITETER = "studentidentiteter";
+	private static final String RESOURCE_SKAPA="skapa";
+	private static final String RESOURCE_UPPDATERA = "uppdatera";
 	
 	private static final String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 	public static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
 	public static final String CONTENT_TYPE_HEADER_VALUE = "application/vnd.ladok+xml";
+
 
 	WebTarget resultat;
 
@@ -134,7 +139,8 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 
 		return validatedResponse(response, Utbildningsinstans.class);
 	}
-
+	
+	@Deprecated
 	@Override																										
 	public Resultat skapaResultatForStudentPakurs(SkapaResultat resultat, String studieresultatUID, String utbildningUID) {
 		JAXBElement<SkapaResultat> resultatJAXBElement = new ObjectFactory().createSkapaResultat(resultat);
@@ -151,6 +157,22 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 
 	}
 
+	@Override
+	public ResultatLista skapaResultatForStudentPaUtbildningsinstans(SkapaFlera resultat) {
+		JAXBElement<SkapaFlera> resultatJAXBElement = new ObjectFactory().createSkapaFlera(resultat);
+		WebTarget client = getClient().path(RESOURCE_STUDIERESULTAT).path(RESOURCE_SKAPA);
+
+		log.info("Query URL: " + client.getUri());
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.post(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, ResultatLista.class);
+	}
+
+	@Deprecated
 	@Override																										
 	public Resultat updateraResultatForStudentPakurs(Resultat resultat, String resultatUID) {
 		JAXBElement<Resultat> resultatJAXBElement = new ObjectFactory().createResultat(resultat);
@@ -167,6 +189,21 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 
 	}
 
+	@Override
+	public ResultatLista uppdateraResultatForStudentPaUtbildningsinstans(UppdateraFlera resultat) {
+		JAXBElement<UppdateraFlera> resultatJAXBElement = new ObjectFactory().createUppdateraFlera(resultat);
+		WebTarget client = getClient().path(RESOURCE_STUDIERESULTAT).path(RESOURCE_UPPDATERA);
+
+		log.info("Query URL: " + client.getUri());
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, ResultatLista.class);
+	}
+	
 	@Override
 	public Resultat klarmarkeraResultatForStudentPakurs(Klarmarkera klarmarkera, String resultatUID) {
 		JAXBElement<Klarmarkera> resultatJAXBElement = new ObjectFactory().createKlarmarkera(klarmarkera);

@@ -11,6 +11,7 @@ import se.ladok.schemas.resultat.Klarmarkera;
 import se.ladok.schemas.resultat.Perioder;
 import se.ladok.schemas.resultat.Resultat;
 import se.ladok.schemas.resultat.ResultatLista;
+import se.ladok.schemas.resultat.SkapaFlera;
 import se.ladok.schemas.resultat.SkapaResultat;
 import se.ladok.schemas.resultat.SokresultatAktivitetstillfalleResultat;
 import se.ladok.schemas.resultat.SokresultatAktivitetstillfallesmojlighetResultat;
@@ -18,6 +19,7 @@ import se.ladok.schemas.resultat.SokresultatKurstillfalleResultat;
 import se.ladok.schemas.resultat.SokresultatResultatuppfoljning;
 import se.ladok.schemas.resultat.Studielokaliseringar;
 import se.ladok.schemas.resultat.Studieresultat;
+import se.ladok.schemas.resultat.UppdateraFlera;
 import se.ladok.schemas.resultat.Utbildningsinstans;
 import se.ladok.schemas.resultat.SokresultatStudieresultatResultat;
 
@@ -33,6 +35,10 @@ public interface Resultatinformation {
 	public Resultat skapaResultatForStudentPakurs(SkapaResultat resultat, String studieresultatUID, String utbildningUID);
 
 	public Resultat updateraResultatForStudentPakurs(Resultat resultat, String resultatUID);
+	
+	public ResultatLista skapaResultatForStudentPaUtbildningsinstans(SkapaFlera resultat);
+	
+	public ResultatLista uppdateraResultatForStudentPaUtbildningsinstans(UppdateraFlera resultat);
 	
 	public Resultat klarmarkeraResultatForStudentPakurs(Klarmarkera klarmarkera, String resultatUID);
 	
