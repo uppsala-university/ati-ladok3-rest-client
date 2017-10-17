@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Student;
+import se.ladok.schemas.studiedeltagande.Atgard;
 import se.ladok.schemas.studiedeltagande.BehorighetsvillkorLista;
 import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
 import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
@@ -30,6 +31,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 	private static final String RESOURCE_KOMMANDE = "kommande";
 	private static final String RESOURCE_REGISTRERING = "registrering";
 	private static final String RESOURCE_HINDER = "hinder";
+	private static final String RESOURCE_ATGARD = "atgard";
 	private static final String RESOURCE_BEHORIGHETSVILLKOR = "behorighetsvillkor";
 	private static final String RESOURCE_TILLFALLESANTAGNING = "tillfallesantagning";
 	private static final String RESOURCE_KURSTILLFALLESANTAGNING = "kurstillfallesantagning";
@@ -172,6 +174,29 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.get();
 
 		return validatedResponse(response, Hinderlista.class);
+	}
+
+	@Override
+	public Atgard hamtaAtgardStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex) {
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+
+		WebTarget client = getClient()
+				.path(RESOURCE_REGISTRERING)
+				.path(RESOURCE_ATGARD)
+				.path(RESOURCE_KURSTILLFALLESANTAGNING)
+				.path(kurstillfallesantagningUid)
+				.path(RESOURCE_PERIODINDEX)
+				.path(periodIndex);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Atgard.class);
 	}
 
 	@Override

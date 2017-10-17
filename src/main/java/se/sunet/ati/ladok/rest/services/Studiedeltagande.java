@@ -2,6 +2,7 @@ package se.sunet.ati.ladok.rest.services;
 
 import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Student;
+import se.ladok.schemas.studiedeltagande.Atgard;
 import se.ladok.schemas.studiedeltagande.BehorighetsvillkorLista;
 import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
 import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
@@ -22,6 +23,8 @@ public interface Studiedeltagande extends LadokServiceProperties {
 	public void registreraStudentPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
 
 	public Hinderlista hamtaHinderMotStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
+
+	public Atgard hamtaAtgardStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
 
 	public BehorighetsvillkorLista hamtaBehorighetsVillkorForTillfallesantagning(String kurstillfallesantagningUid);
 }
