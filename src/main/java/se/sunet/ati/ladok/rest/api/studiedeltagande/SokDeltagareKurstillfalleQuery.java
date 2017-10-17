@@ -1,10 +1,8 @@
-package se.sunet.ati.ladok.rest.api.studiedeltagande;
+ package se.sunet.ati.ladok.rest.api.studiedeltagande;
 
-import se.sunet.ati.ladok.rest.api.exceptions.SaknarObligatoriskParameterException;
+import java.util.Objects;
 
 public class SokDeltagareKurstillfalleQuery {
-
-	private static final String TJANST_NAMN = "studiedeltagande.sokDeltagareKurstillfalle";
 
 	private final String kurstillfalleUID;
 	private final Integer kanRegistreraPaPeriod;
@@ -13,7 +11,7 @@ public class SokDeltagareKurstillfalleQuery {
 	private final String orderBy;
 	private final String deltagareTillstand;
 
-	private SokDeltagareKurstillfalleQuery(SokDeltagareKurstillfalleQueryBuilder builder){
+	private SokDeltagareKurstillfalleQuery(SokDeltagareKurstillfalleQueryBuilderImpl builder){
 		kurstillfalleUID = builder.nestedKurstillfalleUID;
 		kanRegistreraPaPeriod = builder.nestedKanRegistreraPaPeriod;
 		page = builder.nestedPage;
@@ -46,11 +44,11 @@ public class SokDeltagareKurstillfalleQuery {
 		return kurstillfalleUID;
 	}
 
-	public static SokDeltagareKurstillfalleQueryBuilder builder(){
-		return new SokDeltagareKurstillfalleQueryBuilder();
+	public static KurstillfalleUID builder(){
+		return new SokDeltagareKurstillfalleQueryBuilderImpl();
 	}
 
-	public static class SokDeltagareKurstillfalleQueryBuilder {
+	public static class SokDeltagareKurstillfalleQueryBuilderImpl implements KurstillfalleUID, SokDeltagareKurstillfalleQueryBuilder {
 		private String nestedKurstillfalleUID;
 		private Integer nestedKanRegistreraPaPeriod;
 		private Integer nestedPage;
@@ -58,9 +56,10 @@ public class SokDeltagareKurstillfalleQuery {
 		private String nestedOrderBy;
 		private String deltagareTillstand;
 
-		private SokDeltagareKurstillfalleQueryBuilder() { }
+		private SokDeltagareKurstillfalleQueryBuilderImpl() { }
 
 		public SokDeltagareKurstillfalleQueryBuilder kurstillfalleUID(String nestedKurstillfalleUID) {
+			Objects.requireNonNull(nestedKurstillfalleUID);
 			this.nestedKurstillfalleUID = nestedKurstillfalleUID;
 			return this;
 		}
@@ -90,21 +89,23 @@ public class SokDeltagareKurstillfalleQuery {
 			return this;
 		}
 
-		public SokDeltagareKurstillfalleQuery build() throws SaknarObligatoriskParameterException {
-			verifyParameters();
+		public SokDeltagareKurstillfalleQuery build() {
 			return new SokDeltagareKurstillfalleQuery(this);
 		}
 
-		private void verifyParameters() throws SaknarObligatoriskParameterException {
-			if(isNull(nestedKurstillfalleUID)){
-				throw new SaknarObligatoriskParameterException(TJANST_NAMN, "kurstillfalleUID");
-			}
-		}
+	}
 
-		private static boolean isNull(Object o) {
-			return null == o;
-		}
+	public interface KurstillfalleUID {
+		SokDeltagareKurstillfalleQueryBuilder kurstillfalleUID(String kurstillfalleUID);
+	}
 
+	public interface SokDeltagareKurstillfalleQueryBuilder {
+		SokDeltagareKurstillfalleQueryBuilder kanRegistreraPaPeriod(Integer nestedKanRegistreraPaPeriod);
+		SokDeltagareKurstillfalleQueryBuilder page(Integer page);
+		SokDeltagareKurstillfalleQueryBuilder limit(Integer limit);
+		SokDeltagareKurstillfalleQueryBuilder orderBy(String orderBy);
+		SokDeltagareKurstillfalleQueryBuilder tillstand(String deltagare);
+		SokDeltagareKurstillfalleQuery build();
 	}
 
 }
