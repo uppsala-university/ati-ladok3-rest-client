@@ -1,8 +1,12 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.utbildningsinformation.*;
+import se.sunet.ati.ladok.rest.api.utbildningsinformation.SokUtbildningsinstansQuery;
+import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
+import se.sunet.ati.ladok.rest.util.ClientUtil;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -13,47 +17,15 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import se.ladok.schemas.Organisationslista;
-import se.ladok.schemas.utbildningsinformation.Attributdefinition;
-import se.ladok.schemas.utbildningsinformation.Attributdefinitioner;
-import se.ladok.schemas.utbildningsinformation.Beslut;
-import se.ladok.schemas.utbildningsinformation.Box;
-import se.ladok.schemas.utbildningsinformation.Huvudomraden;
-import se.ladok.schemas.utbildningsinformation.LokalUtbildningsmall;
-import se.ladok.schemas.utbildningsinformation.Markningsnyckel;
-import se.ladok.schemas.utbildningsinformation.Markningsnycklar;
-import se.ladok.schemas.utbildningsinformation.Markningsvarde;
-import se.ladok.schemas.utbildningsinformation.Markningsvarden;
-import se.ladok.schemas.utbildningsinformation.NivaInomStudieordning;
-import se.ladok.schemas.utbildningsinformation.NivaerInomStudieordning;
-import se.ladok.schemas.utbildningsinformation.ObjectFactory;
-import se.ladok.schemas.utbildningsinformation.Period;
-import se.ladok.schemas.utbildningsinformation.Perioder;
-import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningsinstans;
-import se.ladok.schemas.utbildningsinformation.SokresultatUtbildningstillfalleProjektion;
-import se.ladok.schemas.utbildningsinformation.UtbildningMedUnderliggandeUtbildningar;
-import se.ladok.schemas.utbildningsinformation.UtbildningProjektion;
-import se.ladok.schemas.utbildningsinformation.Utbildningsinformationsstruktur;
-import se.ladok.schemas.utbildningsinformation.Utbildningsinstans;
-import se.ladok.schemas.utbildningsinformation.Utbildningsinstansbox;
-import se.ladok.schemas.utbildningsinformation.Utbildningsinstansprojektioner;
-import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
-import se.ladok.schemas.utbildningsinformation.Utbildningstillfallesbox;
-import se.ladok.schemas.utbildningsinformation.Utbildningstyp;
-import se.ladok.schemas.utbildningsinformation.Versionsinformation;
-import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
-import se.sunet.ati.ladok.rest.util.ClientUtil;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
 
 public class UtbildningsinformationImpl extends LadokServicePropertiesImpl implements Utbildningsinformation {
 
 
-	
 	private static Log log = LogFactory.getLog(UtbildningsinformationImpl.class);
 	private static final String UTBILDNINGSINFORMATION_URL = "/utbildningsinformation";
 
@@ -67,6 +39,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String RESOURCE_KOD = "kod";
 	private static final String RESOURCE_LOKAL = "lokal";
 	private static final String RESOURCE_NIVAINOMSTUDIEORDNING = "nivaInomStudieordning";
+	private static final String RESOURCE_STUDIEORDNING = "studieordning";
 	private static final String RESOURCE_ORGANISATION = "organisation";
 	private static final String RESOURCE_PERIOD = "period";
 	private static final String RESOURCE_UNDERLIGGANDE = "underliggande";
@@ -228,7 +201,23 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		return validatedResponse(response, NivaerInomStudieordning.class);
 	}
-	
+
+	@Override
+	public Studieordningar hamtaStudieordningar() {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_GRUNDDATA)
+				.path(RESOURCE_STUDIEORDNING);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Studieordningar.class);
+	}
+
 
 	@Override
 	public List<Period> hamtaPerioder() {
@@ -788,13 +777,13 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		return validatedResponse(response, SokresultatUtbildningstillfalleProjektion.class);
 	}
 
-	private WebTarget addQueryParam(final String parameterName, Collection<String> values, WebTarget client ) {
+	private <T> WebTarget addQueryParam(final String parameterName, Collection<T> values, WebTarget client ) {
 		if (values == null) {
 			return client;
 		}
 
 		WebTarget newClient = client;
-		for (String val: values) {
+		for (T val: values) {
 			newClient = newClient.queryParam(parameterName, val);
 		}
 		return newClient;
@@ -848,33 +837,27 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
-	public SokresultatUtbildningsinstans sokUtbildningsinstans( 
-																String utbildningstypID,
-																String studieordningID,	
-															 	String utbildningskod,
-															 	String benamning,
-																String status,
-																int page, 
-																int limit, 
-																boolean skipCount, 																
-																String sprakkod) {	
-	
+	public SokresultatUtbildningsinstans sokUtbildningsinstans(SokUtbildningsinstansQuery sokUtbildningsinstansQuery) {
 		WebTarget client = getClient()
 				.path("utbildningsinstans")
 				.path("filtrera")
-				.queryParam("utbildningstypID", utbildningstypID)
-				.queryParam("benamning", benamning)
-				.queryParam("studieordningID", studieordningID)
-				.queryParam("utbildningskod", utbildningskod)
-				.queryParam("page", page)
-				.queryParam("limit", limit)
-				.queryParam("skipCount", skipCount)
-				.queryParam("sprakkod", sprakkod);	
-		
-		if (status != null && !status.isEmpty()) {
-			client.queryParam("status", status);
-		}
-				
+				.queryParam("utbildningUID", sokUtbildningsinstansQuery.getUtbildningUID())
+				.queryParam("utbildningsinstansUID", sokUtbildningsinstansQuery.getUtbildningsinstansUID())
+				.queryParam("studieordningID", sokUtbildningsinstansQuery.getStudieordningID())
+				.queryParam("overliggandeUtbildningUID", sokUtbildningsinstansQuery.getOverliggandeUtbildningUID())
+				.queryParam("aktuellVersion", sokUtbildningsinstansQuery.isAktuellVersion())
+				.queryParam("skipCount", sokUtbildningsinstansQuery.isSkipCount())
+				.queryParam("onlyCount", sokUtbildningsinstansQuery.isOnlyCount())
+				.queryParam("sprakkod", sokUtbildningsinstansQuery.getSprakkod())
+				.queryParam("page", sokUtbildningsinstansQuery.getPage())
+				.queryParam("limit", sokUtbildningsinstansQuery.getLimit());
+
+		client = addQueryParam("utbildningstypID", sokUtbildningsinstansQuery.getUtbildningstypID(), client);
+		client = addQueryParam("utbildningskod", sokUtbildningsinstansQuery.getUtbildningskod(), client);
+		client = addQueryParam("status", sokUtbildningsinstansQuery.getStatus(), client);
+		client = addQueryParam("organisationUID", sokUtbildningsinstansQuery.getOrganisationUID(), client);
+		client = addQueryParam("benamning", sokUtbildningsinstansQuery.getBenamning(), client);
+
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
@@ -883,6 +866,32 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.get();
 
 		return validatedResponse(response, SokresultatUtbildningsinstans.class);
+	}
+
+	@Deprecated
+	@Override
+	public SokresultatUtbildningsinstans sokUtbildningsinstans( 
+																String utbildningstypID,
+																String studieordningID,
+															 	String utbildningskod,
+															 	String benamning,
+																String status,
+																int page,
+																int limit,
+																boolean skipCount,
+																String sprakkod) {
+		SokUtbildningsinstansQuery sokUtbildningsinstansQuery = SokUtbildningsinstansQuery.builder()
+				.addUtbildningstypID(utbildningstypID)
+				.studieordningID(studieordningID)
+				.addUtbildningskod(utbildningskod)
+				.addBenamning(benamning)
+				.addStatus(status)
+				.page(page)
+				.limit(limit)
+				.skipCount(skipCount)
+				.sprakkod(sprakkod)
+				.build();
+		return sokUtbildningsinstans(sokUtbildningsinstansQuery);
 	}
 
 }

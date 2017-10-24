@@ -5,6 +5,7 @@ import java.util.List;
 
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.*;
+import se.sunet.ati.ladok.rest.api.utbildningsinformation.SokUtbildningsinstansQuery;
 
 public interface Utbildningsinformation extends LadokServiceProperties {
 
@@ -28,6 +29,8 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	 * @return Nivåer inom studieordning
 	 */
 	NivaerInomStudieordning hamtaNivaerInomStudieordning();
+
+	Studieordningar hamtaStudieordningar();
 
 	List<Period> hamtaPerioder();
 
@@ -136,6 +139,9 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	Box publiceraBox(String strukturUID, String boxUID);
 
+	SokresultatUtbildningsinstans sokUtbildningsinstans(SokUtbildningsinstansQuery sokUtbildningsinstansQuery);
+
+	@Deprecated
 	SokresultatUtbildningsinstans sokUtbildningsinstans(String utbildningstypID, String studieordningID,
 			String utbildningskod, String benamning, String status, int page, int limit, boolean skipCount, String sprakkod);
 
