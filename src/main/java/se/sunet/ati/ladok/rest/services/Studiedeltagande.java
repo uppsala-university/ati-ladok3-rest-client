@@ -22,7 +22,9 @@ public interface Studiedeltagande extends LadokServiceProperties {
 	
 	public void registreraStudentPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
 
-	public Hinderlista hamtaHinderMotStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
+    void taBortStudentregistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
+
+    public Hinderlista hamtaHinderMotStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
 
 	public Atgard hamtaAtgardStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
 

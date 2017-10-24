@@ -37,7 +37,8 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 	private static final String RESOURCE_KURSTILLFALLESANTAGNING = "kurstillfallesantagning";
 	private static final String RESOURCE_KURSTILLFALLESANTAGNINGUID = "kurstillfallesantagninguid";
 	private static final String RESOURCE_PERIODINDEX = "periodindex";
-	
+	private static final String RESOURCE_TA_BORT = "ta_bort";
+
 	// OBS Nedanstående resurs är felstavad hos Ladok3
 	private static final String RESOURCE_PABORJAD_UTBILDNING = "paborjadutbilding";
 	private static final String RESOURCE_STUDENT = "student";
@@ -152,6 +153,30 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 		
 		validatedResponse(response, String.class);
 	}
+
+	@Override
+	public void taBortStudentregistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex) {
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+
+		WebTarget client = getClient()
+				.path(RESOURCE_REGISTRERING)
+				.path(RESOURCE_TA_BORT)
+				.path(RESOURCE_KURSTILLFALLESANTAGNING)
+				.path(kurstillfallesantagningUid)
+				.path(RESOURCE_PERIODINDEX)
+				.path(periodIndex);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.delete();
+
+		validatedResponse(response, String.class);
+	}
+
 
 	@Override
 	public Hinderlista hamtaHinderMotStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex) {
