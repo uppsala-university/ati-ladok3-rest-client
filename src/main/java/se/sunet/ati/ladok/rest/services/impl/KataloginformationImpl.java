@@ -30,6 +30,7 @@ import se.ladok.schemas.kataloginformation.Undervisningsformer;
 import se.ladok.schemas.kataloginformation.UndervisningssprakLista;
 import se.ladok.schemas.kataloginformation.Undervisningstider;
 import se.ladok.schemas.kataloginformation.Utbildningsomraden;
+import se.ladok.schemas.kataloginformation.Enheter;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -37,6 +38,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 
 	private static final String RESOURCE_GRUNDDATA = "grunddata";
 	private static final String RESOURCE_ANVANDARE = "anvandare";
+	private static final String RESOURCE_ENHET = "enhet";
 
 	private static Log log = LogFactory.getLog(KataloginformationImpl.class);
 
@@ -194,6 +196,14 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("studieordning");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Studieordningar.class);
+	}
+
+	@Override
+	public Enheter listaEnheter() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path(RESOURCE_ENHET);
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(Enheter.class);
 	}
 
 	@Override

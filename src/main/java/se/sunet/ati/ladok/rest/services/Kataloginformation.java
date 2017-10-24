@@ -43,6 +43,8 @@ public interface Kataloginformation extends LadokServiceProperties {
 
 	Studieordningar listaStudieordningar();
 
+	Enheter listaEnheter();
+
 	Omradesbehorigheter listaOmradesbehorigheter();
 
 	Anvandare hamtAutentiserad();
