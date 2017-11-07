@@ -6,6 +6,7 @@ import java.util.List;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.*;
 import se.sunet.ati.ladok.rest.api.utbildningsinformation.SokUtbildningsinstansQuery;
+import se.sunet.ati.ladok.rest.api.utbildningsinformation.SokUtbildningstillfallenQuery;
 
 public interface Utbildningsinformation extends LadokServiceProperties {
 
@@ -88,10 +89,14 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	Utbildningsinstans utbildningsinstansTillStatusKomplett(String utbildningsinstansUID, Beslut beslut);
 
+	SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(SokUtbildningstillfallenQuery query);
+
 	/**
 	 * Overloaded method that reflects that some of the parameters can in fact be multi-value/list of values.
 	 * These are represented by taking in a Collection instead of a single String argument.
+	 * @deprecated use SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(SokUtbildningstillfallenQuery query)
 	 */
+	@Deprecated
 	SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(String utbildningstypID,
 																	   String utbildningstillfallestypID,
 																	   String studieordningID,
@@ -108,6 +113,10 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 																	   String sprakkod);
 
 
+	/**
+	 * @deprecated use SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(SokUtbildningstillfallenQuery query)
+	 */
+	@Deprecated
 	SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(String utbildningstypID,
 																	   String utbildningstillfallestypID,
 																	   String studieordningID,

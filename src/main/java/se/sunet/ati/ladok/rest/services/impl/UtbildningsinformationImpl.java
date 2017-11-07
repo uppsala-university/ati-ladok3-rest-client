@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.*;
 import se.sunet.ati.ladok.rest.api.utbildningsinformation.SokUtbildningsinstansQuery;
+import se.sunet.ati.ladok.rest.api.utbildningsinformation.SokUtbildningstillfallenQuery;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -750,22 +751,22 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		WebTarget client = getClient()
 				.path("utbildningstillfalle")
-				.path("filtrera")
-				.queryParam("utbildningstypID", utbildningstypID)
-				.queryParam("utbildningstillfallestypID", utbildningstillfallestypID)
-				.queryParam("studieordningID", studieordningID)
-				.queryParam("benamning", benamning)
-				.queryParam("studieperiod", studieperiod)
-				.queryParam("page", page)
-				.queryParam("limit", limit)
-				.queryParam("skipCount", skipCount)
-				.queryParam("onlyCount", onlyCount)
-				.queryParam("sprakkod", sprakkod);
-		client = addQueryParam("utbildningstillfalleskod", utbildningstillfalleskod, client);
-		client = addQueryParam("utbildningskod", utbildningskod, client);
-		client = addQueryParam("organisationUID", organisationUID, client);
-		client = addQueryParam("status", status, client);
+				.path("filtrera");
 
+		client = addQueryParam("utbildningstypID", utbildningstypID, client);
+		client = addQueryParam("utbildningstillfallestypID", utbildningstillfallestypID, client);
+		client = addQueryParam("studieordningID", studieordningID, client);
+		client = addQueryParam("benamning", benamning, client);
+		client = addQueryParam("studieperiod", studieperiod, client);
+		client = addQueryParam("page", page, client);
+		client = addQueryParam("limit", limit, client);
+		client = addQueryParam("skipCount", skipCount, client);
+		client = addQueryParam("onlyCount", onlyCount, client);
+		client = addQueryParam("sprakkod", sprakkod, client);
+		client = addQueryParams("utbildningstillfalleskod", utbildningstillfalleskod, client);
+		client = addQueryParams("utbildningskod", utbildningskod, client);
+		client = addQueryParams("organisationUID", organisationUID, client);
+		client = addQueryParams("status", status, client);
 
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
@@ -777,16 +778,56 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		return validatedResponse(response, SokresultatUtbildningstillfalleProjektion.class);
 	}
 
-	private <T> WebTarget addQueryParam(final String parameterName, Collection<T> values, WebTarget client ) {
-		if (values == null) {
+	private <T> WebTarget addQueryParams(final String parameterName, Collection<T> paramValues, WebTarget client ) {
+		if (paramValues == null) {
 			return client;
 		}
 
 		WebTarget newClient = client;
-		for (T val: values) {
+		for (T val: paramValues) {
 			newClient = newClient.queryParam(parameterName, val);
 		}
 		return newClient;
+	}
+
+	private <T> WebTarget addQueryParam(final String parameterName, T paramValue, WebTarget client ) {
+		if (paramValue == null) {
+			return client;
+		}
+
+		return client.queryParam(parameterName, paramValue);
+	}
+
+	@Override
+	public SokresultatUtbildningstillfalleProjektion sokUtbildningstillfallen(SokUtbildningstillfallenQuery query) {
+		WebTarget client = getClient()
+				.path("utbildningstillfalle")
+				.path("filtrera")
+				.queryParam("utbildningstypID", query.getUtbildningstypID())
+				.queryParam("utbildningstillfallestypID", query.getUtbildningstillfallestypID())
+				.queryParam("studieordningID", query.getStudieordningID())
+				.queryParam("benamning", query.getBenamning())
+				.queryParam("studieperiod", query.getStudieperiod())
+				.queryParam("startperiodID", query.getStartperiodID())
+				.queryParam("page", query.getPage())
+				.queryParam("limit", query.getLimit())
+				.queryParam("skipCount", query.getSkipCount())
+				.queryParam("onlyCount", query.getOnlyCount())
+				.queryParam("sprakkod", query.getSprakkod());
+		client = addQueryParams("utbildningstillfalleskod", query.getUtbildningstillfalleskod(), client);
+		client = addQueryParams("utbildningskod", query.getUtbildningskod(), client);
+		client = addQueryParams("organisationUID", query.getOrganisationUID(), client);
+		client = addQueryParams("status", query.getStatus(), client);
+
+
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, SokresultatUtbildningstillfalleProjektion.class);
 	}
 
 	@Override
@@ -852,11 +893,11 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.queryParam("page", sokUtbildningsinstansQuery.getPage())
 				.queryParam("limit", sokUtbildningsinstansQuery.getLimit());
 
-		client = addQueryParam("utbildningstypID", sokUtbildningsinstansQuery.getUtbildningstypID(), client);
-		client = addQueryParam("utbildningskod", sokUtbildningsinstansQuery.getUtbildningskod(), client);
-		client = addQueryParam("status", sokUtbildningsinstansQuery.getStatus(), client);
-		client = addQueryParam("organisationUID", sokUtbildningsinstansQuery.getOrganisationUID(), client);
-		client = addQueryParam("benamning", sokUtbildningsinstansQuery.getBenamning(), client);
+		client = addQueryParams("utbildningstypID", sokUtbildningsinstansQuery.getUtbildningstypID(), client);
+		client = addQueryParams("utbildningskod", sokUtbildningsinstansQuery.getUtbildningskod(), client);
+		client = addQueryParams("status", sokUtbildningsinstansQuery.getStatus(), client);
+		client = addQueryParams("organisationUID", sokUtbildningsinstansQuery.getOrganisationUID(), client);
+		client = addQueryParams("benamning", sokUtbildningsinstansQuery.getBenamning(), client);
 
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
