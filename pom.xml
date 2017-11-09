@@ -9,6 +9,10 @@
     <relativePath>../ati-parent/pom.xml</relativePath>
   </parent>
 
+  <properties>
+    <bundle.type>bundle</bundle.type>
+  </properties>
+
   <groupId>se.sunet.ati.ladok</groupId>
   <artifactId>ati-ladok3-rest-client</artifactId>
   <version>1.0.1-SNAPSHOT</version>
@@ -90,7 +94,7 @@
       <groupId>se.sunet.ati.ladok</groupId>
       <artifactId>ati-ladok3-dto</artifactId>
       <version>0.89.1</version>
-      <type>bundle</type>
+      <type>${bundle.type}</type>
     </dependency>
   </dependencies>
 
