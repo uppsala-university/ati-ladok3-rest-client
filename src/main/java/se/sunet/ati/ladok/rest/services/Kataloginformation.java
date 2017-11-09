@@ -1,6 +1,7 @@
 package se.sunet.ati.ladok.rest.services;
 
 import se.ladok.schemas.kataloginformation.*;
+import se.sunet.ati.ladok.rest.api.kataloginformation.SokOrganisationQuery;
 
 public interface Kataloginformation extends LadokServiceProperties {
 	I18NLista hamtaOversattningarSvenska();
@@ -48,6 +49,10 @@ public interface Kataloginformation extends LadokServiceProperties {
 	Omradesbehorigheter listaOmradesbehorigheter();
 
 	Anvandare hamtAutentiserad();
+
+    Organisation hamtOrganisation(String organisationUid);
+
+    SokresultatOrganisationKataloginformation sokOrganisation(SokOrganisationQuery sokOrganisationQuery);
 
 	Utbildningstyper listaUtbildningstyper();
 }

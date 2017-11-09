@@ -1,22 +1,25 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
-import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
-
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import se.ladok.schemas.kataloginformation.*;
+import se.sunet.ati.ladok.rest.api.kataloginformation.SokOrganisationQuery;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
+
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
 
 public class KataloginformationImpl extends LadokServicePropertiesImpl implements Kataloginformation {
 
 	private static final String RESOURCE_GRUNDDATA = "grunddata";
 	private static final String RESOURCE_ANVANDARE = "anvandare";
 	private static final String RESOURCE_ENHET = "enhet";
+	private static final String RESOURCE_ORGANISATION = "organisation";
 
 	private static Log log = LogFactory.getLog(KataloginformationImpl.class);
 
@@ -228,6 +231,36 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		WebTarget client = getClient().path(RESOURCE_ANVANDARE).path("autentiserad");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Anvandare.class);
+	}
+
+	@Override
+	public Organisation hamtOrganisation(String organisationUid) {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_ORGANISATION).path(organisationUid);
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(Organisation.class);
+	}
+
+	@Override
+	public SokresultatOrganisationKataloginformation sokOrganisation(SokOrganisationQuery sokOrganisationQuery){
+		WebTarget client = getClient()
+				.path(RESOURCE_ORGANISATION)
+				.path("filtrera")
+				.queryParam("kod", sokOrganisationQuery.getKod())
+				.queryParam("benamning", sokOrganisationQuery.getBenamning())
+				.queryParam("orderBy", sokOrganisationQuery.getOrderBy())
+				.queryParam("skipCount", sokOrganisationQuery.getSkipCount())
+				.queryParam("onlyCount", sokOrganisationQuery.getOnlyCount())
+				.queryParam("sprakkod", sokOrganisationQuery.getSprakkod());
+
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, SokresultatOrganisationKataloginformation.class);
 	}
 
 	@Override
