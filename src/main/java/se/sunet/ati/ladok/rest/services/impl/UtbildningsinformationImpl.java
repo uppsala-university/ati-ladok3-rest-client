@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.utbildningsinformation.*;
 import se.sunet.ati.ladok.rest.api.utbildningsinformation.SokUtbildningsinstansQuery;
+import se.sunet.ati.ladok.rest.api.utbildningsinformation.type.Status;
 import se.sunet.ati.ladok.rest.api.utbildningsinformation.SokUtbildningstillfallenQuery;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
@@ -751,18 +752,18 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		WebTarget client = getClient()
 				.path("utbildningstillfalle")
-				.path("filtrera");
+				.path("filtrera")
+				.queryParam("utbildningstypID", utbildningstypID)
+				.queryParam("utbildningstillfallestypID", utbildningstillfallestypID)
+				.queryParam("studieordningID", studieordningID)
+				.queryParam("benamning", benamning)
+				.queryParam("studieperiod", studieperiod)
+				.queryParam("page", page)
+				.queryParam("limit", limit)
+				.queryParam("skipCount", skipCount)
+				.queryParam("onlyCount", onlyCount)
+				.queryParam("sprakkod", sprakkod);
 
-		client = addQueryParam("utbildningstypID", utbildningstypID, client);
-		client = addQueryParam("utbildningstillfallestypID", utbildningstillfallestypID, client);
-		client = addQueryParam("studieordningID", studieordningID, client);
-		client = addQueryParam("benamning", benamning, client);
-		client = addQueryParam("studieperiod", studieperiod, client);
-		client = addQueryParam("page", page, client);
-		client = addQueryParam("limit", limit, client);
-		client = addQueryParam("skipCount", skipCount, client);
-		client = addQueryParam("onlyCount", onlyCount, client);
-		client = addQueryParam("sprakkod", sprakkod, client);
 		client = addQueryParams("utbildningstillfalleskod", utbildningstillfalleskod, client);
 		client = addQueryParams("utbildningskod", utbildningskod, client);
 		client = addQueryParams("organisationUID", organisationUID, client);
@@ -926,7 +927,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.studieordningID(studieordningID)
 				.addUtbildningskod(utbildningskod)
 				.addBenamning(benamning)
-				.addStatus(status)
+				.addStatus(Status.fromId(Integer.valueOf(status)))
 				.page(page)
 				.limit(limit)
 				.skipCount(skipCount)

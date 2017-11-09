@@ -1,5 +1,7 @@
  package se.sunet.ati.ladok.rest.api.utbildningsinformation;
 
+ import se.sunet.ati.ladok.rest.api.utbildningsinformation.type.Status;
+
  import java.util.ArrayList;
  import java.util.Collection;
 
@@ -10,7 +12,7 @@
      private final Collection<String> utbildningstypID;
      private final String studieordningID;
      private final Collection<String> utbildningskod;
-     private final Collection<String> status;
+     private final Collection<Status> status;
      private final Collection<String> organisationUID;
      private final Collection<String> benamning;
      private final String overliggandeUtbildningUID;
@@ -42,7 +44,7 @@
          return utbildningskod;
      }
 
-     public Collection<String> getStatus() {
+     public Collection<Status> getStatus() {
          return status;
      }
 
@@ -112,8 +114,8 @@
          Buildable studieordningID(String studieordningID);
          Buildable addUtbildningskodCollection(Collection<String> utbildningskodCollection);
          Buildable addUtbildningskod(String utbildningskod);
-         Buildable addStatus(Collection<String> statusCollection);
-         Buildable addStatus(String status);
+         Buildable addStatusCollection(Collection<Status> statusCollection);
+         Buildable addStatus(Status status);
          Buildable addOrganisationUIDCollection(Collection<String> organisationUIDCollection);
          Buildable addOrganisationUID(String organisationUID);
          Buildable addBenamningCollection(Collection<String> benamningCollection);
@@ -137,7 +139,7 @@
          private final Collection<String> utbildningstypIDCollection = new ArrayList<>();
          private String studieordningID;
          private final Collection<String> utbildningskodCollection = new ArrayList<>();
-         private final Collection<String> statusCollection = new ArrayList<>();
+         private final Collection<Status> statusCollection = new ArrayList<>();
          private final Collection<String> organisationUIDCollection = new ArrayList<>();
          private final Collection<String> benamningCollection = new ArrayList<>();
          private String overliggandeUtbildningUID;
@@ -194,13 +196,13 @@
          }
 
          @Override
-         public BuilderImpl addStatus(Collection<String> statusCollection) {
+         public BuilderImpl addStatusCollection(Collection<Status> statusCollection) {
              this.statusCollection.addAll(statusCollection);
              return this;
          }
 
          @Override
-         public BuilderImpl addStatus(String status) {
+         public BuilderImpl addStatus(Status status) {
              this.statusCollection.add(status);
              return this;
          }
