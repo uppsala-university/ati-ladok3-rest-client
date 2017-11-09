@@ -234,7 +234,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	}
 
 	@Override
-	public Organisation hamtOrganisation(String organisationUid) {
+	public Organisation hamtaOrganisation(String organisationUid) {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_ORGANISATION).path(organisationUid);
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)

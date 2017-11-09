@@ -50,7 +50,7 @@ public interface Kataloginformation extends LadokServiceProperties {
 
 	Anvandare hamtAutentiserad();
 
-    Organisation hamtOrganisation(String organisationUid);
+    Organisation hamtaOrganisation(String organisationUid);
 
     SokresultatOrganisationKataloginformation sokOrganisation(SokOrganisationQuery sokOrganisationQuery);
 
