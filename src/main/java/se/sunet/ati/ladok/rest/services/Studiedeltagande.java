@@ -9,24 +9,27 @@ import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
 import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQuery;
 
 public interface Studiedeltagande extends LadokServiceProperties {
-	public TillfallesdeltagandeLista hamtaPaborjadeKurser(String studentUid);
+	TillfallesdeltagandeLista hamtaPaborjadeKurser(String studentUid);
 
-	public Student hamtaStudentViaPersonnummer(String personnummer);
+	Student hamtaStudentViaPersonnummer(String personnummer);
 
+	/**
+	 * @deprecated använd sokDeltagareKurstillfalle(SokDeltagareKurstillfalleQuery q)
+	 */
 	@Deprecated
-	public SokresultatDeltagare sokDeltagareKurstillfalle(String kurstillfalleUID);
+	SokresultatDeltagare sokDeltagareKurstillfalle(String kurstillfalleUID);
 
-	public SokresultatDeltagare sokDeltagareKurstillfalle(SokDeltagareKurstillfalleQuery sokDeltagareKurstillfalleQuery);
-	
-	public TillfallesdeltagandeLista hamtaKommandeKurstillfallesdeltaganden(String studentUid);
-	
-	public void registreraStudentPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
+	SokresultatDeltagare sokDeltagareKurstillfalle(SokDeltagareKurstillfalleQuery sokDeltagareKurstillfalleQuery);
+
+	TillfallesdeltagandeLista hamtaKommandeKurstillfallesdeltaganden(String studentUid);
+
+	void registreraStudentPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
 
     void taBortStudentregistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
 
-    public Hinderlista hamtaHinderMotStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
+    Hinderlista hamtaHinderMotStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
 
-	public Atgard hamtaAtgardStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
+	Atgard hamtaAtgardStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
 
-	public BehorighetsvillkorLista hamtaBehorighetsVillkorForTillfallesantagning(String kurstillfallesantagningUid);
+	BehorighetsvillkorLista hamtaBehorighetsVillkorForTillfallesantagning(String kurstillfallesantagningUid);
 }
