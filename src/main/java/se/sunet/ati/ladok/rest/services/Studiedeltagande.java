@@ -6,6 +6,7 @@ import se.ladok.schemas.studiedeltagande.Atgard;
 import se.ladok.schemas.studiedeltagande.BehorighetsvillkorLista;
 import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
 import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
+import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurspaketeringstillfalleQuery;
 import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQuery;
 
 public interface Studiedeltagande extends LadokServiceProperties {
@@ -19,7 +20,9 @@ public interface Studiedeltagande extends LadokServiceProperties {
 	@Deprecated
 	SokresultatDeltagare sokDeltagareKurstillfalle(String kurstillfalleUID);
 
-	SokresultatDeltagare sokDeltagareKurstillfalle(SokDeltagareKurstillfalleQuery sokDeltagareKurstillfalleQuery);
+	SokresultatDeltagare sokDeltagareKurstillfalle(SokDeltagareKurstillfalleQuery query);
+
+	SokresultatDeltagare sokDeltagareKurspaketeringstillfalle(SokDeltagareKurspaketeringstillfalleQuery query);
 
 	TillfallesdeltagandeLista hamtaKommandeKurstillfallesdeltaganden(String studentUid);
 

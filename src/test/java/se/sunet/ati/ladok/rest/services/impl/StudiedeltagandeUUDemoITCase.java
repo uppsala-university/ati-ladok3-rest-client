@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import se.ladok.schemas.Student;
 import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
+import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurspaketeringstillfalleQuery;
 import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQuery;
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
 import se.sunet.ati.ladok.rest.util.TestUtil;
@@ -25,7 +26,7 @@ public class StudiedeltagandeUUDemoITCase {
 	}
 
 	@Test
-	public void testHamtaStudentViaPersonnummer() throws Exception {
+	public void testHamtaStudentViaPersonnummer() {
 		Studiedeltagande st = new StudiedeltagandeImpl();
 		Student student = st.hamtaStudentViaPersonnummer(properties.getProperty(
 				"rest.studiedeltagande.student.personnummer"));
@@ -34,7 +35,7 @@ public class StudiedeltagandeUUDemoITCase {
 	}
 
 	@Test
-	public void testSokDeltagareKurstillfalle() throws Exception {
+	public void testSokDeltagareKurstillfalle() {
 		String kurstillfalleUID = properties.getProperty(
 				"rest.studiedeltagande.kurstillfalle.uid");
 
@@ -44,6 +45,21 @@ public class StudiedeltagandeUUDemoITCase {
 
 		Studiedeltagande sd = new StudiedeltagandeImpl();
 		SokresultatDeltagare deltagare = sd.sokDeltagareKurstillfalle(sokDeltagareKurstillfalleQuery);
+		System.out.println("Deltagare: " + deltagare.getTotaltAntalPoster());
+		assertNotNull(deltagare);
+	}
+
+	@Test
+	public void testSokDeltagareKurspaketeringstillfalle() {
+		String kurspaketeringstillfalleUID = properties.getProperty(
+				"rest.studiedeltagande.kurspaketeringstillfalle.uid");
+
+		SokDeltagareKurspaketeringstillfalleQuery query = SokDeltagareKurspaketeringstillfalleQuery.builder()
+				.kurspaketeringstillfalleUID(kurspaketeringstillfalleUID)
+				.build();
+
+		Studiedeltagande sd = new StudiedeltagandeImpl();
+		SokresultatDeltagare deltagare = sd.sokDeltagareKurspaketeringstillfalle(query);
 		System.out.println("Deltagare: " + deltagare.getTotaltAntalPoster());
 		assertNotNull(deltagare);
 	}

@@ -8,6 +8,7 @@ import se.ladok.schemas.studiedeltagande.Atgard;
 import se.ladok.schemas.studiedeltagande.BehorighetsvillkorLista;
 import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
 import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
+import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurspaketeringstillfalleQuery;
 import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQuery;
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
@@ -26,6 +27,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 	private static final String STUDIEDELTAGANDE_MEDIATYPE = "xml;charset=UTF-8";
 	private static final String RESOURCE_DELTAGARE = "deltagare";
 	private static final String RESOURCE_KURSTILLFALLE = "kurstillfalle";
+	private static final String RESOURCE_KURSPAKETERINGSTILLFALLE = "kurspaketeringstillfalle";
 	private static final String RESOURCE_KURS = "kurs";
 	private static final String RESOURCE_TILLFALLESDELTAGANDE ="tillfallesdeltagande";
 	private static final String RESOURCE_KOMMANDE = "kommande";
@@ -114,14 +116,14 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 	}
 	
 	@Override
-	public SokresultatDeltagare sokDeltagareKurstillfalle(SokDeltagareKurstillfalleQuery sokDeltagareKurstillfalleQuery) {
+	public SokresultatDeltagare sokDeltagareKurstillfalle(SokDeltagareKurstillfalleQuery query) {
 		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
-		WebTarget client = getClient().path(RESOURCE_DELTAGARE).path(RESOURCE_KURSTILLFALLE).path(sokDeltagareKurstillfalleQuery.getKurstillfalleUID())
-				.queryParam("kanRegistreraPaPeriod" ,sokDeltagareKurstillfalleQuery.getKanRegistreraPaPeriod())
-				.queryParam("page", sokDeltagareKurstillfalleQuery.getPage())
-				.queryParam("limit", sokDeltagareKurstillfalleQuery.getLimit())
-				.queryParam("orderBy", sokDeltagareKurstillfalleQuery.getOrderBy())
-				.queryParam("deltagaretillstand", sokDeltagareKurstillfalleQuery.getDeltagareTillstand());
+		WebTarget client = getClient().path(RESOURCE_DELTAGARE).path(RESOURCE_KURSTILLFALLE).path(query.getKurstillfalleUID())
+				.queryParam("kanRegistreraPaPeriod" ,query.getKanRegistreraPaPeriod())
+				.queryParam("page", query.getPage())
+				.queryParam("limit", query.getLimit())
+				.queryParam("orderBy", query.getOrderBy())
+				.queryParam("deltagaretillstand", query.getDeltagareTillstand());
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		Response response =  client
 			.request()
@@ -129,6 +131,24 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 			.accept(responseType)
 			.get();
 		
+		return validatedResponse(response, SokresultatDeltagare.class);
+	}
+
+	@Override
+	public SokresultatDeltagare sokDeltagareKurspaketeringstillfalle(SokDeltagareKurspaketeringstillfalleQuery query) {
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_DELTAGARE).path(RESOURCE_KURSPAKETERINGSTILLFALLE).path(query.getKurspaketeringstillfalleUID())
+				.queryParam("page", query.getPage())
+				.queryParam("limit", query.getLimit())
+				.queryParam("orderBy", query.getOrderBy())
+				.queryParam("deltagaretillstand", query.getDeltagareTillstand());
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
 		return validatedResponse(response, SokresultatDeltagare.class);
 	}
 	
