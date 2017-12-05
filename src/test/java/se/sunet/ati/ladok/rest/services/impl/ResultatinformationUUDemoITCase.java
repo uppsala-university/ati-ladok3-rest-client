@@ -25,28 +25,7 @@ import se.ladok.schemas.Benamningar;
 import se.ladok.schemas.Datumperiod;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.Student;
-import se.ladok.schemas.resultat.Aktivitetstillfalle;
-import se.ladok.schemas.resultat.Aktivitetstillfallestyp;
-import se.ladok.schemas.resultat.Aktivitetstillfallestyper;
-import se.ladok.schemas.resultat.Benamning;
-import se.ladok.schemas.resultat.Resultat;
-import se.ladok.schemas.resultat.ResultatLista;
-import se.ladok.schemas.resultat.ResultatPaUtbildning;
-import se.ladok.schemas.resultat.ResultatuppfoljningOrderByEnum;
-import se.ladok.schemas.resultat.SkapaFlera;
-import se.ladok.schemas.resultat.SkapaResultat;
-import se.ladok.schemas.resultat.SokresultatAktivitetstillfalleResultat;
-import se.ladok.schemas.resultat.SokresultatAktivitetstillfallesmojlighetResultat;
-import se.ladok.schemas.resultat.SokresultatKurstillfalleResultat;
-import se.ladok.schemas.resultat.SokresultatResultatuppfoljning;
-import se.ladok.schemas.resultat.SokresultatStudieresultatResultat;
-import se.ladok.schemas.resultat.Studielokaliseringar;
-import se.ladok.schemas.resultat.Studieresultat;
-import se.ladok.schemas.resultat.StudieresultatOrderByEnum;
-import se.ladok.schemas.resultat.TillstandEnum;
-import se.ladok.schemas.resultat.UppdateraFlera;
-import se.ladok.schemas.resultat.UppdateraResultat;
-import se.ladok.schemas.resultat.Utbildningsinstans;
+import se.ladok.schemas.resultat.*;
 import se.sunet.ati.ladok.rest.services.Resultatinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
 
@@ -167,10 +146,9 @@ public class ResultatinformationUUDemoITCase {
 	//PUT
 	//resultat/studieresultat/uppdatera
 	//@Test
-	public void updateraResultatForStudentPaUtbildningsinstans() throws Exception {
+	public void testUpdateraResultatForStudentPaUtbildningsinstans() throws Exception {
 		UppdateraFlera resultat = new UppdateraFlera();
-		UppdateraResultat res = new UppdateraResultat();	
-		
+		UppdateraResultat res = new UppdateraResultat();
 		res.setResultatUID("3254d578-af59-11e7-b27e-48ab1cac4efd");
 		res .setBetygsgrad(Integer.valueOf(2402));//VG
 		res.setBetygsskalaID(Integer.valueOf(432));
@@ -182,6 +160,24 @@ public class ResultatinformationUUDemoITCase {
 		ResultatLista resu = ri.uppdateraResultatForStudentPaUtbildningsinstans(resultat);
 		System.out.println("resultat: " + resu);
 		assertNotNull(resu);
+	}
+
+	//PUT
+	//resultat/studieresultat/klarmarkera
+	//@Test
+	public void testKlarmarkeraResultatForStudentPaUtbildningsinstans() throws Exception {
+	    KlarmarkeraFlera klarmarkeraFlera = new KlarmarkeraFlera();
+	    Klarmarkera klarmarkering = new Klarmarkera();
+	    klarmarkering.setKlarmarkeringsdatum(new Date());
+		klarmarkering.setResultatetsSenastSparad(new Date());
+		klarmarkering.setKlarmarkeradAvUID("");
+		klarmarkeraFlera.setKlarmarkering(klarmarkering);
+	    klarmarkeraFlera.getResultatUIDer().add("5e3c7157-d6df-11e7-8965-8d9fc5414a76");
+	    klarmarkeraFlera.getResultatUIDer().add("eb263447-d6df-11e7-8965-8d9fc5414a76");
+		ResultatLista resu = ri.klarmarkeraResultatForStudentPakurs(klarmarkeraFlera);
+		System.out.println("resultat: " + resu);
+		assertNotNull(resu);
+
 	}
 	
 	//@Test

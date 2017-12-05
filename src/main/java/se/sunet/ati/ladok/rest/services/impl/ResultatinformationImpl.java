@@ -8,29 +8,9 @@ import javax.xml.bind.JAXBElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import se.ladok.schemas.resultat.Resultat;
-import se.ladok.schemas.resultat.ResultatLista;
-import se.ladok.schemas.resultat.SkapaFlera;
-import se.ladok.schemas.resultat.SkapaResultat;
-import se.ladok.schemas.resultat.SokresultatAktivitetstillfalleResultat;
-import se.ladok.schemas.resultat.SokresultatAktivitetstillfallesmojlighetResultat;
-import se.ladok.schemas.resultat.SokresultatKurstillfalleResultat;
-import se.ladok.schemas.resultat.SokresultatResultatuppfoljning;
-import se.ladok.schemas.resultat.Studielokaliseringar;
-import se.ladok.schemas.resultat.Studieresultat;
-import se.ladok.schemas.resultat.UppdateraFlera;
-import se.ladok.schemas.resultat.Utbildningsinstans;
+import se.ladok.schemas.resultat.*;
 import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
-import se.ladok.schemas.resultat.Aktivitetstillfalle;
-import se.ladok.schemas.resultat.Aktivitetstillfallesmojlighet;
-import se.ladok.schemas.resultat.Aktivitetstillfallestyp;
-import se.ladok.schemas.resultat.Aktivitetstillfallestyper;
-import se.ladok.schemas.resultat.Anmalan;
-import se.ladok.schemas.resultat.Klarmarkera;
-import se.ladok.schemas.resultat.ObjectFactory;
-import se.ladok.schemas.resultat.Perioder;
-import se.ladok.schemas.resultat.SokresultatStudieresultatResultat;
 
 import se.sunet.ati.ladok.rest.services.Resultatinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
@@ -219,6 +199,20 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		return validatedResponse(response, Resultat.class);
 	}
 
+	@Override
+	public ResultatLista  klarmarkeraResultatForStudentPakurs(KlarmarkeraFlera resultat) {
+		JAXBElement<KlarmarkeraFlera> resultatJAXBElement = new ObjectFactory().createKlarmarkeraFlera(resultat);
+		WebTarget client = getClient().path(RESOURCE_STUDIERESULTAT).path(RESOURCE_KLARMARKERA);
+
+		log.info("Query URL: " + client.getUri());
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, ResultatLista.class);
+	}
 	
 	/**
 	 * utbildningsinstansUID - uid for a modul gives results on that modul; uid for a kursinstans gives results on the course 
