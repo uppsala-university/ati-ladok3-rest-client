@@ -4,10 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Student;
-import se.ladok.schemas.studiedeltagande.Atgard;
-import se.ladok.schemas.studiedeltagande.BehorighetsvillkorLista;
-import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
-import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
+import se.ladok.schemas.studiedeltagande.*;
 import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurspaketeringstillfalleQuery;
 import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQuery;
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
@@ -40,6 +37,9 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 	private static final String RESOURCE_KURSTILLFALLESANTAGNINGUID = "kurstillfallesantagninguid";
 	private static final String RESOURCE_PERIODINDEX = "periodindex";
 	private static final String RESOURCE_TA_BORT = "ta_bort";
+	private static final String RESOURCE_KURSTILLFALLESDELTAGANDE = "kurstillfallesdeltagande";
+	private static final String RESOURCE_STUDIESTRUKTURREFERENS = "studiestrukturreferens";
+	private static final String RESOURCE_STUDIESTRUKTUR = "studiestruktur";
 
 	// OBS Nedanstående resurs är felstavad hos Ladok3
 	private static final String RESOURCE_PABORJAD_UTBILDNING = "paborjadutbilding";
@@ -263,4 +263,86 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 
 		return validatedResponse(response, BehorighetsvillkorLista.class);
 	}
+
+	@Override
+	public TillfallesdeltagandeLista hamtaAllaKurstillfallesdeltagandenForStudent(String studentUid){
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+
+		WebTarget client = getClient()
+				.path(RESOURCE_TILLFALLESDELTAGANDE)
+				.path(RESOURCE_KURSTILLFALLESDELTAGANDE)
+				.path(RESOURCE_STUDENT)
+				.path(studentUid);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, TillfallesdeltagandeLista.class);
+	}
+
+	@Override
+	public Tillfallesdeltagande hamtaKurspaketeringstillfallesdeltagandeForStudiestrukturreferens(String studiestrukturreferens){
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+
+		WebTarget client = getClient()
+				.path(RESOURCE_TILLFALLESDELTAGANDE)
+				.path(RESOURCE_STUDIESTRUKTURREFERENS)
+				.path(studiestrukturreferens);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Tillfallesdeltagande.class);
+	}
+
+	@Override
+	public IngaendeKurspaketeringstillfalleLista hamtaIngaendeKurspaketeringMedBarn(String studiestrukturreferens) {
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+
+		WebTarget client = getClient()
+				.path(RESOURCE_STUDIESTRUKTUR)
+				.path(RESOURCE_STUDIESTRUKTURREFERENS)
+				.path(studiestrukturreferens);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, IngaendeKurspaketeringstillfalleLista.class);
+	}
+
+	@Override
+	public IngaendeKurspaketeringstillfalleLista hamtaStudiestrukturerForStudent(String studentuid) {
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+
+		WebTarget client = getClient()
+				.path(RESOURCE_STUDIESTRUKTUR)
+				.path(RESOURCE_STUDENT)
+				.path(studentuid);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, IngaendeKurspaketeringstillfalleLista.class);
+	}
+
 }

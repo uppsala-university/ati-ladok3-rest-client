@@ -2,10 +2,7 @@ package se.sunet.ati.ladok.rest.services;
 
 import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Student;
-import se.ladok.schemas.studiedeltagande.Atgard;
-import se.ladok.schemas.studiedeltagande.BehorighetsvillkorLista;
-import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
-import se.ladok.schemas.studiedeltagande.TillfallesdeltagandeLista;
+import se.ladok.schemas.studiedeltagande.*;
 import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurspaketeringstillfalleQuery;
 import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQuery;
 
@@ -35,4 +32,12 @@ public interface Studiedeltagande extends LadokServiceProperties {
 	Atgard hamtaAtgardStudentRegistreringPaKurstillfalle(String kurstillfallesantagningUid, String periodIndex);
 
 	BehorighetsvillkorLista hamtaBehorighetsVillkorForTillfallesantagning(String kurstillfallesantagningUid);
+
+	TillfallesdeltagandeLista hamtaAllaKurstillfallesdeltagandenForStudent(String studentUid);
+
+	Tillfallesdeltagande hamtaKurspaketeringstillfallesdeltagandeForStudiestrukturreferens(String studiestrukturreferens);
+
+	IngaendeKurspaketeringstillfalleLista hamtaIngaendeKurspaketeringMedBarn(String studiestrukturreferens);
+
+	IngaendeKurspaketeringstillfalleLista hamtaStudiestrukturerForStudent(String studentuid);
 }
