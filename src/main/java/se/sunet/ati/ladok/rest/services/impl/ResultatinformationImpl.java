@@ -1,5 +1,9 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
+import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
+
+import java.util.Arrays;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -8,14 +12,35 @@ import javax.xml.bind.JAXBElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import se.ladok.schemas.resultat.*;
 import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
-
+import se.ladok.schemas.resultat.Aktivitetstillfalle;
+import se.ladok.schemas.resultat.Aktivitetstillfallesmojlighet;
+import se.ladok.schemas.resultat.Aktivitetstillfallestyp;
+import se.ladok.schemas.resultat.Aktivitetstillfallestyper;
+import se.ladok.schemas.resultat.Anmalan;
+import se.ladok.schemas.resultat.Klarmarkera;
+import se.ladok.schemas.resultat.KlarmarkeraFlera;
+import se.ladok.schemas.resultat.ObjectFactory;
+import se.ladok.schemas.resultat.Perioder;
+import se.ladok.schemas.resultat.Resultat;
+import se.ladok.schemas.resultat.ResultatLista;
+import se.ladok.schemas.resultat.SkapaFlera;
+import se.ladok.schemas.resultat.SkapaResultat;
+import se.ladok.schemas.resultat.SokresultatAktivitetstillfalleResultat;
+import se.ladok.schemas.resultat.SokresultatAktivitetstillfallesmojlighetResultat;
+import se.ladok.schemas.resultat.SokresultatKurstillfalleResultat;
+import se.ladok.schemas.resultat.SokresultatResultatuppfoljning;
+import se.ladok.schemas.resultat.SokresultatStudieresultatResultat;
+import se.ladok.schemas.resultat.Studielokaliseringar;
+import se.ladok.schemas.resultat.Studieresultat;
+import se.ladok.schemas.resultat.StudieresultatForRapporteringSokVarden;
+import se.ladok.schemas.resultat.StudieresultatOrderByEnum;
+import se.ladok.schemas.resultat.StudieresultatTillstandVidRapporteringEnum;
+import se.ladok.schemas.resultat.UppdateraFlera;
+import se.ladok.schemas.resultat.Utbildningsinstans;
 import se.sunet.ati.ladok.rest.services.Resultatinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
-
-import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
 
 public class ResultatinformationImpl extends LadokServicePropertiesImpl implements Resultatinformation {
 	private static Log log = LogFactory.getLog(ResultatinformationImpl.class);
@@ -226,31 +251,45 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 			int page,
 			int limit,
 			String orderby) {
+		StudieresultatForRapporteringSokVarden studieresultatForRapporteringSokVarden = new StudieresultatForRapporteringSokVarden();
+		studieresultatForRapporteringSokVarden.setUtbildningsinstansUID(utbildningsinstansUID);
+		if (filtrering != null) {
+			studieresultatForRapporteringSokVarden.getFiltrering().add(StudieresultatTillstandVidRapporteringEnum.fromValue(filtrering));
+		}
+		if (kurstillfalleUIDs != null) {
+			studieresultatForRapporteringSokVarden.getKurstillfallenUID().addAll(Arrays.asList(kurstillfalleUIDs));
+		}
+		studieresultatForRapporteringSokVarden.setGruppUID(grupp);
+		studieresultatForRapporteringSokVarden.setPage(page);
+		studieresultatForRapporteringSokVarden.setLimit(limit);
+		if (orderby != null) {
+			studieresultatForRapporteringSokVarden.getOrderBy().add(StudieresultatOrderByEnum.fromValue(orderby));
+
+		}
+		return sokStudieResultat(studieresultatForRapporteringSokVarden, utbildningsinstansUID);
+	}
+
+	@Override
+	public SokresultatStudieresultatResultat sokStudieResultat(StudieresultatForRapporteringSokVarden studieresultatForRapporteringSokVarden, String utbildningsinstansUID) {
 		WebTarget client = getClient().path(RESOURCE_STUDIERESULTAT)
 				.path(RESOURCE_RAPPORTERA)
 				.path(RESOURCE_UTBILDNINGSINSTANS)
 				.path(utbildningsinstansUID)
-				.queryParam("filtrering", filtrering)
-				.queryParam("grupp", grupp)
-				.queryParam("page", page)
-				.queryParam("limit", limit)
-				.queryParam("orderby", orderby);
-
-		for (String kurstillfalleUID : kurstillfalleUIDs) {
-			client = client.queryParam("kurstillfallen", kurstillfalleUID);
-		}
+				.path("sok");
 		log.info("Query URL: " + client.getUri());
+
+		JAXBElement<StudieresultatForRapporteringSokVarden> sokVardenJAXBElement = new ObjectFactory().createStudieresultatForRapporteringSokVarden(studieresultatForRapporteringSokVarden);
 
 		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
-				.get();
-		
+				.put(Entity.entity(sokVardenJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
 		return validatedResponse(response, SokresultatStudieresultatResultat.class);
 	}
-	
+
 	/**
 	 * utbildningsinstansUID - uid for a modul gives results on that modul; uid for a kursinstans gives results on the course 
 	 * 

@@ -73,6 +73,12 @@ public interface Resultatinformation {
 	
 	public Studielokaliseringar sokAllaStudielokaliseringar();
 
+	SokresultatStudieresultatResultat sokStudieResultat(StudieresultatForRapporteringSokVarden studieresultatForRapporteringSokVarden, String utbildningsinstansUID);
+
+	/**
+	 * @deprecated
+	 */
+	@Deprecated
 	public SokresultatStudieresultatResultat sokStudieResultat(String utbildningsinstansUID,
 			String[] kurstillfalleUIDn,
 			String filtrering,
