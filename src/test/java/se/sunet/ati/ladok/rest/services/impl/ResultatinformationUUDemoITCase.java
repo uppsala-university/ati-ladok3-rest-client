@@ -1,33 +1,55 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import se.ladok.schemas.Benamningar;
+import se.ladok.schemas.Datumperiod;
+import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.Student;
+import se.ladok.schemas.resultat.Aktivitetstillfalle;
+import se.ladok.schemas.resultat.Aktivitetstillfallestyp;
+import se.ladok.schemas.resultat.Aktivitetstillfallestyper;
+import se.ladok.schemas.resultat.Benamning;
+import se.ladok.schemas.resultat.Klarmarkera;
+import se.ladok.schemas.resultat.KlarmarkeraFlera;
+import se.ladok.schemas.resultat.Resultat;
+import se.ladok.schemas.resultat.ResultatLista;
+import se.ladok.schemas.resultat.ResultatPaUtbildning;
+import se.ladok.schemas.resultat.ResultatuppfoljningOrderByEnum;
+import se.ladok.schemas.resultat.SkapaFlera;
+import se.ladok.schemas.resultat.SkapaResultat;
+import se.ladok.schemas.resultat.SokresultatAktivitetstillfalleResultat;
+import se.ladok.schemas.resultat.SokresultatAktivitetstillfallesmojlighetResultat;
+import se.ladok.schemas.resultat.SokresultatKurstillfalleResultat;
+import se.ladok.schemas.resultat.SokresultatResultatuppfoljning;
+import se.ladok.schemas.resultat.SokresultatStudieresultatResultat;
+import se.ladok.schemas.resultat.Studielokaliseringar;
+import se.ladok.schemas.resultat.Studieresultat;
+import se.ladok.schemas.resultat.StudieresultatForRapporteringSokVarden;
+import se.ladok.schemas.resultat.StudieresultatOrderByEnum;
+import se.ladok.schemas.resultat.StudieresultatTillstandVidRapporteringEnum;
+import se.ladok.schemas.resultat.TillstandEnum;
+import se.ladok.schemas.resultat.UppdateraFlera;
+import se.ladok.schemas.resultat.UppdateraResultat;
+import se.ladok.schemas.resultat.Utbildningsinstans;
+import se.sunet.ati.ladok.rest.services.Resultatinformation;
+import se.sunet.ati.ladok.rest.util.TestUtil;
 
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runners.MethodSorters;
-
-import se.ladok.schemas.Benamningar;
-import se.ladok.schemas.Datumperiod;
-import se.ladok.schemas.Organisationslista;
-import se.ladok.schemas.Student;
-import se.ladok.schemas.resultat.*;
-import se.sunet.ati.ladok.rest.services.Resultatinformation;
-import se.sunet.ati.ladok.rest.util.TestUtil;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class ResultatinformationUUDemoITCase {
 	private static Log log = LogFactory.getLog(ResultatinformationUUDemoITCase.class);
@@ -348,18 +370,23 @@ public class ResultatinformationUUDemoITCase {
 	//@Test
 	public void testSokResultat() throws Exception {
 		System.out.println("UTKAST");
-		testSokResultat("01010101-2222-3333-0043-000000000949", new String[]{"01010101-2222-3333-0043-000000002094"}, "UTKAST");
+		List<String> kurstillfallen = new ArrayList<String>();
+		//kurstillfallen.add("01010101-2222-3333-0043-000000002094");
+		//testSokResultat("01010101-2222-3333-0043-000000000949", kurstillfallen, "UTKAST");
+		kurstillfallen.add("bce52909-d426-11e7-a506-1c40749b409d");
+		testSokResultat("3ee026a6-d432-11e7-a506-1c40749b409d", kurstillfallen, "OBEHANDLADE_UTKAST_KLARMARKERADE_ATTESTERADE");
 	}	
-	
-	
-	public void testSokResultat(String kursinstansUid, String[] kurstillfallen, String filtrering) throws Exception {
-		SokresultatStudieresultatResultat s = ri.sokStudieResultat(kursinstansUid,   
-				kurstillfallen,
-				filtrering,
-				"", 
-				1, 
-				45,
-				"EFTERNAMN_ASC");
+
+	public void testSokResultat(String kursinstansUid, List<String> kurstillfallen, String filtrering) throws Exception {
+		StudieresultatForRapporteringSokVarden sokVarden = new StudieresultatForRapporteringSokVarden();
+		sokVarden.getKurstillfallenUID().addAll(kurstillfallen);
+		sokVarden.getFiltrering().add(StudieresultatTillstandVidRapporteringEnum.fromValue(filtrering));
+		sokVarden.setGruppUID("");
+		sokVarden.setPage(1);
+		sokVarden.setLimit(45);
+		sokVarden.getOrderBy().add(StudieresultatOrderByEnum.fromValue("EFTERNAMN_ASC"));
+
+		SokresultatStudieresultatResultat s = ri.sokStudieResultat(sokVarden, kursinstansUid);
 		System.out.println("totalt antal poster: " +  s.getTotaltAntalPoster());
 		assertNotNull(s);
 		List<Studieresultat> resultat = s.getResultat();
@@ -368,12 +395,26 @@ public class ResultatinformationUUDemoITCase {
 			Student student = r.getStudent();
 			System.out.println("Student " + student.getFornamn()  + " " + student.getEfternamn());
 			Studieresultat.ResultatPaUtbildningar resultatPaUtbildningar = r.getResultatPaUtbildningar();
+
 			for (ResultatPaUtbildning resultatPaUtbildning : resultatPaUtbildningar.getResultatPaUtbildning()) {
+				// Necessary to compare against moduleUID because the service sometimes gives results that
+				// belong to other modules.
+				if (resultatPaUtbildning.getSenastAttesteradeResultat() != null &&
+						resultatPaUtbildning.getSenastAttesteradeResultat().getUtbildningsinstansUID() != null &&
+						kursinstansUid.equals(resultatPaUtbildning.getSenastAttesteradeResultat().getUtbildningsinstansUID())) {
+					Resultat senastAttesteradeResultat = resultatPaUtbildning.getSenastAttesteradeResultat();
+					Integer betygsgrad = senastAttesteradeResultat != null ? senastAttesteradeResultat.getBetygsgrad() : null;
+					System.out.println("   ATTESTERAD " + senastAttesteradeResultat.getProcessStatus());
+					break;
+				}
 				Resultat arbetsunderlag = resultatPaUtbildning.getArbetsunderlag();
 				if (arbetsunderlag == null) {
-					System.out.println("   Arbetsunderlag null");
-				} else {
-					System.out.println("   ProcessStatus: " + arbetsunderlag.getProcessStatus());
+					System.out.println("Arbetsunderlag null");
+				}
+				if (arbetsunderlag != null && arbetsunderlag.getBetygsgrad() != null && arbetsunderlag.getUtbildningsinstansUID() != null &&
+						kursinstansUid.equals(arbetsunderlag.getUtbildningsinstansUID())) {
+					System.out.println("   " + arbetsunderlag.getProcessStatus());
+					System.out.println(arbetsunderlag);
 				}
 			}
 		}
