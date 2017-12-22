@@ -910,7 +910,6 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		return validatedResponse(response, SokresultatUtbildningsinstans.class);
 	}
 
-	@Deprecated
 	@Override
 	public SokresultatUtbildningsinstans sokUtbildningsinstans( 
 																String utbildningstypID,
@@ -922,18 +921,21 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 																int limit,
 																boolean skipCount,
 																String sprakkod) {
-		SokUtbildningsinstansQuery sokUtbildningsinstansQuery = SokUtbildningsinstansQuery.builder()
+		SokUtbildningsinstansQuery.Buildable builder = SokUtbildningsinstansQuery.builder()
 				.addUtbildningstypID(utbildningstypID)
 				.studieordningID(studieordningID)
 				.addUtbildningskod(utbildningskod)
 				.addBenamning(benamning)
-				.addStatus(Status.fromId(Integer.valueOf(status)))
 				.page(page)
 				.limit(limit)
 				.skipCount(skipCount)
-				.sprakkod(sprakkod)
-				.build();
-		return sokUtbildningsinstans(sokUtbildningsinstansQuery);
+				.sprakkod(sprakkod);
+
+		if (status != null && !status.trim().isEmpty()) {
+			builder.addStatus(Status.fromId(Integer.valueOf(status.trim())));
+		}
+
+		return sokUtbildningsinstans(builder.build());
 	}
 
 }

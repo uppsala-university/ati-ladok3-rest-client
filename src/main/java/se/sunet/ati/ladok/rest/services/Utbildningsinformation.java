@@ -150,7 +150,6 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 
 	SokresultatUtbildningsinstans sokUtbildningsinstans(SokUtbildningsinstansQuery sokUtbildningsinstansQuery);
 
-	@Deprecated
 	SokresultatUtbildningsinstans sokUtbildningsinstans(String utbildningstypID, String studieordningID,
 			String utbildningskod, String benamning, String status, int page, int limit, boolean skipCount, String sprakkod);
 
