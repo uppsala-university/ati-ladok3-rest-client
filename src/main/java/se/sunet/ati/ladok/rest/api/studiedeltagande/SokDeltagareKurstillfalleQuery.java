@@ -1,10 +1,13 @@
  package se.sunet.ati.ladok.rest.api.studiedeltagande;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 public class SokDeltagareKurstillfalleQuery {
 
-	private final String kurstillfalleUID;
+	private final List<String> kurstillfalleUIDs;
 	private final Integer kanRegistreraPaPeriod;
 	private final Integer page;
 	private final Integer limit;
@@ -12,7 +15,7 @@ public class SokDeltagareKurstillfalleQuery {
 	private final String deltagareTillstand;
 
 	private SokDeltagareKurstillfalleQuery(SokDeltagareKurstillfalleQueryBuilderImpl builder){
-		kurstillfalleUID = builder.nestedKurstillfalleUID;
+		kurstillfalleUIDs = Collections.unmodifiableList(builder.nestedKurstillfalleUIDs);
 		kanRegistreraPaPeriod = builder.nestedKanRegistreraPaPeriod;
 		page = builder.nestedPage;
 		limit = builder.nestedLimit;
@@ -40,8 +43,8 @@ public class SokDeltagareKurstillfalleQuery {
 		return deltagareTillstand;
 	}
 
-	public String getKurstillfalleUID() {
-		return kurstillfalleUID;
+	public List<String> getKurstillfalleUID() {
+		return kurstillfalleUIDs;
 	}
 
 	public static KurstillfalleUID builder(){
@@ -49,7 +52,7 @@ public class SokDeltagareKurstillfalleQuery {
 	}
 
 	public static class SokDeltagareKurstillfalleQueryBuilderImpl implements KurstillfalleUID, SokDeltagareKurstillfalleQueryBuilder {
-		private String nestedKurstillfalleUID;
+		private List<String> nestedKurstillfalleUIDs = new ArrayList<>();
 		private Integer nestedKanRegistreraPaPeriod;
 		private Integer nestedPage;
 		private Integer nestedLimit;
@@ -58,9 +61,19 @@ public class SokDeltagareKurstillfalleQuery {
 
 		private SokDeltagareKurstillfalleQueryBuilderImpl() { }
 
-		public SokDeltagareKurstillfalleQueryBuilder kurstillfalleUID(String nestedKurstillfalleUID) {
-			Objects.requireNonNull(nestedKurstillfalleUID);
-			this.nestedKurstillfalleUID = nestedKurstillfalleUID;
+		public SokDeltagareKurstillfalleQueryBuilder kurstillfalleUID(String kurstillfalleUID) {
+			return addKurstillfalleUID(kurstillfalleUID);
+		}
+
+		public SokDeltagareKurstillfalleQueryBuilder addKurstillfalleUID(String kurstillfalleUID) {
+			Objects.requireNonNull(kurstillfalleUID);
+			nestedKurstillfalleUIDs.add(kurstillfalleUID);
+			return this;
+		}
+
+		public SokDeltagareKurstillfalleQueryBuilder addKurstillfalleUIDList(List<String> kurstillfalleUIDs) {
+			Objects.requireNonNull(kurstillfalleUIDs);
+			nestedKurstillfalleUIDs.addAll(kurstillfalleUIDs);
 			return this;
 		}
 
@@ -97,6 +110,8 @@ public class SokDeltagareKurstillfalleQuery {
 
 	public interface KurstillfalleUID {
 		SokDeltagareKurstillfalleQueryBuilder kurstillfalleUID(String kurstillfalleUID);
+		SokDeltagareKurstillfalleQueryBuilder addKurstillfalleUID(String kurstillfalleUID);
+		SokDeltagareKurstillfalleQueryBuilder addKurstillfalleUIDList(List<String> kurstillfalleUIDs);
 	}
 
 	public interface SokDeltagareKurstillfalleQueryBuilder {

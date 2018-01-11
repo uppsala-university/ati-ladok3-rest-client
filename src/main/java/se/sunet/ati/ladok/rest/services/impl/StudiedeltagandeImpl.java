@@ -110,7 +110,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 	@Override
 	public SokresultatDeltagare sokDeltagareKurstillfalle(String kurstillfalleUID) {
 		SokDeltagareKurstillfalleQuery sokDeltagareKurstillfalleQuery = SokDeltagareKurstillfalleQuery.builder()
-				.kurstillfalleUID(kurstillfalleUID)
+				.addKurstillfalleUID(kurstillfalleUID)
 				.build();
 		return sokDeltagareKurstillfalle(sokDeltagareKurstillfalleQuery);
 	}
@@ -118,7 +118,8 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 	@Override
 	public SokresultatDeltagare sokDeltagareKurstillfalle(SokDeltagareKurstillfalleQuery query) {
 		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
-		WebTarget client = getClient().path(RESOURCE_DELTAGARE).path(RESOURCE_KURSTILLFALLE).path(query.getKurstillfalleUID())
+		WebTarget client = getClient().path(RESOURCE_DELTAGARE).path(RESOURCE_KURSTILLFALLE)
+				.queryParam("kurstillfalleUID", query.getKurstillfalleUID())
 				.queryParam("kanRegistreraPaPeriod" ,query.getKanRegistreraPaPeriod())
 				.queryParam("page", query.getPage())
 				.queryParam("limit", query.getLimit())

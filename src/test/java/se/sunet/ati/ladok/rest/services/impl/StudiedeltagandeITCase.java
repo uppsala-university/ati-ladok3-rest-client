@@ -1,14 +1,9 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.util.Properties;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import se.ladok.schemas.Student;
 import se.ladok.schemas.studiedeltagande.SokresultatDeltagare;
 import se.ladok.schemas.studiedeltagande.Tillfallesdeltagande;
@@ -18,6 +13,10 @@ import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQue
 import se.sunet.ati.ladok.rest.services.Studiedeltagande;
 import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
+
+import java.util.Properties;
+
+import static org.junit.Assert.assertNotNull;
 
 public class StudiedeltagandeITCase {
 	private static Log log = LogFactory.getLog(StudiedeltagandeITCase.class);
@@ -97,7 +96,7 @@ public class StudiedeltagandeITCase {
 		String kurstillfalleUID = getUtbildningstillfalleUID();
 
 		SokDeltagareKurstillfalleQuery sokDeltagareKurstillfalleQuery = SokDeltagareKurstillfalleQuery.builder()
-				.kurstillfalleUID(kurstillfalleUID)
+				.addKurstillfalleUID(kurstillfalleUID)
 				.build();
 
 		Studiedeltagande sd = new StudiedeltagandeImpl();

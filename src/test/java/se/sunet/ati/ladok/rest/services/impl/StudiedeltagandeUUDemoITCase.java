@@ -40,7 +40,7 @@ public class StudiedeltagandeUUDemoITCase {
 				"rest.studiedeltagande.kurstillfalle.uid");
 
 		SokDeltagareKurstillfalleQuery sokDeltagareKurstillfalleQuery = SokDeltagareKurstillfalleQuery.builder()
-				.kurstillfalleUID(kurstillfalleUID)
+				.addKurstillfalleUID(kurstillfalleUID)
 				.build();
 
 		Studiedeltagande sd = new StudiedeltagandeImpl();
