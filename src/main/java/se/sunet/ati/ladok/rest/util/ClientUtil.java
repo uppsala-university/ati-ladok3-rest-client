@@ -9,6 +9,7 @@ import java.net.CookiePolicy;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyStore;
+import java.util.Collection;
 import java.util.Properties;
 
 import javax.net.ssl.KeyManagerFactory;
@@ -237,5 +238,18 @@ public class ClientUtil {
 
 	public static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
 	public static final String CONTENT_TYPE_HEADER_VALUE = "application/vnd.ladok+xml";
+
+
+	public static <T> WebTarget addQueryParams(final String parameterName, Collection<T> paramValues, WebTarget client ) {
+		if (paramValues == null) {
+			return client;
+		}
+
+		WebTarget newClient = client;
+		for (T val: paramValues) {
+			newClient = newClient.queryParam(parameterName, val);
+		}
+		return newClient;
+	}
 
 }

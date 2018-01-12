@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
+import static se.sunet.ati.ladok.rest.util.ClientUtil.addQueryParams;
 
 public class UtbildningsinformationImpl extends LadokServicePropertiesImpl implements Utbildningsinformation {
 
@@ -777,18 +778,6 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.get();
 
 		return validatedResponse(response, SokresultatUtbildningstillfalleProjektion.class);
-	}
-
-	private <T> WebTarget addQueryParams(final String parameterName, Collection<T> paramValues, WebTarget client ) {
-		if (paramValues == null) {
-			return client;
-		}
-
-		WebTarget newClient = client;
-		for (T val: paramValues) {
-			newClient = newClient.queryParam(parameterName, val);
-		}
-		return newClient;
 	}
 
 	private <T> WebTarget addQueryParam(final String parameterName, T paramValue, WebTarget client ) {

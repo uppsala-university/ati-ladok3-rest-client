@@ -15,6 +15,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
+import static se.sunet.ati.ladok.rest.util.ClientUtil.addQueryParams;
 
 public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements Studiedeltagande {
 	private static Log log = LogFactory.getLog(StudiedeltagandeImpl.class);
@@ -118,8 +119,8 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 	@Override
 	public SokresultatDeltagare sokDeltagareKurstillfalle(SokDeltagareKurstillfalleQuery query) {
 		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
-		WebTarget client = getClient().path(RESOURCE_DELTAGARE).path(RESOURCE_KURSTILLFALLE)
-				.queryParam("kurstillfalleUID", query.getKurstillfalleUID())
+		WebTarget client = getClient().path(RESOURCE_DELTAGARE).path(RESOURCE_KURSTILLFALLE);
+		client = addQueryParams("kurstillfalleUID", query.getKurstillfalleUID(), client)
 				.queryParam("kanRegistreraPaPeriod" ,query.getKanRegistreraPaPeriod())
 				.queryParam("page", query.getPage())
 				.queryParam("limit", query.getLimit())
