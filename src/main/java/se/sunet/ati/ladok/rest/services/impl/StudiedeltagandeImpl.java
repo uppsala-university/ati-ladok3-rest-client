@@ -124,8 +124,8 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.queryParam("kanRegistreraPaPeriod" ,query.getKanRegistreraPaPeriod())
 				.queryParam("page", query.getPage())
 				.queryParam("limit", query.getLimit())
-				.queryParam("orderBy", query.getOrderBy())
-				.queryParam("deltagaretillstand", query.getDeltagareTillstand());
+				.queryParam("orderBy", query.getOrderBy());
+		client = addQueryParams("deltagaretillstand", query.getDeltagareTillstands(), client);
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		Response response =  client
 			.request()
@@ -142,8 +142,8 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 		WebTarget client = getClient().path(RESOURCE_DELTAGARE).path(RESOURCE_KURSPAKETERINGSTILLFALLE).path(query.getKurspaketeringstillfalleUID())
 				.queryParam("page", query.getPage())
 				.queryParam("limit", query.getLimit())
-				.queryParam("orderBy", query.getOrderBy())
-				.queryParam("deltagaretillstand", query.getDeltagareTillstand());
+				.queryParam("orderBy", query.getOrderBy());
+		client = addQueryParams("deltagaretillstand", query.getDeltagareTillstands(), client);
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		Response response =  client
 				.request()

@@ -12,7 +12,7 @@ public class SokDeltagareKurstillfalleQuery {
 	private final Integer page;
 	private final Integer limit;
 	private final String orderBy;
-	private final String deltagareTillstand;
+	private final List<String> deltagareTillstand;
 
 	private SokDeltagareKurstillfalleQuery(SokDeltagareKurstillfalleQueryBuilderImpl builder){
 		kurstillfalleUIDs = Collections.unmodifiableList(builder.nestedKurstillfalleUIDs);
@@ -39,7 +39,7 @@ public class SokDeltagareKurstillfalleQuery {
 		return orderBy;
 	}
 
-	public String getDeltagareTillstand() {
+	public List<String> getDeltagareTillstands() {
 		return deltagareTillstand;
 	}
 
@@ -57,7 +57,7 @@ public class SokDeltagareKurstillfalleQuery {
 		private Integer nestedPage;
 		private Integer nestedLimit;
 		private String nestedOrderBy;
-		private String deltagareTillstand;
+		private List<String> deltagareTillstand = new ArrayList<>();
 
 		private SokDeltagareKurstillfalleQueryBuilderImpl() { }
 
@@ -98,7 +98,16 @@ public class SokDeltagareKurstillfalleQuery {
 		}
 
 		public SokDeltagareKurstillfalleQueryBuilder tillstand(String deltagareTillstand) {
-			this.deltagareTillstand = deltagareTillstand;
+			return addTillstand(deltagareTillstand);
+		}
+
+		public SokDeltagareKurstillfalleQueryBuilder addTillstand(String deltagareTillstand) {
+			this.deltagareTillstand.add(deltagareTillstand);
+			return this;
+		}
+
+		public SokDeltagareKurstillfalleQueryBuilder addTillstandList(List<String> deltagareTillstand) {
+			this.deltagareTillstand.addAll(deltagareTillstand);
 			return this;
 		}
 
@@ -119,6 +128,8 @@ public class SokDeltagareKurstillfalleQuery {
 		SokDeltagareKurstillfalleQueryBuilder page(Integer page);
 		SokDeltagareKurstillfalleQueryBuilder limit(Integer limit);
 		SokDeltagareKurstillfalleQueryBuilder orderBy(String orderBy);
+		SokDeltagareKurstillfalleQueryBuilder addTillstand(String deltagare);
+		SokDeltagareKurstillfalleQueryBuilder addTillstandList(List<String> deltagare);
 		SokDeltagareKurstillfalleQueryBuilder tillstand(String deltagare);
 		SokDeltagareKurstillfalleQuery build();
 	}

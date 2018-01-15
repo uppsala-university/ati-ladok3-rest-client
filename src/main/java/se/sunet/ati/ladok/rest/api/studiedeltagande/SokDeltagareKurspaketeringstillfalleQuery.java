@@ -1,11 +1,15 @@
 package se.sunet.ati.ladok.rest.api.studiedeltagande;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class SokDeltagareKurspaketeringstillfalleQuery {
 	private final String kurspaketeringstillfalleUID;
 	private final Integer page;
 	private final Integer limit;
 	private final String orderBy;
-	private final String deltagareTillstand;
+	private final List<String> deltagareTillstands;
 
 	public static Builder builder() {
 		return new Builder();
@@ -27,8 +31,8 @@ public class SokDeltagareKurspaketeringstillfalleQuery {
 		return orderBy;
 	}
 
-	public String getDeltagareTillstand() {
-		return deltagareTillstand;
+	public List<String> getDeltagareTillstands() {
+		return deltagareTillstands;
 	}
 
 	private SokDeltagareKurspaketeringstillfalleQuery(Builder builder) {
@@ -36,7 +40,7 @@ public class SokDeltagareKurspaketeringstillfalleQuery {
 		page = builder.page;
 		limit = builder.limit;
 		orderBy = builder.orderBy;
-		deltagareTillstand = builder.deltagareTillstand;
+		deltagareTillstands = Collections.unmodifiableList(builder.deltagareTillstands);
 	}
 
 	public static final class Builder {
@@ -44,7 +48,7 @@ public class SokDeltagareKurspaketeringstillfalleQuery {
 		private Integer page;
 		private Integer limit;
 		private String orderBy;
-		private String deltagareTillstand;
+		private List<String> deltagareTillstands = new ArrayList<>();
 
 		private Builder() {
 		}
@@ -70,7 +74,16 @@ public class SokDeltagareKurspaketeringstillfalleQuery {
 		}
 
 		public Builder deltagareTillstand(String deltagareTillstand) {
-			this.deltagareTillstand = deltagareTillstand;
+			return addDeltagareTillstand(deltagareTillstand);
+		}
+
+		public Builder addDeltagareTillstand(String deltagareTillstand) {
+			this.deltagareTillstands.add(deltagareTillstand);
+			return this;
+		}
+
+		public Builder addDeltagareTillstandList(List<String> deltagareTillstand) {
+			this.deltagareTillstands.addAll(deltagareTillstand);
 			return this;
 		}
 
