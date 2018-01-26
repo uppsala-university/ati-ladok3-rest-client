@@ -6,8 +6,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import se.ladok.schemas.Benamningar;
 import se.ladok.schemas.Datumperiod;
+import se.ladok.schemas.Hinder;
+import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.Student;
+import se.ladok.schemas.dap.RelationLink;
 import se.ladok.schemas.resultat.Aktivitetstillfalle;
 import se.ladok.schemas.resultat.Aktivitetstillfallestyp;
 import se.ladok.schemas.resultat.Aktivitetstillfallestyper;
@@ -56,6 +59,7 @@ public class ResultatinformationUUDemoITCase {
 	private static Properties properties = null;
 	static final String TEST_DATA_FILE = "restclient.testdata.uudemo.properties"; 
 	private static Resultatinformation ri;
+	static final String HINDER_FOR_RAPPORTERING = "http://relations.ladok.se/resultat/studieresultat/resultat/skapa/hinder";
 
 	@BeforeClass
 	public static void beforeClass() throws IOException {
@@ -374,8 +378,9 @@ public class ResultatinformationUUDemoITCase {
 		//kurstillfallen.add("01010101-2222-3333-0043-000000002094");
 		//testSokResultat("01010101-2222-3333-0043-000000000949", kurstillfallen, "UTKAST");
 		kurstillfallen.add("bce52909-d426-11e7-a506-1c40749b409d");
-		testSokResultat("3ee026a6-d432-11e7-a506-1c40749b409d", kurstillfallen, "OBEHANDLADE_UTKAST_KLARMARKERADE_ATTESTERADE");
-	}	
+//		testSokResultat("3ee026a6-d432-11e7-a506-1c40749b409d", kurstillfallen, "OBEHANDLADE_UTKAST_KLARMARKERADE_ATTESTERADE");
+		testSokResultat("9d39f49e-d42c-11e7-a506-1c40749b409d", kurstillfallen, "OBEHANDLADE_UTKAST_KLARMARKERADE_ATTESTERADE");
+	}
 
 	public void testSokResultat(String kursinstansUid, List<String> kurstillfallen, String filtrering) throws Exception {
 		StudieresultatForRapporteringSokVarden sokVarden = new StudieresultatForRapporteringSokVarden();
@@ -414,7 +419,16 @@ public class ResultatinformationUUDemoITCase {
 				if (arbetsunderlag != null && arbetsunderlag.getBetygsgrad() != null && arbetsunderlag.getUtbildningsinstansUID() != null &&
 						kursinstansUid.equals(arbetsunderlag.getUtbildningsinstansUID())) {
 					System.out.println("   " + arbetsunderlag.getProcessStatus());
-					System.out.println(arbetsunderlag);
+					//System.out.println(arbetsunderlag);
+				}
+			}
+			if (r.getLink() != null) {
+				for (RelationLink link : r.getLink()) {
+					if (HINDER_FOR_RAPPORTERING.equals(link.getRel())) {
+						System.out.println("Hinder för rapportering!");
+						System.out.println(link.getUri());
+						System.out.println("");
+					}
 				}
 			}
 		}
@@ -452,7 +466,24 @@ public class ResultatinformationUUDemoITCase {
 			}
 		}
 	}
-	
+
+
+	// Note: It says "utbildningUID" in the restdoc but this is wrong, it should be "utbildningsinstansUID"
+	//resultat/studieresultat/{studieresultatUID}/utbildning/{utbildningsinstansUID}/resultat/hinder
+	//@Test
+	public void testHamtaHinder() throws Exception {
+		// Mario  9429b55a-e646-11e7-922a-3b91b6b54620
+		// Wilma  0466cc55-f603-11e7-b1a4-a7800d66443f
+		Hinderlista hinderlista = ri.hamtaHinder("9429b55a-e646-11e7-922a-3b91b6b54620", "9d39f49e-d42c-11e7-a506-1c40749b409d");
+		assertNotNull(hinderlista);
+
+		List<Hinder> hinders = hinderlista.getHinder();
+		for (Hinder hinder : hinders) {
+			System.out.println("hinder: " + hinder.getI18NNyckel() + " . " + hinder.toString());
+			System.out.println("stoppande: " + hinder.isStoppande());
+		}
+	}
+
 	//@Test
 	public void testListaOrganisatoriskaDelar() throws Exception {
 		Organisationslista organisationslista = ri.listaOrganisatoriskaDelar();

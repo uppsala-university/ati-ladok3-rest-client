@@ -1,5 +1,6 @@
 package se.sunet.ati.ladok.rest.services;
 
+import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.resultat.*;
@@ -143,4 +144,6 @@ public interface Resultatinformation {
 	public Aktivitetstillfallesmojlighet skapaAktivitetstillfallesmojlighet(String studieresultatUID, Aktivitetstillfalle aktivitetstillfalle);
 	
 	public Identiteter sokStudentidentiteter(String aktivitetstillfalleUID);
+
+	public Hinderlista hamtaHinder(String studieresultatUID, String utbildningUID);
 }

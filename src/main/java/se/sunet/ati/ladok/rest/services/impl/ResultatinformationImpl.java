@@ -12,6 +12,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.resultat.Aktivitetstillfalle;
@@ -77,6 +78,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	private static final String RESOURCE_STUDENTIDENTITETER = "studentidentiteter";
 	private static final String RESOURCE_SKAPA="skapa";
 	private static final String RESOURCE_UPPDATERA = "uppdatera";
+	private static final String RESOURCE_HINDER = "hinder";
 	
 	private static final String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 	public static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
@@ -831,6 +833,28 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		
 		return validatedResponse(response, Identiteter.class);
 	}
-	
-	
+
+	// Note: It says "utbildningUID" in the restdoc but this is wrong, it should be "utbildningsinstansUID"
+	@Override
+	public Hinderlista hamtaHinder(String studieresultatUID, String utbildningsinstansUID) {
+		WebTarget client = getClient()
+				.path(RESOURCE_STUDIERESULTAT)
+				.path(studieresultatUID)
+				.path(RESOURCE_UTBILDNING)
+				.path(utbildningsinstansUID)
+				.path(RESOURCE_RESULTAT)
+				.path(RESOURCE_HINDER);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		System.out.println("Query URL: " + client.getUri());
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Hinderlista.class);
+	}
+
+
 }
