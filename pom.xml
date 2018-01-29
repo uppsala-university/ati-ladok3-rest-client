@@ -6,7 +6,7 @@
     <groupId>se.sunet.ati</groupId>
     <artifactId>ati-parent</artifactId>
     <version>2</version>
-    <!--<relativePath>../ati-parent/pom.xml</relativePath>-->
+    <relativePath>../ati-parent/pom.xml</relativePath>
   </parent>
 
   <properties>
