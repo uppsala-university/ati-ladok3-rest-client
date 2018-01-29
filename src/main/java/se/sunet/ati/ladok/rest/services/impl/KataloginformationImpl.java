@@ -20,6 +20,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	private static final String RESOURCE_ANVANDARE = "anvandare";
 	private static final String RESOURCE_ENHET = "enhet";
 	private static final String RESOURCE_ORGANISATION = "organisation";
+	private static final String RESOURCE_AKTIVITETSTILLFALLESTYP = "aktivitetstillfallestyp";
 
 	private static Log log = LogFactory.getLog(KataloginformationImpl.class);
 
@@ -269,6 +270,23 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("utbildningstyp");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Utbildningstyper.class);
+	}
+
+	@Override
+	public Aktivitetstillfallestyper listaAktivitetstillfallestyper() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_GRUNDDATA)
+				.path(RESOURCE_AKTIVITETSTILLFALLESTYP);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Aktivitetstillfallestyper.class);
 	}
 
 }

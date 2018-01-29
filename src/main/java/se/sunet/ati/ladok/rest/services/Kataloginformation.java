@@ -55,4 +55,6 @@ public interface Kataloginformation extends LadokServiceProperties {
     SokresultatOrganisationKataloginformation sokOrganisation(SokOrganisationQuery sokOrganisationQuery);
 
 	Utbildningstyper listaUtbildningstyper();
+
+	Aktivitetstillfallestyper listaAktivitetstillfallestyper();
 }

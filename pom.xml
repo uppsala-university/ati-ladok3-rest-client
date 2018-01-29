@@ -6,7 +6,7 @@
     <groupId>se.sunet.ati</groupId>
     <artifactId>ati-parent</artifactId>
     <version>2</version>
-    <relativePath>../ati-parent/pom.xml</relativePath>
+    <!--<relativePath>../ati-parent/pom.xml</relativePath>-->
   </parent>
 
   <properties>
@@ -93,7 +93,8 @@
     <dependency>
       <groupId>se.sunet.ati.ladok</groupId>
       <artifactId>ati-ladok3-dto</artifactId>
-      <version>0.89.1</version>
+      <!--<version>0.84.1</version>-->
+      <version>1.0.0-SNAPSHOT</version>
       <type>${bundle.type}</type>
     </dependency>
   </dependencies>

@@ -165,4 +165,11 @@ public class KataloginformationITCase {
 		Anvandare a = ki.hamtAutentiserad();
 		assertFalse(a.getAnvandarnamn() == null);
 	}
+
+	@Test
+	public void listaAktivitetstillfallestyper() throws Exception {
+		Kataloginformation ki = new KataloginformationImpl();
+		Aktivitetstillfallestyper aktivitetstillfallestyper = ki.listaAktivitetstillfallestyper();
+		assertFalse(aktivitetstillfallestyper.getAktivitetstillfallestyp().isEmpty());
+	}
 }
