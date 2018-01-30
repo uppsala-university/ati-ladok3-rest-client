@@ -567,6 +567,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		return validatedResponse(response,SokresultatAktivitetstillfallesmojlighetResultat.class);
 	}
 
+	@Override
 	public SokresultatAktivitetstillfallesmojlighetResultat sokAktivitetstillfallesmojligheter(SokAktivitetstillfallesmojlighetQuery sokAktivitetstillfallesmojlighetQuery) {
 		return sokAktivitetstillfallesmojligheter(
 				sokAktivitetstillfallesmojlighetQuery.getAktivitetstillfalleUID(),
