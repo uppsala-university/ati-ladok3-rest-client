@@ -40,6 +40,7 @@ import se.ladok.schemas.resultat.StudieresultatOrderByEnum;
 import se.ladok.schemas.resultat.StudieresultatTillstandVidRapporteringEnum;
 import se.ladok.schemas.resultat.UppdateraFlera;
 import se.ladok.schemas.resultat.Utbildningsinstans;
+import se.sunet.ati.ladok.rest.api.resultinformation.SokAktivitetstillfallesmojlighetQuery;
 import se.sunet.ati.ladok.rest.services.Resultatinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -565,7 +566,22 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		
 		return validatedResponse(response,SokresultatAktivitetstillfallesmojlighetResultat.class);
 	}
-	
+
+	public SokresultatAktivitetstillfallesmojlighetResultat sokAktivitetstillfallesmojligheter(SokAktivitetstillfallesmojlighetQuery sokAktivitetstillfallesmojlighetQuery) {
+		return sokAktivitetstillfallesmojligheter(
+				sokAktivitetstillfallesmojlighetQuery.getAktivitetstillfalleUID(),
+				sokAktivitetstillfallesmojlighetQuery.getAnmalda(),
+				sokAktivitetstillfallesmojlighetQuery.getPersonnummer(),
+				sokAktivitetstillfallesmojlighetQuery.getFornamn(),
+				sokAktivitetstillfallesmojlighetQuery.getEfternamn(),
+				sokAktivitetstillfallesmojlighetQuery.getSkipCount(),
+				sokAktivitetstillfallesmojlighetQuery.getOnlyCount(),
+				sokAktivitetstillfallesmojlighetQuery.getSprakkod(),
+				sokAktivitetstillfallesmojlighetQuery.getPage(),
+				sokAktivitetstillfallesmojlighetQuery.getLimit()
+		);
+	}
+
 	@Override
 	public Studielokaliseringar sokAllaStudielokaliseringar() {
 		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;

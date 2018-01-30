@@ -4,6 +4,7 @@ import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.resultat.*;
+import se.sunet.ati.ladok.rest.api.resultinformation.SokAktivitetstillfallesmojlighetQuery;
 
 public interface Resultatinformation {
 
@@ -71,6 +72,8 @@ public interface Resultatinformation {
 			int page, 
 			int limit
 	);
+
+	public SokresultatAktivitetstillfallesmojlighetResultat sokAktivitetstillfallesmojligheter(SokAktivitetstillfallesmojlighetQuery sokAktivitetstillfallesmojlighetQuery);
 	
 	public Studielokaliseringar sokAllaStudielokaliseringar();
 
