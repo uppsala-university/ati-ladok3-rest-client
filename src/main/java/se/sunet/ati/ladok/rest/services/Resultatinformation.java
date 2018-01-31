@@ -5,6 +5,7 @@ import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.resultat.*;
 import se.sunet.ati.ladok.rest.api.resultinformation.SokAktivitetstillfallesmojlighetQuery;
+import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfalleQuery;
 
 public interface Resultatinformation {
 
@@ -42,7 +43,9 @@ public interface Resultatinformation {
 	public Aktivitetstillfallestyp hamtaAktivitetstillfallestyp(int aktivitesttillfalletypUID);
 
 	public Aktivitetstillfallestyper listaAktivitetstillfallestyper();
-	
+
+	public SokresultatAktivitetstillfalleResultat sokAktivitetstillfallen(SokAktivitetstillfalleQuery sokAktivitetstillfalleQuery);
+
 	public SokresultatAktivitetstillfalleResultat sokAktivitetstillfallen(
 			String aktivitetstillfallestypID,
 			String benamning, 
@@ -74,7 +77,7 @@ public interface Resultatinformation {
 	);
 
 	public SokresultatAktivitetstillfallesmojlighetResultat sokAktivitetstillfallesmojligheter(SokAktivitetstillfallesmojlighetQuery sokAktivitetstillfallesmojlighetQuery);
-	
+
 	public Studielokaliseringar sokAllaStudielokaliseringar();
 
 	SokresultatStudieresultatResultat sokStudieResultat(StudieresultatForRapporteringSokVarden studieresultatForRapporteringSokVarden, String utbildningsinstansUID);
