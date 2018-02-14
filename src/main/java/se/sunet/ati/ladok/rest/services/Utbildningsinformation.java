@@ -160,4 +160,6 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	Markningsvarden hamtaMarkningsvarden(String kod);
 
 	Utbildningsinformationsstruktur sokStruktur(String utbildningsbasUID);
+
+	Utbildningstillfalle ateraktiveraTillfalle(String utbildningstillfalleUID, Beslut beslut);
 }

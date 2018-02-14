@@ -568,6 +568,21 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		return validatedResponse(response, Utbildningstillfalle.class);
 	}
+	
+	@Override
+	public Utbildningstillfalle ateraktiveraTillfalle(String utbildningstillfalleUID, Beslut beslut) {
+		JAXBElement<Beslut> beslutJAXBElement = getBeslutJAXBElement(beslut);
+		WebTarget client = getClient()
+				.path(RESOURCE_UTBILDNINGSTILFALLE)
+				.path("ateraktivera_installt")
+				.path(utbildningstillfalleUID);
+
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.put(Entity.entity(beslutJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, Utbildningstillfalle.class);
+	}
 
 	@Override
 	public Utbildningstillfalle bytUtbildningsinstansForUtbildningstillfalle(String utbildningstillfalleUID, String utbildningsinstansUID) {
