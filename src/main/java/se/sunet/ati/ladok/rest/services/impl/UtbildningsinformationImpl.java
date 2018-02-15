@@ -113,7 +113,26 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		return validatedResponse(response, LokalUtbildningsmall.class);
 	}
+	
+	@Override
+	public LokalaUtbildningsmallar sokLokalUtbildningsmallar(int studieordningID) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_UTBILDNINGSMALL)
+				.path(RESOURCE_LOKAL)
+				.path("sok")
+				.queryParam("studieordningID", studieordningID);
 
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, LokalaUtbildningsmallar.class);
+	}
+			
 	@Override
 	public LokalUtbildningsmall hamtaLokalUtbildningsmall(String utbildningsmallUID) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;

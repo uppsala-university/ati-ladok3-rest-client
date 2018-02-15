@@ -162,4 +162,6 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	Utbildningsinformationsstruktur sokStruktur(String utbildningsbasUID);
 
 	Utbildningstillfalle ateraktiveraTillfalle(String utbildningstillfalleUID, Beslut beslut);
+
+	LokalaUtbildningsmallar sokLokalUtbildningsmallar(int studieordningID);
 }
