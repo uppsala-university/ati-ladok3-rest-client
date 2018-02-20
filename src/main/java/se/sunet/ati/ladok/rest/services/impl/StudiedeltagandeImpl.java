@@ -41,6 +41,8 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 	private static final String RESOURCE_KURSTILLFALLESDELTAGANDE = "kurstillfallesdeltagande";
 	private static final String RESOURCE_STUDIESTRUKTURREFERENS = "studiestrukturreferens";
 	private static final String RESOURCE_STUDIESTRUKTUR = "studiestruktur";
+	private static final String RESOURCE_GRUPP = "grupp";
+	private static final String RESOURCE_UTBILDNING = "utbildning";
 
 	// OBS Nedanstående resurs är felstavad hos Ladok3
 	private static final String RESOURCE_PABORJAD_UTBILDNING = "paborjadutbilding";
@@ -345,6 +347,27 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.get();
 
 		return validatedResponse(response, IngaendeKurspaketeringstillfalleLista.class);
+	}
+
+	@Override
+	public GruppLista hamtaGrupperForUtbildning(String utbildninguid) {
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+
+
+		WebTarget client = getClient()
+				.path(RESOURCE_GRUPP)
+				.path(RESOURCE_UTBILDNING)
+				.path(utbildninguid);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, GruppLista.class);
 	}
 
 }

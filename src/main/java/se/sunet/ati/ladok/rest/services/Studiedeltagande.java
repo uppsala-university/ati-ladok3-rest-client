@@ -40,4 +40,6 @@ public interface Studiedeltagande extends LadokServiceProperties {
 	IngaendeKurspaketeringstillfalleLista hamtaIngaendeKurspaketeringMedBarn(String studiestrukturreferens);
 
 	IngaendeKurspaketeringstillfalleLista hamtaStudiestrukturerForStudent(String studentuid);
+
+	GruppLista hamtaGrupperForUtbildning(String utbildninguid);
 }
