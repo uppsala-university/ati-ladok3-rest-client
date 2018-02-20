@@ -7,6 +7,7 @@ import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.resultat.*;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfalleQuery;
+import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatResultatUppfoljningQuery;
 import se.sunet.ati.ladok.rest.api.resultinformation.SokAktivitetstillfallesmojlighetQuery;
 import se.sunet.ati.ladok.rest.services.Resultatinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
@@ -668,6 +669,23 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.get();
 
 		return validatedResponse(response, Perioder.class);
+	}
+
+	@Override
+	public SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(
+			SokResultatResultatUppfoljningQuery sokResultatResultatUppfoljningQuery) {
+
+		return sokStudieresultatForResultatuppfoljningAvKurs(
+				sokResultatResultatUppfoljningQuery.getKursinstansUID(),
+				sokResultatResultatUppfoljningQuery.getKurstillfallen().toArray(new String[sokResultatResultatUppfoljningQuery.getKurstillfallen().size()]),
+				sokResultatResultatUppfoljningQuery.getGrupp(),
+				sokResultatResultatUppfoljningQuery.getTillstand(),
+				sokResultatResultatUppfoljningQuery.getPage(),
+				sokResultatResultatUppfoljningQuery.getLimit(),
+				sokResultatResultatUppfoljningQuery.getOrderby(),
+				sokResultatResultatUppfoljningQuery.getOrderBetygsgradAvserUtbildningUID(),
+				sokResultatResultatUppfoljningQuery.getOrderExaminationsdatumAvserUtbildningUID()
+		);
 	}
 
 	@Override

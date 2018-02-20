@@ -4,6 +4,7 @@ import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.resultat.*;
+import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatResultatUppfoljningQuery;
 import se.sunet.ati.ladok.rest.api.resultinformation.SokAktivitetstillfallesmojlighetQuery;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfalleQuery;
 
@@ -130,7 +131,10 @@ public interface Resultatinformation {
 			String orderby,
 			String orderBetygsgradAvserUtbildningUID,
 			String orderExaminationsdatumAvserUtbildningUID);
-	
+
+	public SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(
+			SokResultatResultatUppfoljningQuery sokResultatResultatUppfoljningQuery);
+
 	public SokresultatStudieresultatResultat sokStudieresultatForRapporteringsunderlag(
 		String aktivitetstillfalleUID,
 		String[] kurstillfallen,
