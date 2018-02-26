@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import se.ladok.schemas.studentinformation.AvskiljandebeslutLista;
 import se.ladok.schemas.studentinformation.Avstangningar;
+import se.ladok.schemas.studentinformation.Student;
 import se.sunet.ati.ladok.rest.services.Studentinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -69,4 +70,20 @@ public class StudentinformationImpl extends LadokServicePropertiesImpl implement
 		return validatedResponse(response, Avstangningar.class);
 	}
 
+	@Override
+	public Student hamtaStudent(String studentUID) {
+		WebTarget client = getClient()
+				.path(RESOURCE_STUDENT)
+				.path(studentUID);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		System.out.println("Query URL: " + client.getUri());
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Student.class);
+	}
 }
