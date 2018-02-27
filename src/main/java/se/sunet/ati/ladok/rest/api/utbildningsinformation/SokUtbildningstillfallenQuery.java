@@ -1,5 +1,7 @@
 package se.sunet.ati.ladok.rest.api.utbildningsinformation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -7,7 +9,7 @@ import java.util.Collection;
  */
 public class SokUtbildningstillfallenQuery {
 	private final String utbildningstypID;
-	private final String utbildningstillfallestypID;
+	private final Collection<String> utbildningstillfallestypID;
 	private final String studieordningID;
 	private final String benamning;
 	private final String studieperiod;
@@ -48,7 +50,21 @@ public class SokUtbildningstillfallenQuery {
 		return utbildningstypID;
 	}
 
+	/**
+	 * @deprecated Use getUtbildningstillfallestypIDs instead. This method will be removed in future release.
+	 */
+	@Deprecated
 	public String getUtbildningstillfallestypID() {
+		if (utbildningstillfallestypID == null) {
+			return null;
+		} else if (utbildningstillfallestypID.size() != 1) {
+			throw new IllegalStateException("Expects exactly one item in list, got: " + utbildningstillfallestypID.size());
+		} else {
+			return utbildningstillfallestypID.iterator().next();
+		}
+	}
+
+	public Collection<String> getUtbildningstillfallestypIDs() {
 		return utbildningstillfallestypID;
 	}
 
@@ -106,7 +122,7 @@ public class SokUtbildningstillfallenQuery {
 
 	public static final class Builder {
 		private String utbildningstypID;
-		private String utbildningstillfallestypID;
+		private Collection<String> utbildningstillfallestypID;
 		private String studieordningID;
 		private String benamning;
 		private String studieperiod;
@@ -129,8 +145,13 @@ public class SokUtbildningstillfallenQuery {
 			return this;
 		}
 
-		public Builder utbildningstillfallestypID(String val) {
-			utbildningstillfallestypID = val;
+		public Builder utbildningstillfallestypID(String id) {
+			utbildningstillfallestypID = Arrays.asList(id);
+			return this;
+		}
+
+		public Builder utbildningstillfallestypID(Collection<String> ids) {
+			utbildningstillfallestypID = new ArrayList<>(ids);
 			return this;
 		}
 

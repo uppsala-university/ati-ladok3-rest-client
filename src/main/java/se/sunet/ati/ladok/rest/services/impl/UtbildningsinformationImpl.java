@@ -828,7 +828,6 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.path("utbildningstillfalle")
 				.path("filtrera")
 				.queryParam("utbildningstypID", query.getUtbildningstypID())
-				.queryParam("utbildningstillfallestypID", query.getUtbildningstillfallestypID())
 				.queryParam("studieordningID", query.getStudieordningID())
 				.queryParam("benamning", query.getBenamning())
 				.queryParam("studieperiod", query.getStudieperiod())
@@ -838,6 +837,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.queryParam("skipCount", query.getSkipCount())
 				.queryParam("onlyCount", query.getOnlyCount())
 				.queryParam("sprakkod", query.getSprakkod());
+		client = addQueryParams("utbildningstillfallestypID", query.getUtbildningstillfallestypIDs(), client);
 		client = addQueryParams("utbildningstillfalleskod", query.getUtbildningstillfalleskod(), client);
 		client = addQueryParams("utbildningskod", query.getUtbildningskod(), client);
 		client = addQueryParams("organisationUID", query.getOrganisationUID(), client);
