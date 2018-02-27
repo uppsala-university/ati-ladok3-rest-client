@@ -54,6 +54,10 @@ public class SokAktivitetstillfallesmojlighetQuery {
         return limit;
     }
 
+    public static Builder builder(){
+        return new Builder();
+    }
+
     private SokAktivitetstillfallesmojlighetQuery(Builder builder) {
         aktivitetstillfalleUID = builder.aktivitetstillfalleUID;
         anmalda = builder.anmalda;

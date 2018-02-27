@@ -539,21 +539,37 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 			String sprakkod,
 			int page,
 			int limit) {
-
+		return sokAktivitetstillfallesmojligheter(SokAktivitetstillfallesmojlighetQuery.builder()
+				.aktivitetstillfalleUID(aktivitetstillfalleUID)
+				.anmalda(anmalda)
+				.personnummer(personnummer)
+				.fornamn(fornamn)
+				.efternamn(efternamn)
+				.skipCount(skipCount)
+				.onlyCount(onlyCount)
+				.sprakkod(sprakkod)
+				.page(page)
+				.limit(limit)
+				.build());
+	}
+	@Override
+	public SokresultatAktivitetstillfallesmojlighetResultat sokAktivitetstillfallesmojligheter(SokAktivitetstillfallesmojlighetQuery sokAktivitetstillfallesmojlighetQuery) {
 		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 		WebTarget client = getClient()
 				.path(RESOURCE_AKTIVITETSTILLFALLESMOJLIGHET)
-				.path(RESOURCE_FILTRERA)
-				.queryParam("aktivitetstillfalleUID",aktivitetstillfalleUID)
-				.queryParam("anmalda",anmalda)
-				.queryParam("personnummer",personnummer)
-				.queryParam("fornamn",fornamn)
-				.queryParam("efternamn",efternamn)
-				.queryParam("page",page)
-				.queryParam("limit",limit)
-				.queryParam("skipCount",skipCount)
-				.queryParam("onlyCount",onlyCount)
-				.queryParam("sprakkod",sprakkod);
+				.path(RESOURCE_FILTRERA);
+		log.info("TEST: Query URL: " + client.getUri() + ", response type: " + responseType);
+
+		client= client.queryParam("aktivitetstillfalleUID",sokAktivitetstillfallesmojlighetQuery.getAktivitetstillfalleUID());
+		client= client.queryParam("anmalda",sokAktivitetstillfallesmojlighetQuery.getAnmalda());
+		client= client.queryParam("personnummer",sokAktivitetstillfallesmojlighetQuery.getPersonnummer());
+		client= client.queryParam("fornamn",sokAktivitetstillfallesmojlighetQuery.getFornamn());
+		client= client.queryParam("efternamn",sokAktivitetstillfallesmojlighetQuery.getEfternamn());
+		client= client.queryParam("skipCount",sokAktivitetstillfallesmojlighetQuery.getSkipCount());
+		client= client.queryParam("onlyCount",sokAktivitetstillfallesmojlighetQuery.getOnlyCount());
+		client= client.queryParam("sprakkod",sokAktivitetstillfallesmojlighetQuery.getSprakkod());
+		client= client.queryParam("limit",sokAktivitetstillfallesmojlighetQuery.getLimit());
+		client= client.queryParam("page",sokAktivitetstillfallesmojlighetQuery.getPage());
 
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		Response response = client
@@ -563,21 +579,6 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.get();
 
 		return validatedResponse(response,SokresultatAktivitetstillfallesmojlighetResultat.class);
-	}
-	@Override
-	public SokresultatAktivitetstillfallesmojlighetResultat sokAktivitetstillfallesmojligheter(SokAktivitetstillfallesmojlighetQuery sokAktivitetstillfallesmojlighetQuery) {
-		return sokAktivitetstillfallesmojligheter(
-				sokAktivitetstillfallesmojlighetQuery.getAktivitetstillfalleUID(),
-				sokAktivitetstillfallesmojlighetQuery.getAnmalda(),
-				sokAktivitetstillfallesmojlighetQuery.getPersonnummer(),
-				sokAktivitetstillfallesmojlighetQuery.getFornamn(),
-				sokAktivitetstillfallesmojlighetQuery.getEfternamn(),
-				sokAktivitetstillfallesmojlighetQuery.getSkipCount(),
-				sokAktivitetstillfallesmojlighetQuery.getOnlyCount(),
-				sokAktivitetstillfallesmojlighetQuery.getSprakkod(),
-				sokAktivitetstillfallesmojlighetQuery.getPage(),
-				sokAktivitetstillfallesmojlighetQuery.getLimit()
-		);
 	}
 	@Override
 	public Studielokaliseringar sokAllaStudielokaliseringar() {
