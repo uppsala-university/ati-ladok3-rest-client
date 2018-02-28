@@ -114,6 +114,7 @@
          Buildable studieordningID(String studieordningID);
          Buildable addUtbildningskodCollection(Collection<String> utbildningskodCollection);
          Buildable addUtbildningskod(String utbildningskod);
+         Buildable setStatusCollection(Collection<Status> statusCollection);
          Buildable addStatusCollection(Collection<Status> statusCollection);
          Buildable addStatus(Status status);
          Buildable addOrganisationUIDCollection(Collection<String> organisationUIDCollection);
@@ -195,6 +196,23 @@
              return this;
          }
 
+         /**
+          * Set status collection
+          * @param statusCollection
+          * @return
+          */
+         @Override
+         public BuilderImpl setStatusCollection(Collection<Status> statusCollection) {
+             this.statusCollection.clear();
+             this.statusCollection.addAll(statusCollection);
+             return this;
+         }
+
+         /**
+          * Append status collection
+          * @param statusCollection
+          * @return
+          */
          @Override
          public BuilderImpl addStatusCollection(Collection<Status> statusCollection) {
              this.statusCollection.addAll(statusCollection);
