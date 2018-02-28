@@ -8,7 +8,8 @@ import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.resultat.*;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfalleQuery;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatResultatUppfoljningQuery;
-import se.sunet.ati.ladok.rest.api.resultinformation.SokAktivitetstillfallesmojlighetQuery;
+import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfallesmojlighetQuery;
+import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatKurstillfallesdeltagareQuery;
 import se.sunet.ati.ladok.rest.services.Resultatinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -57,6 +58,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	private static final String RESOURCE_SKAPA="skapa";
 	private static final String RESOURCE_UPPDATERA = "uppdatera";
 	private static final String RESOURCE_HINDER = "hinder";
+	private static final String RESOURCE_KURSTILLFALLESDELTAGARE = "kurstillfallesdeltagare";
 
 	private static final String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 	public static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
@@ -825,6 +827,23 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	}
 
 	@Override
+	public Aktivitetstillfallesmojlighet hamtaAktivitetstillfallesmojlighet(String aktivitetstillfallesmojlighetUID) {
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_AKTIVITETSTILLFALLESMOJLIGHET)
+				.path(aktivitetstillfallesmojlighetUID);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Aktivitetstillfallesmojlighet.class);
+	}
+
+	@Override
 	public Aktivitetstillfallesmojlighet skapaAktivitetstillfallesmojlighet(
 			String studieresultatUID, Aktivitetstillfalle aktivitetstillfalle) {
 
@@ -841,7 +860,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
-				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+				.post(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
 
 		return validatedResponse(response, Aktivitetstillfallesmojlighet.class);
 	}
@@ -887,5 +906,55 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		return validatedResponse(response, Hinderlista.class);
 	}
 
+	@Override
+	public SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(
+			String aktivitetstillfalleUID,
+			String kurstillfalleUID,
+			String gruppUID,
+			boolean skipCount,
+			boolean onlyCount,
+			String sprakkod,
+			int limit,
+			int page,
+			String orderby) {
 
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_KURSTILLFALLESDELTAGARE)
+				.path(RESOURCE_FILTRERA)
+				.queryParam("aktivitetstillfalleUID",aktivitetstillfalleUID)
+				.queryParam("kurstillfalleUID",kurstillfalleUID)
+				.queryParam("gruppUID",gruppUID)
+				.queryParam("skipCount",skipCount)
+				.queryParam("onlyCount",onlyCount)
+				.queryParam("sprakkod",sprakkod)
+				.queryParam("limit",limit)
+				.queryParam("page",page)
+				.queryParam("orderby",orderby);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		System.out.println("Query URL: " + client.getUri());
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, SokresultatKurstillfallesdeltagare.class);
+	}
+
+	@Override
+	public SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(SokResultatKurstillfallesdeltagareQuery sokResultatKurstillfallesdeltagareQuery) {
+		return sokresultatKurstillfallesdeltagare(
+				sokResultatKurstillfallesdeltagareQuery.getAktivitetstillfalleUID(),
+				sokResultatKurstillfallesdeltagareQuery.getKurstillfalleUID(),
+				sokResultatKurstillfallesdeltagareQuery.getGruppUID(),
+				sokResultatKurstillfallesdeltagareQuery.getSkipCount(),
+				sokResultatKurstillfallesdeltagareQuery.getOnlyCount(),
+				sokResultatKurstillfallesdeltagareQuery.getSprakkod(),
+				sokResultatKurstillfallesdeltagareQuery.getLimit(),
+				sokResultatKurstillfallesdeltagareQuery.getPage(),
+				sokResultatKurstillfallesdeltagareQuery.getOrderby()
+		);
+	}
 }

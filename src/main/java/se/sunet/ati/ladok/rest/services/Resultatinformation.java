@@ -5,8 +5,9 @@ import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.resultat.*;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatResultatUppfoljningQuery;
-import se.sunet.ati.ladok.rest.api.resultinformation.SokAktivitetstillfallesmojlighetQuery;
+import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfallesmojlighetQuery;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfalleQuery;
+import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatKurstillfallesdeltagareQuery;
 
 public interface Resultatinformation {
 
@@ -145,6 +146,8 @@ public interface Resultatinformation {
 		int limit,
 		String orderby);
 
+	public Aktivitetstillfallesmojlighet hamtaAktivitetstillfallesmojlighet(String aktivitetstillfallesmojlighetUID);
+
 	public Aktivitetstillfallesmojlighet avanmalStudentFranAktivitetstillfalle(String aktivitetstillfallesmojlighetUID, Anmalan anmalan);
 	
 	public Aktivitetstillfallesmojlighet anmalStudentTillAktivitetstillfalle(String aktivitetstillfallesmojlighetUID, Anmalan anmalan);
@@ -156,4 +159,20 @@ public interface Resultatinformation {
 	public Identiteter sokStudentidentiteter(String aktivitetstillfalleUID);
 
 	public Hinderlista hamtaHinder(String studieresultatUID, String utbildningUID);
+
+	public SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(
+			String aktivitetstillfalleUID,
+			String kurstillfalleUID,
+			String gruppUID,
+			boolean skipCount,
+			boolean onlyCount,
+			String sprakkod,
+			int limit,
+			int page,
+			String orderby
+	);
+
+	public SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(
+			SokResultatKurstillfallesdeltagareQuery sokResultatKurstillfallesdeltagareQuery);
+
 }

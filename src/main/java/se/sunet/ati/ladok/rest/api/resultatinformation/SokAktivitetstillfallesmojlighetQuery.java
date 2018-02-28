@@ -1,4 +1,4 @@
-package se.sunet.ati.ladok.rest.api.resultinformation;
+package se.sunet.ati.ladok.rest.api.resultatinformation;
 
 public class SokAktivitetstillfallesmojlighetQuery {
 
