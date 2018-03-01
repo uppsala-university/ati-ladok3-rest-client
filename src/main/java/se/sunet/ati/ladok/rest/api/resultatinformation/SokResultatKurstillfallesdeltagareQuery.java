@@ -1,8 +1,10 @@
 package se.sunet.ati.ladok.rest.api.resultatinformation;
 
+import java.util.List;
+
 public class SokResultatKurstillfallesdeltagareQuery {
     private String aktivitetstillfalleUID;
-    private String kurstillfalleUID;
+    private List<String> kurstillfalleUIDer;
     private String gruppUID;
     private boolean skipCount;
     private boolean onlyCount;
@@ -13,7 +15,7 @@ public class SokResultatKurstillfallesdeltagareQuery {
 
     private SokResultatKurstillfallesdeltagareQuery(Builder builder) {
         aktivitetstillfalleUID = builder.aktivitetstillfalleUID;
-        kurstillfalleUID = builder.kurstillfalleUID;
+        kurstillfalleUIDer = builder.kurstillfalleUIDer;
         gruppUID = builder.gruppUID;
         skipCount = builder.skipCount;
         onlyCount = builder.onlyCount;
@@ -27,8 +29,8 @@ public class SokResultatKurstillfallesdeltagareQuery {
         return aktivitetstillfalleUID;
     }
 
-    public String getKurstillfalleUID() {
-        return kurstillfalleUID;
+    public List<String> getKurstillfalleUIDer() {
+        return kurstillfalleUIDer;
     }
 
     public String getGruppUID() {
@@ -61,7 +63,7 @@ public class SokResultatKurstillfallesdeltagareQuery {
 
     public static final class Builder {
         private String aktivitetstillfalleUID;
-        private String kurstillfalleUID;
+        private List<String> kurstillfalleUIDer;
         private String gruppUID;
         private boolean skipCount;
         private boolean onlyCount;
@@ -78,8 +80,8 @@ public class SokResultatKurstillfallesdeltagareQuery {
             return this;
         }
 
-        public Builder kurstillfalleUID(String val) {
-            kurstillfalleUID = val;
+        public Builder kurstillfalleUIDer(List<String> vals) {
+            kurstillfalleUIDer = vals;
             return this;
         }
 

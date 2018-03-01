@@ -162,7 +162,7 @@ public interface Resultatinformation {
 
 	public SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(
 			String aktivitetstillfalleUID,
-			String kurstillfalleUID,
+			String[] kurstillfalleUID,
 			String gruppUID,
 			boolean skipCount,
 			boolean onlyCount,

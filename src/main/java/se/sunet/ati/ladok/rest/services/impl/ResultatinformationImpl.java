@@ -909,7 +909,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	@Override
 	public SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(
 			String aktivitetstillfalleUID,
-			String kurstillfalleUID,
+			String[] kurstillfalleUID,
 			String gruppUID,
 			boolean skipCount,
 			boolean onlyCount,
@@ -947,7 +947,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	public SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(SokResultatKurstillfallesdeltagareQuery sokResultatKurstillfallesdeltagareQuery) {
 		return sokresultatKurstillfallesdeltagare(
 				sokResultatKurstillfallesdeltagareQuery.getAktivitetstillfalleUID(),
-				sokResultatKurstillfallesdeltagareQuery.getKurstillfalleUID(),
+				sokResultatKurstillfallesdeltagareQuery.getKurstillfalleUIDer().toArray(new String[sokResultatKurstillfallesdeltagareQuery.getKurstillfalleUIDer().size()]),
 				sokResultatKurstillfallesdeltagareQuery.getGruppUID(),
 				sokResultatKurstillfallesdeltagareQuery.getSkipCount(),
 				sokResultatKurstillfallesdeltagareQuery.getOnlyCount(),
