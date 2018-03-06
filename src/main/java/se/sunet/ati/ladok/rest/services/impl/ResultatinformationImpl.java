@@ -476,7 +476,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		client = addQueryParams("aktivitetUID", query.getAktivitetUID(), client);
 		client = addQueryParams("kurskod", query.getKurskod(), client);
 		client = addQueryParams("organisation", query.getOrganisation(), client);
-		client = client.queryParam("datumperiod",query.getOrderby())
+		client = client.queryParam("datumperiod",query.getDatumperiod())
 				.queryParam("orderby",query.getOrderby())
 				.queryParam("skipCount",query.getSkipCount())
 				.queryParam("onlyCount",query.getOnlyCount())
