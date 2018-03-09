@@ -560,7 +560,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		WebTarget client = getClient()
 				.path(RESOURCE_AKTIVITETSTILLFALLESMOJLIGHET)
 				.path(RESOURCE_FILTRERA);
-		log.info("TEST: Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 
 		client= client.queryParam("aktivitetstillfalleUID",sokAktivitetstillfallesmojlighetQuery.getAktivitetstillfalleUID());
 		client= client.queryParam("anmalda",sokAktivitetstillfallesmojlighetQuery.getAnmalda());
