@@ -175,4 +175,9 @@ public interface Resultatinformation {
 	public SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(
 			SokResultatKurstillfallesdeltagareQuery sokResultatKurstillfallesdeltagareQuery);
 
+	public AktivitetstillfalleForStudentLista sokAktivitetstillfalleForStudent(
+			String studentUID,
+			String kurstillfalleUID,
+			Boolean endastAnmalan
+	);
 }

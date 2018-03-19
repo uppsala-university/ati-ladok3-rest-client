@@ -957,4 +957,24 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				sokResultatKurstillfallesdeltagareQuery.getOrderby()
 		);
 	}
+
+	@Override
+	public AktivitetstillfalleForStudentLista sokAktivitetstillfalleForStudent(String studentUID, String kurstillfalleUID, Boolean endastAnmalan) {
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_AKTIVITETSTILLFALLE)
+				.path(RESOURCE_STUDENT_CRITERIA)
+				.path(studentUID)
+				.queryParam("kurstillfalleUID", kurstillfalleUID)
+				.queryParam("endastAnmalan", endastAnmalan);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, AktivitetstillfalleForStudentLista.class);
+	}
 }
