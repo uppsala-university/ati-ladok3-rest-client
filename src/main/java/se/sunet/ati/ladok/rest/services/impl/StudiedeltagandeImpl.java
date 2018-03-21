@@ -57,6 +57,20 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 		}
 		return this.studiedeltagande;
 	}
+	
+	@Override
+	public Student hamtaStudentViaUid(String studentUid) {
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+		WebTarget client = getClient().path(RESOURCE_STUDENT)
+				.path(studentUid);
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+		return validatedResponse(response, Student.class);
+	}
 
 	@Override
 	public Student hamtaStudentViaPersonnummer(String personnummer) {

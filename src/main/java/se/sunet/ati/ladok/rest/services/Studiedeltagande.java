@@ -9,6 +9,8 @@ import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQue
 public interface Studiedeltagande extends LadokServiceProperties {
 	TillfallesdeltagandeLista hamtaPaborjadeKurser(String studentUid);
 
+	Student hamtaStudentViaUid(String studentUid);
+
 	Student hamtaStudentViaPersonnummer(String personnummer);
 
 	/**
