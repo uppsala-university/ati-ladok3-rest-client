@@ -136,6 +136,8 @@ public interface Resultatinformation {
 	public SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(
 			SokResultatResultatUppfoljningQuery sokResultatResultatUppfoljningQuery);
 
+	SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(ResultatuppfoljningSokVarden resultatuppfoljningSokVarden);
+
 	public SokresultatStudieresultatResultat sokStudieresultatForRapporteringsunderlag(
 		String aktivitetstillfalleUID,
 		String[] kurstillfallen,

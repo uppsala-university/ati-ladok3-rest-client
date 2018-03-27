@@ -7,9 +7,9 @@ import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.resultat.*;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfalleQuery;
-import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatResultatUppfoljningQuery;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfallesmojlighetQuery;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatKurstillfallesdeltagareQuery;
+import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatResultatUppfoljningQuery;
 import se.sunet.ati.ladok.rest.services.Resultatinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
 
@@ -59,6 +59,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	private static final String RESOURCE_UPPDATERA = "uppdatera";
 	private static final String RESOURCE_HINDER = "hinder";
 	private static final String RESOURCE_KURSTILLFALLESDELTAGARE = "kurstillfallesdeltagare";
+	private static final String RESOURCE_SOK = "sok";
 
 	private static final String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 	public static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
@@ -677,18 +678,27 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	@Override
 	public SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(
 			SokResultatResultatUppfoljningQuery sokResultatResultatUppfoljningQuery) {
+		WebTarget client = getClient()
+				.path(RESOURCE_RESULTATUPPFOLJNING)
+				.path(RESOURCE_KURSINSTANS)
+				.path(sokResultatResultatUppfoljningQuery.getKursinstansUID())
+				.queryParam("kurstillfallen",sokResultatResultatUppfoljningQuery.getKurstillfallen().toArray(new String[sokResultatResultatUppfoljningQuery.getKurstillfallen().size()]))
+				.queryParam("grupp",sokResultatResultatUppfoljningQuery.getGrupp())
+				.queryParam("tillstand",sokResultatResultatUppfoljningQuery.getTillstand())
+				.queryParam("page",sokResultatResultatUppfoljningQuery.getPage())
+				.queryParam("limit",sokResultatResultatUppfoljningQuery.getLimit())
+				.queryParam("orderby",sokResultatResultatUppfoljningQuery.getOrderby())
+				.queryParam("orderBetygsgradAvserUtbildningUID",sokResultatResultatUppfoljningQuery.getOrderBetygsgradAvserUtbildningUID())
+				.queryParam("orderExaminationsdatumAvserUtbildningUID",sokResultatResultatUppfoljningQuery.getOrderExaminationsdatumAvserUtbildningUID());
 
-		return sokStudieresultatForResultatuppfoljningAvKurs(
-				sokResultatResultatUppfoljningQuery.getKursinstansUID(),
-				sokResultatResultatUppfoljningQuery.getKurstillfallen().toArray(new String[sokResultatResultatUppfoljningQuery.getKurstillfallen().size()]),
-				sokResultatResultatUppfoljningQuery.getGrupp(),
-				sokResultatResultatUppfoljningQuery.getTillstand(),
-				sokResultatResultatUppfoljningQuery.getPage(),
-				sokResultatResultatUppfoljningQuery.getLimit(),
-				sokResultatResultatUppfoljningQuery.getOrderby(),
-				sokResultatResultatUppfoljningQuery.getOrderBetygsgradAvserUtbildningUID(),
-				sokResultatResultatUppfoljningQuery.getOrderExaminationsdatumAvserUtbildningUID()
-		);
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, SokresultatResultatuppfoljning.class);
 	}
 
 	@Override
@@ -703,26 +713,35 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 			String orderBetygsgradAvserUtbildningUID,
 			String orderExaminationsdatumAvserUtbildningUID) {
 
-		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		return sokStudieresultatForResultatuppfoljningAvKurs(new SokResultatResultatUppfoljningQuery.Builder()
+				.kursinstansUID(kursinstansUID)
+				.kurstillfallen(Arrays.asList(kurstillfallen))
+				.grupp(grupp)
+				.tillstand(tillstand)
+				.page(page)
+				.limit(limit)
+				.orderby(orderby)
+				.orderBetygsgradAvserUtbildningUID(orderBetygsgradAvserUtbildningUID)
+				.orderExaminationsdatumAvserUtbildningUID(orderExaminationsdatumAvserUtbildningUID)
+				.build()
+		);
+	}
+
+	@Override
+	public SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(ResultatuppfoljningSokVarden resultatuppfoljningSokVarden){
+		JAXBElement<ResultatuppfoljningSokVarden> resultatJAXBElement = new ObjectFactory().createResultatuppfoljningSokVarden(resultatuppfoljningSokVarden);
+
 		WebTarget client = getClient()
 				.path(RESOURCE_RESULTATUPPFOLJNING)
-				.path(RESOURCE_KURSINSTANS)
-				.path(kursinstansUID)
-				.queryParam("kurstillfallen",kurstillfallen)
-				.queryParam("grupp",grupp)
-				.queryParam("tillstand",tillstand)
-				.queryParam("page",page)
-				.queryParam("limit",limit)
-				.queryParam("orderby",orderby)
-				.queryParam("orderBetygsgradAvserUtbildningUID",orderBetygsgradAvserUtbildningUID)
-				.queryParam("orderExaminationsdatumAvserUtbildningUID",orderExaminationsdatumAvserUtbildningUID);
+				.path(RESOURCE_RESULTATUPPFOLJNING)
+				.path(RESOURCE_SOK);
 
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
-				.get();
+				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
 
 		return validatedResponse(response, SokresultatResultatuppfoljning.class);
 	}
