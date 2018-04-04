@@ -470,11 +470,37 @@ public class ResultatinformationUUDemoITCase {
 
 	// Note: It says "utbildningUID" in the restdoc but this is wrong, it should be "utbildningsinstansUID"
 	//resultat/studieresultat/{studieresultatUID}/utbildning/{utbildningsinstansUID}/resultat/hinder
+	@Deprecated
 	//@Test
 	public void testHamtaHinder() throws Exception {
 		// Mario  9429b55a-e646-11e7-922a-3b91b6b54620
 		// Wilma  0466cc55-f603-11e7-b1a4-a7800d66443f
 		Hinderlista hinderlista = ri.hamtaHinder("9429b55a-e646-11e7-922a-3b91b6b54620", "9d39f49e-d42c-11e7-a506-1c40749b409d");
+		assertNotNull(hinderlista);
+
+		List<Hinder> hinders = hinderlista.getHinder();
+		for (Hinder hinder : hinders) {
+			System.out.println("hinder: " + hinder.getI18NNyckel() + " . " + hinder.toString());
+			System.out.println("stoppande: " + hinder.isStoppande());
+		}
+	}
+
+	//@Test
+	public void testHamtaHinderSkapa() throws Exception {
+		Hinderlista hinderlista = ri.hamtaHinderSkapa("0466cc55-f603-11e7-b1a4-a7800d66443f", "3ee026a6-d432-11e7-a506-1c40749b409d");
+		assertNotNull(hinderlista);
+
+		List<Hinder> hinders = hinderlista.getHinder();
+		for (Hinder hinder : hinders) {
+			System.out.println("hinder: " + hinder.getI18NNyckel() + " . " + hinder.toString());
+			System.out.println("stoppande: " + hinder.isStoppande());
+		}
+	}
+
+	//@Test
+	public void testHamtaHinderKlarmarkera() throws Exception {
+		//Hinderlista hinderlista = ri.hamtaHinderKlarmarkera("bccc0f0b-d43e-11e7-8965-8d9fc5414a76", "1551808d-d852-11e7-8965-8d9fc5414a76");
+		Hinderlista hinderlista = ri.hamtaHinderKlarmarkera("bccc0f0b-d43e-11e7-8965-8d9fc5414a76", "eb263447-d6df-11e7-8965-8d9fc5414a76");
 		assertNotNull(hinderlista);
 
 		List<Hinder> hinders = hinderlista.getHinder();

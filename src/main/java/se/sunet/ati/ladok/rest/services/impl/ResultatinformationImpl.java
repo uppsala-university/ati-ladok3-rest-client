@@ -58,8 +58,11 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	private static final String RESOURCE_SKAPA="skapa";
 	private static final String RESOURCE_UPPDATERA = "uppdatera";
 	private static final String RESOURCE_HINDER = "hinder";
+<<<<<<< Updated upstream
 	private static final String RESOURCE_KURSTILLFALLESDELTAGARE = "kurstillfallesdeltagare";
 	private static final String RESOURCE_SOK = "sok";
+=======
+>>>>>>> Stashed changes
 
 	private static final String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 	public static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
@@ -905,6 +908,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 
 	// Note: It says "utbildningUID" in the restdoc but this is wrong, it should be "utbildningsinstansUID"
 	@Override
+	@Deprecated
 	public Hinderlista hamtaHinder(String studieresultatUID, String utbildningsinstansUID) {
 		WebTarget client = getClient()
 				.path(RESOURCE_STUDIERESULTAT)
@@ -926,6 +930,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	}
 
 	@Override
+<<<<<<< Updated upstream
 	public SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(
 			String aktivitetstillfalleUID,
 			String[] kurstillfalleUID,
@@ -950,6 +955,17 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.queryParam("limit",limit)
 				.queryParam("page",page)
 				.queryParam("orderby",orderby);
+=======
+	public Hinderlista hamtaHinderSkapa(String studieresultatUID, String utbildningsinstansUID) {
+		WebTarget client = getClient()
+				.path(RESOURCE_STUDIERESULTAT)
+				.path(studieresultatUID)
+				.path(RESOURCE_UTBILDNINGSINSTANS)
+				.path(utbildningsinstansUID)
+				.path(RESOURCE_RESULTAT)
+				.path(RESOURCE_SKAPA)
+				.path(RESOURCE_HINDER);
+>>>>>>> Stashed changes
 
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		System.out.println("Query URL: " + client.getUri());
@@ -975,6 +991,29 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				sokResultatKurstillfallesdeltagareQuery.getPage(),
 				sokResultatKurstillfallesdeltagareQuery.getOrderby()
 		);
+
+	}
+
+	@Override
+	public Hinderlista hamtaHinderKlarmarkera(String studieresultatUID, String resultatUID) {
+		WebTarget client = getClient()
+				.path(RESOURCE_STUDIERESULTAT)
+				.path(studieresultatUID)
+				.path(RESOURCE_RESULTAT)
+				.path(resultatUID)
+				.path(RESOURCE_KLARMARKERA)
+				.path(RESOURCE_HINDER);
+
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		System.out.println("Query URL: " + client.getUri());
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Hinderlista.class);
+>>>>>>> Stashed changes
 	}
 
 	@Override

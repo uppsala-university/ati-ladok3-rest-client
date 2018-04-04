@@ -160,8 +160,6 @@ public interface Resultatinformation {
 	
 	public Identiteter sokStudentidentiteter(String aktivitetstillfalleUID);
 
-	public Hinderlista hamtaHinder(String studieresultatUID, String utbildningUID);
-
 	public SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(
 			String aktivitetstillfalleUID,
 			String[] kurstillfalleUID,
@@ -182,4 +180,11 @@ public interface Resultatinformation {
 			String kurstillfalleUID,
 			Boolean endastAnmalan
 	);
+
+	@Deprecated
+	public Hinderlista hamtaHinder(String studieresultatUID, String utbildningUID);
+
+	public Hinderlista hamtaHinderSkapa(String studieresultatUID, String utbildningUID);
+
+	public Hinderlista hamtaHinderKlarmarkera(String studieresultatUID, String resultatUID);
 }
