@@ -4,10 +4,10 @@ import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.resultat.*;
-import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatResultatUppfoljningQuery;
-import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfallesmojlighetQuery;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfalleQuery;
+import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfallesmojlighetQuery;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatKurstillfallesdeltagareQuery;
+import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatResultatUppfoljningQuery;
 
 public interface Resultatinformation {
 
@@ -38,9 +38,9 @@ public interface Resultatinformation {
 	
 	public Aktivitetstillfalle updateraAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle);
 	
-	public Aktivitetstillfalle stallInAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle);
+	public Aktivitetstillfalle stallInAktivitetstillfalle(String aktivitetstillfalleUid);
 	
-	public Aktivitetstillfalle aktiveraAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle);
+	public Aktivitetstillfalle aktiveraAktivitetstillfalle(String aktivitetstillfalleUid);
 	
 	public Aktivitetstillfallestyp hamtaAktivitetstillfallestyp(int aktivitesttillfalletypUID);
 

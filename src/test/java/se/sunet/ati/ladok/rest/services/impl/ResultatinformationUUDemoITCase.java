@@ -672,7 +672,7 @@ public class ResultatinformationUUDemoITCase {
 				sokresultatAktivitetstillfalleResultat.getResultat().get(0);
 		
 		Aktivitetstillfalle installedAktivitetstillfalle = 
-				ri.stallInAktivitetstillfalle(aktivitetstillfalle);
+				ri.stallInAktivitetstillfalle(aktivitetstillfalle.getUid());
 		
 		
 		assertTrue(installedAktivitetstillfalle.isInstalld());		
@@ -704,12 +704,12 @@ public class ResultatinformationUUDemoITCase {
 				sokresultatAktivitetstillfalleResultat.getResultat().get(0);
 		
 		Aktivitetstillfalle installtAktivitetstillfalle = 
-				ri.stallInAktivitetstillfalle(aktivitetstillfalle);
+				ri.stallInAktivitetstillfalle(aktivitetstillfalle.getUid());
 		
 		assertTrue(installtAktivitetstillfalle.isInstalld() == true);
 		
 		Aktivitetstillfalle aktiveratAktivitetstillfalle = 
-				ri.aktiveraAktivitetstillfalle(aktivitetstillfalle);
+				ri.aktiveraAktivitetstillfalle(aktivitetstillfalle.getUid());
 		
 		assertTrue(aktiveratAktivitetstillfalle.isInstalld() == false);
 	}

@@ -387,13 +387,11 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	}
 
 	@Override
-	public Aktivitetstillfalle stallInAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle) {
-		JAXBElement<Aktivitetstillfalle> resultatJAXBElement = new ObjectFactory().createAktivitetstillfalle(aktivitetstillfalle);
-
+	public Aktivitetstillfalle stallInAktivitetstillfalle(String aktivitetstillfalleUid) {
 		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 		WebTarget client = getClient()
 				.path(RESOURCE_AKTIVITETSTILLFALLE)
-				.path(aktivitetstillfalle.getUid())
+				.path(aktivitetstillfalleUid)
 				.path(RESOURCE_STALLIN);
 
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
@@ -401,20 +399,18 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
-				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+				.put(Entity.entity("", ClientUtil.CONTENT_TYPE_HEADER_VALUE));
 
 		return validatedResponse(response, Aktivitetstillfalle.class);
 
 	}
 
 	@Override
-	public Aktivitetstillfalle aktiveraAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle) {
-		JAXBElement<Aktivitetstillfalle> resultatJAXBElement = new ObjectFactory().createAktivitetstillfalle(aktivitetstillfalle);
-
+	public Aktivitetstillfalle aktiveraAktivitetstillfalle(String aktivitetstillfalleUid) {
 		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 		WebTarget client = getClient()
 				.path(RESOURCE_AKTIVITETSTILLFALLE)
-				.path(aktivitetstillfalle.getUid())
+				.path(aktivitetstillfalleUid)
 				.path(RESOURCE_AKTIVERA);
 
 
@@ -423,7 +419,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
-				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+				.put(Entity.entity("", ClientUtil.CONTENT_TYPE_HEADER_VALUE));
 
 		return validatedResponse(response, Aktivitetstillfalle.class);
 
