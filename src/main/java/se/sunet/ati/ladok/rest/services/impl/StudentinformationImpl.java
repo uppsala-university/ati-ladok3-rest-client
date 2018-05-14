@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import se.ladok.schemas.studentinformation.AvskiljandebeslutLista;
 import se.ladok.schemas.studentinformation.Avstangningar;
+import se.ladok.schemas.studentinformation.Kontaktuppgifter;
 import se.ladok.schemas.studentinformation.Student;
 import se.sunet.ati.ladok.rest.services.Studentinformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
@@ -20,6 +21,7 @@ public class StudentinformationImpl extends LadokServicePropertiesImpl implement
 	private static final String STUDENT_URL = "studentinformation";
 	private static final String RESOURCE_AVSKILJANDEBESLUT = "avskiljandebeslut";
 	private static final String RESOURCE_AVSTANGNING = "avstangning";
+	private static final String RESOURCE_KONTAKTUPPGIFTER = "kontaktuppgifter";
 	private static final String RESOURCE_STUDENT = "student";
 
 	private static final String STUDENT_RESPONSE_TYPE = "application/vnd.ladok-studentinformation";
@@ -43,7 +45,7 @@ public class StudentinformationImpl extends LadokServicePropertiesImpl implement
 				.path(studentUID);
 
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
-		System.out.println("Query URL: " + client.getUri());
+		
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -60,7 +62,7 @@ public class StudentinformationImpl extends LadokServicePropertiesImpl implement
 				.path(studentUID);
 
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
-		System.out.println("Query URL: " + client.getUri());
+		
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -77,7 +79,7 @@ public class StudentinformationImpl extends LadokServicePropertiesImpl implement
 				.path(studentUID);
 
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
-		System.out.println("Query URL: " + client.getUri());
+		
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -85,5 +87,20 @@ public class StudentinformationImpl extends LadokServicePropertiesImpl implement
 				.get();
 
 		return validatedResponse(response, Student.class);
+	}
+	
+	@Override
+	public Kontaktuppgifter hamtaKontaktuppgifterGivetStudent(String studentUID) {
+		WebTarget client = getClient().path(RESOURCE_STUDENT).path(studentUID)
+				.path(RESOURCE_KONTAKTUPPGIFTER);
+		
+		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, Kontaktuppgifter.class);
 	}
 }
