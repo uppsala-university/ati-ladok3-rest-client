@@ -828,8 +828,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 		WebTarget client = getClient()
 				.path(RESOURCE_AKTIVITETSTILLFALLESMOJLIGHET)
-				.path(aktivitetstillfallesmojlighetUID)
-				.path(RESOURCE_ANMAL);
+				.path(aktivitetstillfallesmojlighetUID);
 
 		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
 		Response response =  client
