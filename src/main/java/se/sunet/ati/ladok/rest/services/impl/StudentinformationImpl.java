@@ -44,7 +44,7 @@ public class StudentinformationImpl extends LadokServicePropertiesImpl implement
 				.path(RESOURCE_STUDENT)
 				.path(studentUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		
 		Response response = client
 				.request()
@@ -61,7 +61,7 @@ public class StudentinformationImpl extends LadokServicePropertiesImpl implement
 				.path(RESOURCE_STUDENT)
 				.path(studentUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		
 		Response response = client
 				.request()
@@ -78,7 +78,7 @@ public class StudentinformationImpl extends LadokServicePropertiesImpl implement
 				.path(RESOURCE_STUDENT)
 				.path(studentUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		
 		Response response = client
 				.request()
@@ -94,7 +94,7 @@ public class StudentinformationImpl extends LadokServicePropertiesImpl implement
 		WebTarget client = getClient().path(RESOURCE_STUDENT).path(studentUID)
 				.path(RESOURCE_KONTAKTUPPGIFTER);
 		
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)

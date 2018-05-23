@@ -63,7 +63,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_STUDENT)
 				.path(studentUid);
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -78,7 +78,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 		WebTarget client = getClient().path(RESOURCE_STUDENT)
 				.path(RESOURCE_STUDENT_CRITERIA)
 				.path(personnummer);
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -94,7 +94,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 		WebTarget client = getClient().path(RESOURCE_PABORJAD_UTBILDNING)
 				.path(RESOURCE_KURS).path(RESOURCE_STUDENT)
 				.path(studentUid);
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -113,7 +113,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.path(RESOURCE_STUDENT)
 				.path(studentUid);
 		
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -142,7 +142,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.queryParam("limit", query.getLimit())
 				.queryParam("orderBy", query.getOrderBy());
 		client = addQueryParams("deltagaretillstand", query.getDeltagareTillstands(), client);
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 			.request()
 			.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -160,7 +160,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.queryParam("limit", query.getLimit())
 				.queryParam("orderBy", query.getOrderBy());
 		client = addQueryParams("deltagaretillstand", query.getDeltagareTillstands(), client);
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -181,7 +181,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.path(RESOURCE_PERIODINDEX)
 				.path(periodIndex);
 		
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		
 		Response response = client
 				.request()
@@ -204,7 +204,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.path(RESOURCE_PERIODINDEX)
 				.path(periodIndex);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response = client
 				.request()
@@ -228,7 +228,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.path(RESOURCE_PERIODINDEX)
 				.path(periodIndex);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response = client
 				.request()
@@ -251,7 +251,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.path(RESOURCE_PERIODINDEX)
 				.path(periodIndex);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response = client
 				.request()
@@ -271,7 +271,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.path(RESOURCE_TILLFALLESANTAGNING)
 				.path(tillfallesantagningUid);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response = client
 				.request()
@@ -292,7 +292,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.path(RESOURCE_STUDENT)
 				.path(studentUid);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response = client
 				.request()
@@ -312,7 +312,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.path(RESOURCE_STUDIESTRUKTURREFERENS)
 				.path(studiestrukturreferens);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response = client
 				.request()
@@ -332,7 +332,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.path(RESOURCE_STUDIESTRUKTURREFERENS)
 				.path(studiestrukturreferens);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response = client
 				.request()
@@ -352,7 +352,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.path(RESOURCE_STUDENT)
 				.path(studentuid);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response = client
 				.request()
@@ -373,7 +373,7 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.path(RESOURCE_UTBILDNING)
 				.path(utbildninguid);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response = client
 				.request()
