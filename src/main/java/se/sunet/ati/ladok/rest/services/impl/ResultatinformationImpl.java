@@ -84,7 +84,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_KURS)
 				.path(kurstillfalleUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -101,7 +101,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_STUDENT_CRITERIA)
 				.path(studentUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -117,7 +117,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(kursinstansUID)
 				.path(MODULER);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		System.out.println("Query URL: " + client.getUri());
 		Response response = client
 				.request()
@@ -318,7 +318,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_AKTIVITETSTILLFALLE)
 				.path(aktivitetstillfalleUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response =
 				client.request()
@@ -336,7 +336,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_AKTIVITETSTILLFALLE)
 				.path(aktivitesttillfalleUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response =
 				client.request()
@@ -355,7 +355,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		WebTarget client = getClient()
 				.path(RESOURCE_AKTIVITETSTILLFALLE);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response = client
 				.request()
@@ -375,7 +375,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_AKTIVITETSTILLFALLE)
 				.path(aktivitetstillfalle.getUid());
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		Response response = client
 				.request()
@@ -394,7 +394,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(aktivitetstillfalleUid)
 				.path(RESOURCE_STALLIN);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -414,7 +414,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_AKTIVERA);
 
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -433,7 +433,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_AKTIVITETSTILLFALLESTYP)
 				.path(Integer.toString(aktivitetstillfalleUID));
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -450,7 +450,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_GRUNDDATA)
 				.path(RESOURCE_AKTIVITETSTILLFALLESTYPER);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -481,7 +481,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.queryParam("limit", query.getLimit())
 				.queryParam("page",query.getPage());
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -557,7 +557,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		WebTarget client = getClient()
 				.path(RESOURCE_AKTIVITETSTILLFALLESMOJLIGHET)
 				.path(RESOURCE_FILTRERA);
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 
 		client= client.queryParam("aktivitetstillfalleUID",sokAktivitetstillfallesmojlighetQuery.getAktivitetstillfalleUID());
 		client= client.queryParam("anmalda",sokAktivitetstillfallesmojlighetQuery.getAnmalda());
@@ -570,7 +570,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		client= client.queryParam("limit",sokAktivitetstillfallesmojlighetQuery.getLimit());
 		client= client.queryParam("page",sokAktivitetstillfallesmojlighetQuery.getPage());
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -586,7 +586,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_GRUNDDATA)
 				.path(RESOURCE_STUDIELOKALISERING);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -602,7 +602,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 		WebTarget client = getClient()
 				.path(RESOURCE_ORGANISATION);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -644,7 +644,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.queryParam("page",page)
 				.queryParam("sprakkod",sprakkod);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -661,7 +661,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_GRUNDDATA)
 				.path(RESOURCE_PERIOD);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -687,7 +687,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.queryParam("orderBetygsgradAvserUtbildningUID",sokResultatResultatUppfoljningQuery.getOrderBetygsgradAvserUtbildningUID())
 				.queryParam("orderExaminationsdatumAvserUtbildningUID",sokResultatResultatUppfoljningQuery.getOrderExaminationsdatumAvserUtbildningUID());
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -732,7 +732,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_RESULTATUPPFOLJNING)
 				.path(RESOURCE_SOK);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -767,7 +767,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.queryParam("limit",limit)
 				.queryParam("orderby",orderby);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -789,7 +789,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(aktivitetstillfallesmojlighetUID)
 				.path(RESOURCE_AVANMAL);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -812,7 +812,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(aktivitetstillfallesmojlighetUID)
 				.path(RESOURCE_ANMAL);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -830,7 +830,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_AKTIVITETSTILLFALLESMOJLIGHET)
 				.path(aktivitetstillfallesmojlighetUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -847,7 +847,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_AKTIVITETSTILLFALLESMOJLIGHET)
 				.path(aktivitetstillfallesmojlighetUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -869,7 +869,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_STUDIERESULTAT)
 				.path(studieresultatUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -888,7 +888,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_STUDENTIDENTITETER)
 				.queryParam("aktivitetstillfalleUID", aktivitetstillfalleUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -910,7 +910,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_RESULTAT)
 				.path(RESOURCE_HINDER);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		System.out.println("Query URL: " + client.getUri());
 		Response response = client
 				.request()
@@ -932,7 +932,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_SKAPA)
 				.path(RESOURCE_HINDER);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		System.out.println("Query URL: " + client.getUri());
 		Response response = client
 				.request()
@@ -953,7 +953,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_KLARMARKERA)
 				.path(RESOURCE_HINDER);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		System.out.println("Query URL: " + client.getUri());
 		Response response = client
 				.request()
@@ -990,7 +990,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.queryParam("page",page)
 				.queryParam("orderby",orderby);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		System.out.println("Query URL: " + client.getUri());
 		Response response = client
 				.request()
@@ -1027,7 +1027,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.queryParam("kurstillfalleUID", kurstillfalleUID)
 				.queryParam("endastAnmalan", endastAnmalan);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response =  client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)

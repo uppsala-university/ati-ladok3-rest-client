@@ -86,7 +86,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.path(RESOURCE_ATTRIBUTDEFINITIONER)
 				.queryParam("utbildningstypID", utbildningstypID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -104,7 +104,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.queryParam("utbildningstypID", utbildningstypID)
 				.queryParam("datum", datum);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -123,7 +123,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.path("sok")
 				.queryParam("studieordningID", studieordningID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -141,7 +141,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.path(RESOURCE_LOKAL)
 				.path(utbildningsmallUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client
 				.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -215,7 +215,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.path(RESOURCE_GRUNDDATA)
 				.path(RESOURCE_NIVAINOMSTUDIEORDNING);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -231,7 +231,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.path(RESOURCE_GRUNDDATA)
 				.path(RESOURCE_STUDIEORDNING);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -248,7 +248,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.path(RESOURCE_GRUNDDATA)
 				.path(RESOURCE_PERIOD);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -279,7 +279,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.path(RESOURCE_KOD)
 				.path(utbildningstypKod);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -297,7 +297,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.queryParam("studieordningID", studieordningID)
 				.queryParam("utbildningstypID", utbildningstypID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -313,7 +313,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.path(RESOURCE_UTBILDNINGSINSTANS)
 				.queryParam("kod", utbildningsinstansKod);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -326,7 +326,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	public Utbildningsinstans hamtaUtbildningsinstansViaUID(String utbildningsinstansUID) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSTANS).path(utbildningsinstansUID);
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -342,7 +342,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.path(RESOURCE_UTBILDNINGSTILFALLE)
 				.path(utbildningstillfalleUID);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -696,7 +696,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		WebTarget client = getClient()
 				.path(RESOURCE_ORGANISATION);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -712,7 +712,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 				.path(RESOURCE_ORGANISATION)
 				.queryParam("kod", kod);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -805,7 +805,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		client = addQueryParams("status", status, client);
 
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -845,7 +845,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -892,7 +892,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		WebTarget client = getClient()
 				.path(RESOURCE_HUVUDOMRADE);
 
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
@@ -924,7 +924,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		client = addQueryParams("benamning", sokUtbildningsinstansQuery.getBenamning(), client);
 
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
-		log.info("Query URL: " + client.getUri() + ", response type: " + responseType);
+		log.info("Query URL: " + client.getUri());
 		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType)
