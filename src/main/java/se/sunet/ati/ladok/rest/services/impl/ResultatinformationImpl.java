@@ -467,7 +467,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.path(RESOURCE_AKTIVITETSTILLFALLE)
 				.path(RESOURCE_FILTRERA)
 				.queryParam("benamning", query.getBenamning());
-		client = addQueryParams("aktivitetstillfallestypID", query.getKurstillfalleUID(), client);
+		client = addQueryParams("aktivitetstillfallestypID", query.getAktivitetstillfallestypID(), client);
 		client = addQueryParams("kurstillfalleUID", query.getKurstillfalleUID(), client);
 		client = addQueryParams("kurstillfalleskod", query.getKurstillfalleskod(), client);
 		client = addQueryParams("aktivitetUID", query.getAktivitetUID(), client);
