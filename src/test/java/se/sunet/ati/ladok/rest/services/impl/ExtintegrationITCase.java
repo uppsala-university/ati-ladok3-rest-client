@@ -1,39 +1,42 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
+import static org.junit.Assert.assertNotNull;
+
+import java.util.Properties;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import se.ladok.schemas.Benamning;
-import se.ladok.schemas.Benamningar;
-import se.ladok.schemas.Organisation;
-import se.ladok.schemas.Organisationslista;
-import se.ladok.schemas.utbildningsinformation.*;
+
+import se.ladok.schemas.extintegration.UtannonseringLista;
+import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
 import se.sunet.ati.ladok.rest.services.Extintegration;
-import se.sunet.ati.ladok.rest.services.LadokRestClientException;
-import se.sunet.ati.ladok.rest.services.Utbildningsinformation;
 import se.sunet.ati.ladok.rest.util.TestUtil;
 
-import javax.ws.rs.BadRequestException;
-import javax.xml.datatype.DatatypeConfigurationException;
-import java.util.*;
-
-import static org.junit.Assert.*;
-
 public class ExtintegrationITCase {
-	private static Log log = LogFactory.getLog(ExtintegrationITCase.class);
-
+	
 	private static Extintegration ext;
+	static final String TEST_DATA_FILE = "restclient.testdata.uudemo.properties";
 
+	private static String utbildningstillfalleUID = null;
+	
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		ext = new ExtintegrationImpl();
+		Properties properties = TestUtil.getProperties(TEST_DATA_FILE);
+		utbildningstillfalleUID = properties.getProperty("rest.extintgration.utbildning.uid");
 	}
 	
 	@Test
-	public void testUtannonseraUtbildningstillfalle() {
-		String utbildningstillfalleUID = "2b9d23c8-31cf-11e8-8f26-9c84a82f4e3b";
+	public void testUtannonseraUtbildningstillfalle() {	
 		Utbildningstillfalle utbildningstillfalle = ext.utannonseraUtbildningstillfalle(utbildningstillfalleUID);	
+		assertNotNull(utbildningstillfalle);
+	}
+	
+	@Test
+	public void testIsUtannonseraUtbildningstillfalle() {	
+		UtannonseringLista utbildningstillfalle = ext.isUtbildningstillfalleUtannonserat(utbildningstillfalleUID);
 		assertNotNull(utbildningstillfalle);
 	}
 	
