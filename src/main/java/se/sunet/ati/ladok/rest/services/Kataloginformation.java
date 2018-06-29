@@ -1,6 +1,5 @@
 package se.sunet.ati.ladok.rest.services;
 
-import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.kataloginformation.*;
 import se.sunet.ati.ladok.rest.api.kataloginformation.SokOrganisationQuery;
 
@@ -54,8 +53,6 @@ public interface Kataloginformation extends LadokServiceProperties {
     Organisation hamtaOrganisation(String organisationUid);
 
     SokresultatOrganisationKataloginformation sokOrganisation(SokOrganisationQuery sokOrganisationQuery);
-
-	Organisationslista sokAllaOrganisationer();
 
 	Utbildningstyper listaUtbildningstyper();
 

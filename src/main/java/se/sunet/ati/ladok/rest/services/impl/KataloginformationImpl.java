@@ -1,42 +1,16 @@
 package se.sunet.ati.ladok.rest.services.impl;
 
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import se.ladok.schemas.Organisationslista;
-import se.ladok.schemas.kataloginformation.Aktivitetstillfallestyper;
-import se.ladok.schemas.kataloginformation.Amnesgrupper;
-import se.ladok.schemas.kataloginformation.Antagningsomgangar;
-import se.ladok.schemas.kataloginformation.Anvandare;
-import se.ladok.schemas.kataloginformation.Betygsskalor;
-import se.ladok.schemas.kataloginformation.Enheter;
-import se.ladok.schemas.kataloginformation.Finansieringsformer;
-import se.ladok.schemas.kataloginformation.I18NLista;
-import se.ladok.schemas.kataloginformation.Kommuner;
-import se.ladok.schemas.kataloginformation.KravPaTidigareStudierLista;
-import se.ladok.schemas.kataloginformation.Lander;
-import se.ladok.schemas.kataloginformation.NivaerInomStudieordning;
-import se.ladok.schemas.kataloginformation.Omradesbehorigheter;
-import se.ladok.schemas.kataloginformation.Organisation;
-import se.ladok.schemas.kataloginformation.OrganisationLista;
-import se.ladok.schemas.kataloginformation.Perioder;
-import se.ladok.schemas.kataloginformation.SokresultatOrganisationKataloginformation;
-import se.ladok.schemas.kataloginformation.Studielokaliseringar;
-import se.ladok.schemas.kataloginformation.Studieordningar;
-import se.ladok.schemas.kataloginformation.Studietakter;
-import se.ladok.schemas.kataloginformation.SuccessivaFordjupningar;
-import se.ladok.schemas.kataloginformation.SvenskaOrter;
-import se.ladok.schemas.kataloginformation.Undervisningsformer;
-import se.ladok.schemas.kataloginformation.UndervisningssprakLista;
-import se.ladok.schemas.kataloginformation.Undervisningstider;
-import se.ladok.schemas.kataloginformation.Utbildningsomraden;
-import se.ladok.schemas.kataloginformation.Utbildningstyper;
+
+import se.ladok.schemas.kataloginformation.*;
 import se.sunet.ati.ladok.rest.api.kataloginformation.SokOrganisationQuery;
 import se.sunet.ati.ladok.rest.services.Kataloginformation;
 import se.sunet.ati.ladok.rest.util.ClientUtil;
+
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
 
@@ -83,7 +57,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("period");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-				.accept(responseType).get(Perioder.class);
+			.accept(responseType).get(Perioder.class);
 	}
 
 	@Override
@@ -91,7 +65,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("successivfordjupning");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-				.accept(responseType).get(SuccessivaFordjupningar.class);
+			.accept(responseType).get(SuccessivaFordjupningar.class);
 	}
 
 	@Override
@@ -99,7 +73,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("svenskort");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-				.accept(responseType).get(SvenskaOrter.class);
+			.accept(responseType).get(SvenskaOrter.class);
 	}
 
 	@Override
@@ -107,7 +81,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("kommun");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-				.accept(responseType).get(Kommuner.class);
+			.accept(responseType).get(Kommuner.class);
 	}
 
 	@Override
@@ -191,7 +165,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	}
 
 	@Override
-	public KravPaTidigareStudierLista listaKravPaTidigareStudier() {
+	public KravPaTidigareStudierLista listaKravPaTidigareStudier(){
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("kravpatidigarestudier");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -234,14 +208,14 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Studielokaliseringar.class);
 	}
-
+	
 	@Override
-	public Antagningsomgangar hamtaAntagningsomgangar() {
+	public Antagningsomgangar hamtaAntagningsomgangar() {	
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
 		WebTarget client = getClient().path(RESOURCE_GRUNDDATA).path("antagningsomgang");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Antagningsomgangar.class);
-
+		
 	}
 
 	@Override
@@ -251,7 +225,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(UndervisningssprakLista.class);
 	}
-
+	
 	@Override
 	public Anvandare hamtAutentiserad() {
 		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
@@ -269,7 +243,7 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	}
 
 	@Override
-	public SokresultatOrganisationKataloginformation sokOrganisation(SokOrganisationQuery sokOrganisationQuery) {
+	public SokresultatOrganisationKataloginformation sokOrganisation(SokOrganisationQuery sokOrganisationQuery){
 		WebTarget client = getClient()
 				.path(RESOURCE_ORGANISATION)
 				.path("filtrera")
@@ -288,21 +262,6 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 				.get();
 
 		return validatedResponse(response, SokresultatOrganisationKataloginformation.class);
-	}
-
-	@Override
-	public Organisationslista sokAllaOrganisationer() {
-		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
-		WebTarget client = getClient()
-				.path(RESOURCE_ORGANISATION);
-
-		log.info("Query URL: " + client.getUri());
-		Response response = client.request()
-				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
-				.accept(responseType)
-				.get();
-
-		return validatedResponse(response, Organisationslista.class);
 	}
 
 	@Override
