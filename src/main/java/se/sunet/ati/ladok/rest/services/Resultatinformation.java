@@ -11,44 +11,44 @@ import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatResultatUppfol
 
 public interface Resultatinformation {
 
-	public Studieresultat hamtaStudieResultatForStudentPaUtbildningstillfalle(String studentUid, 
+	Studieresultat hamtaStudieResultatForStudentPaUtbildningstillfalle(String studentUid,
 			String kurstillfalleUID);
 
-	public ResultatLista hamtaStudieResultatForStudent(String studentUID);
+	ResultatLista hamtaStudieResultatForStudent(String studentUID);
 
-	public Utbildningsinstans hamtaModulerForUtbildningsinstans(String utbildningsinstanceUID);
+	Utbildningsinstans hamtaModulerForUtbildningsinstans(String utbildningsinstanceUID);
 
-	public Resultat skapaResultatForStudentPakurs(SkapaResultat resultat, String studieresultatUID, String utbildningUID);
+	Resultat skapaResultatForStudentPakurs(SkapaResultat resultat, String studieresultatUID, String utbildningUID);
 
-	public Resultat updateraResultatForStudentPakurs(Resultat resultat, String resultatUID);
+	Resultat updateraResultatForStudentPakurs(Resultat resultat, String resultatUID);
 	
-	public ResultatLista skapaResultatForStudentPaUtbildningsinstans(SkapaFlera resultat);
+	ResultatLista skapaResultatForStudentPaUtbildningsinstans(SkapaFlera resultat);
 	
-	public ResultatLista uppdateraResultatForStudentPaUtbildningsinstans(UppdateraFlera resultat);
+	ResultatLista uppdateraResultatForStudentPaUtbildningsinstans(UppdateraFlera resultat);
 
-	public Resultat klarmarkeraResultatForStudentPakurs(Klarmarkera klarmarkera, String resultatUID);
+	Resultat klarmarkeraResultatForStudentPakurs(Klarmarkera klarmarkera, String resultatUID);
 
-	public ResultatLista klarmarkeraResultatForStudentPakurs(KlarmarkeraFlera resultat);
+	ResultatLista klarmarkeraResultatForStudentPakurs(KlarmarkeraFlera resultat);
 	
-	public Aktivitetstillfalle hamtaAktivitetstillfalle(String aktivitesttillfalleUID);
+	Aktivitetstillfalle hamtaAktivitetstillfalle(String aktivitesttillfalleUID);
 	
-	public void taBortAktivitetstillfalle(String aktivitesttillfalleUID);
+	void taBortAktivitetstillfalle(String aktivitesttillfalleUID);
 	
-	public Aktivitetstillfalle skapaAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle);
+	Aktivitetstillfalle skapaAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle);
 	
-	public Aktivitetstillfalle updateraAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle);
+	Aktivitetstillfalle updateraAktivitetstillfalle(Aktivitetstillfalle aktivitetstillfalle);
 	
-	public Aktivitetstillfalle stallInAktivitetstillfalle(String aktivitetstillfalleUid);
+	Aktivitetstillfalle stallInAktivitetstillfalle(String aktivitetstillfalleUid);
 	
-	public Aktivitetstillfalle aktiveraAktivitetstillfalle(String aktivitetstillfalleUid);
+	Aktivitetstillfalle aktiveraAktivitetstillfalle(String aktivitetstillfalleUid);
 	
-	public Aktivitetstillfallestyp hamtaAktivitetstillfallestyp(int aktivitesttillfalletypUID);
+	Aktivitetstillfallestyp hamtaAktivitetstillfallestyp(int aktivitesttillfalletypUID);
 
-	public Aktivitetstillfallestyper listaAktivitetstillfallestyper();
+	Aktivitetstillfallestyper listaAktivitetstillfallestyper();
 
-	public SokresultatAktivitetstillfalleResultat sokAktivitetstillfallen(SokAktivitetstillfalleQuery sokAktivitetstillfalleQuery);
+	SokresultatAktivitetstillfalleResultat sokAktivitetstillfallen(SokAktivitetstillfalleQuery sokAktivitetstillfalleQuery);
 
-	public SokresultatAktivitetstillfalleResultat sokAktivitetstillfallen(
+	SokresultatAktivitetstillfalleResultat sokAktivitetstillfallen(
 			String aktivitetstillfallestypID,
 			String benamning, 
 			String[] kurstillfalleUID, 
@@ -65,7 +65,7 @@ public interface Resultatinformation {
 			int limit
 	);
 	
-	public SokresultatAktivitetstillfallesmojlighetResultat sokAktivitetstillfallesmojligheter(
+	SokresultatAktivitetstillfallesmojlighetResultat sokAktivitetstillfallesmojligheter(
 			String	aktivitetstillfalleUID,
 			boolean	anmalda,
 			String	personnummer,
@@ -78,9 +78,9 @@ public interface Resultatinformation {
 			int limit
 	);
 
-	public SokresultatAktivitetstillfallesmojlighetResultat sokAktivitetstillfallesmojligheter(SokAktivitetstillfallesmojlighetQuery sokAktivitetstillfallesmojlighetQuery);
+	SokresultatAktivitetstillfallesmojlighetResultat sokAktivitetstillfallesmojligheter(SokAktivitetstillfallesmojlighetQuery sokAktivitetstillfallesmojlighetQuery);
 
-	public Studielokaliseringar sokAllaStudielokaliseringar();
+	Studielokaliseringar sokAllaStudielokaliseringar();
 
 	SokresultatStudieresultatResultat sokStudieResultat(StudieresultatForRapporteringSokVarden studieresultatForRapporteringSokVarden, String utbildningsinstansUID);
 
@@ -88,7 +88,7 @@ public interface Resultatinformation {
 	 * @deprecated
 	 */
 	@Deprecated
-	public SokresultatStudieresultatResultat sokStudieResultat(String utbildningsinstansUID,
+	SokresultatStudieresultatResultat sokStudieResultat(String utbildningsinstansUID,
 			String[] kurstillfalleUIDn,
 			String filtrering,
 			String grupp,
@@ -96,7 +96,7 @@ public interface Resultatinformation {
 			int limit,
 			String orderby);
 
-	public SokresultatStudieresultatResultat sokAttesteradeStudieResultat(String utbildningsinstansUID,
+	SokresultatStudieresultatResultat sokAttesteradeStudieResultat(String utbildningsinstansUID,
 			String[] kurstillfalleUIDn,
 			String filtrering,
 			String grupp,
@@ -104,9 +104,9 @@ public interface Resultatinformation {
 			int limit,
 			String orderby);
 	
-	public Organisationslista listaOrganisatoriskaDelar();
+	Organisationslista listaOrganisatoriskaDelar();
 	
-	public SokresultatKurstillfalleResultat sokresultatKurstillfalle(
+	SokresultatKurstillfalleResultat sokresultatKurstillfalle(
 			String	benamning,
 			String	kurskod,
 			String	tillfalleskod,
@@ -120,9 +120,9 @@ public interface Resultatinformation {
 			int page,
 			String	sprakkod); 
 
-	public Perioder listaPerioder();
+	Perioder listaPerioder();
 	
-	public SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(
+	SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(
 			String kursinstansUID,
 			String[] kurstillfallen,
 			String grupp,
@@ -133,12 +133,12 @@ public interface Resultatinformation {
 			String orderBetygsgradAvserUtbildningUID,
 			String orderExaminationsdatumAvserUtbildningUID);
 
-	public SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(
+	SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(
 			SokResultatResultatUppfoljningQuery sokResultatResultatUppfoljningQuery);
 
 	SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(ResultatuppfoljningSokVarden resultatuppfoljningSokVarden);
 
-	public SokresultatStudieresultatResultat sokStudieresultatForRapporteringsunderlag(
+	SokresultatStudieresultatResultat sokStudieresultatForRapporteringsunderlag(
 		String aktivitetstillfalleUID,
 		String[] kurstillfallen,
 		String filtrering,
@@ -148,19 +148,19 @@ public interface Resultatinformation {
 		int limit,
 		String orderby);
 
-	public Aktivitetstillfallesmojlighet hamtaAktivitetstillfallesmojlighet(String aktivitetstillfallesmojlighetUID);
+	Aktivitetstillfallesmojlighet hamtaAktivitetstillfallesmojlighet(String aktivitetstillfallesmojlighetUID);
 
-	public Aktivitetstillfallesmojlighet avanmalStudentFranAktivitetstillfalle(String aktivitetstillfallesmojlighetUID, Anmalan anmalan);
+	Aktivitetstillfallesmojlighet avanmalStudentFranAktivitetstillfalle(String aktivitetstillfallesmojlighetUID, Anmalan anmalan);
 	
-	public Aktivitetstillfallesmojlighet anmalStudentTillAktivitetstillfalle(String aktivitetstillfallesmojlighetUID, Anmalan anmalan);
+	Aktivitetstillfallesmojlighet anmalStudentTillAktivitetstillfalle(String aktivitetstillfallesmojlighetUID, Anmalan anmalan);
 	
-	public void avanmalOchTaBortAktivitetstillfallesmojlighet(String aktivitetstillfallesmojlighetUID);
+	void avanmalOchTaBortAktivitetstillfallesmojlighet(String aktivitetstillfallesmojlighetUID);
 	
-	public Aktivitetstillfallesmojlighet skapaAktivitetstillfallesmojlighet(String studieresultatUID, Aktivitetstillfalle aktivitetstillfalle);
+	Aktivitetstillfallesmojlighet skapaAktivitetstillfallesmojlighet(String studieresultatUID, Aktivitetstillfalle aktivitetstillfalle);
 	
-	public Identiteter sokStudentidentiteter(String aktivitetstillfalleUID);
+	Identiteter sokStudentidentiteter(String aktivitetstillfalleUID);
 
-	public SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(
+	SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(
 			String aktivitetstillfalleUID,
 			String[] kurstillfalleUID,
 			String gruppUID,
@@ -172,19 +172,19 @@ public interface Resultatinformation {
 			String orderby
 	);
 
-	public SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(
+	SokresultatKurstillfallesdeltagare sokresultatKurstillfallesdeltagare(
 			SokResultatKurstillfallesdeltagareQuery sokResultatKurstillfallesdeltagareQuery);
 
-	public AktivitetstillfalleForStudentLista sokAktivitetstillfalleForStudent(
+	AktivitetstillfalleForStudentLista sokAktivitetstillfalleForStudent(
 			String studentUID,
 			String kurstillfalleUID,
 			Boolean endastAnmalan
 	);
 
 	@Deprecated
-	public Hinderlista hamtaHinder(String studieresultatUID, String utbildningUID);
+	Hinderlista hamtaHinder(String studieresultatUID, String utbildningUID);
 
-	public Hinderlista hamtaHinderSkapa(String studieresultatUID, String utbildningUID);
+	Hinderlista hamtaHinderSkapa(String studieresultatUID, String utbildningUID);
 
-	public Hinderlista hamtaHinderKlarmarkera(String studieresultatUID, String resultatUID);
+	Hinderlista hamtaHinderKlarmarkera(String studieresultatUID, String resultatUID);
 }
