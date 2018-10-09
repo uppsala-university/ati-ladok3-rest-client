@@ -1,5 +1,6 @@
 package se.sunet.ati.ladok.rest.services;
 
+import se.ladok.schemas.dap.ServiceIndex;
 import se.ladok.schemas.kataloginformation.*;
 import se.sunet.ati.ladok.rest.api.kataloginformation.SokOrganisationQuery;
 
@@ -57,4 +58,6 @@ public interface Kataloginformation extends LadokServiceProperties {
 	Utbildningstyper listaUtbildningstyper();
 
 	Aktivitetstillfallestyper listaAktivitetstillfallestyper();
+
+	ServiceIndex hamtaIndex();
 }

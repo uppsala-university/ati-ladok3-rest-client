@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import se.ladok.schemas.dap.ServiceIndex;
 import se.ladok.schemas.extintegration.UtannonseringLista;
 import se.ladok.schemas.utbildningsinformation.Utbildningstillfalle;
 import se.sunet.ati.ladok.rest.services.Extintegration;
@@ -21,7 +22,9 @@ public class ExtintegrationImpl extends LadokServicePropertiesImpl implements Ex
 	private static final String RESOURCE_GRUNDDATA = "emil";
 	private static final String RESOURCE_UTANNONSERINGAR = "utannonseringar";
 	private static final String RESOURCE_UTBILDNINGSTILLFALLE = "utbildningstillfalle";
-	
+	private static final String RESOURSE_SERVICE = "service";
+	private static final String RESOURSE_INDEX = "index";
+
 	private static Log log = LogFactory.getLog(ExtintegrationImpl.class);
 
 	private static final String EXTINTEGRATION_URL = "/extintegration";
@@ -77,6 +80,23 @@ public class ExtintegrationImpl extends LadokServicePropertiesImpl implements Ex
 				.get();
 
 		return validatedResponse(response, UtannonseringLista.class);
+	}
+
+	@Override
+	public ServiceIndex hamtaIndex() {
+		String responseType = EXTINTEGRATION_RESPONSE_TYPE + "+" + EXTINTEGRATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURSE_SERVICE)
+				.path(RESOURSE_INDEX);
+
+		log.info("Query URL: " + client.getUri());
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, ServiceIndex.class);
 	}
 	
 	

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.dap.ServiceIndex;
 import se.ladok.schemas.utbildningsinformation.*;
 import se.sunet.ati.ladok.rest.api.utbildningsinformation.SokUtbildningsinstansQuery;
 import se.sunet.ati.ladok.rest.api.utbildningsinformation.SokUtbildningstillfallenQuery;
@@ -164,4 +165,6 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	Utbildningstillfalle ateraktiveraTillfalle(String utbildningstillfalleUID, Beslut beslut);
 
 	LokalaUtbildningsmallar sokLokalUtbildningsmallar(int studieordningID);
+
+	ServiceIndex hamtaIndex();
 }

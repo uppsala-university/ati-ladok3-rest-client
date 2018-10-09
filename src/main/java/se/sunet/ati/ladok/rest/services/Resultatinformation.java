@@ -3,6 +3,7 @@ package se.sunet.ati.ladok.rest.services;
 import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.dap.ServiceIndex;
 import se.ladok.schemas.resultat.*;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfalleQuery;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfallesmojlighetQuery;
@@ -187,4 +188,6 @@ public interface Resultatinformation {
 	Hinderlista hamtaHinderSkapa(String studieresultatUID, String utbildningUID);
 
 	Hinderlista hamtaHinderKlarmarkera(String studieresultatUID, String resultatUID);
+
+	ServiceIndex hamtaIndex();
 }

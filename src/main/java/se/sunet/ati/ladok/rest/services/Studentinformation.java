@@ -1,5 +1,6 @@
 package se.sunet.ati.ladok.rest.services;
 
+import se.ladok.schemas.dap.ServiceIndex;
 import se.ladok.schemas.studentinformation.AvskiljandebeslutLista;
 import se.ladok.schemas.studentinformation.Avstangningar;
 import se.ladok.schemas.studentinformation.Kontaktuppgifter;
@@ -14,4 +15,6 @@ public interface Studentinformation extends LadokServiceProperties {
 	Student hamtaStudent(String studentUID);
 
 	Kontaktuppgifter hamtaKontaktuppgifterGivetStudent(String studentUID);
+
+	ServiceIndex hamtaIndex();
 }

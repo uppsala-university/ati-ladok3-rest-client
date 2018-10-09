@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Student;
+import se.ladok.schemas.dap.ServiceIndex;
 import se.ladok.schemas.studiedeltagande.*;
 import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurspaketeringstillfalleQuery;
 import se.sunet.ati.ladok.rest.api.studiedeltagande.SokDeltagareKurstillfalleQuery;
@@ -43,6 +44,8 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 	private static final String RESOURCE_STUDIESTRUKTUR = "studiestruktur";
 	private static final String RESOURCE_GRUPP = "grupp";
 	private static final String RESOURCE_UTBILDNING = "utbildning";
+	private static final String RESOURSE_SERVICE = "service";
+	private static final String RESOURSE_INDEX = "index";
 
 	// OBS Nedanstående resurs är felstavad hos Ladok3
 	private static final String RESOURCE_PABORJAD_UTBILDNING = "paborjadutbilding";
@@ -382,6 +385,23 @@ public class StudiedeltagandeImpl extends LadokServicePropertiesImpl implements 
 				.get();
 
 		return validatedResponse(response, GruppLista.class);
+	}
+
+	@Override
+	public ServiceIndex hamtaIndex() {
+		String responseType = STUDIEDELTAGANDE_RESPONSE_TYPE + "+" + STUDIEDELTAGANDE_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURSE_SERVICE)
+				.path(RESOURSE_INDEX);
+
+		log.info("Query URL: " + client.getUri());
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, ServiceIndex.class);
 	}
 
 }

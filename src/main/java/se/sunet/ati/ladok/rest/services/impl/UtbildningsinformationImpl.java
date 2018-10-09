@@ -3,6 +3,7 @@ package se.sunet.ati.ladok.rest.services.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.dap.ServiceIndex;
 import se.ladok.schemas.utbildningsinformation.*;
 import se.sunet.ati.ladok.rest.api.utbildningsinformation.SokUtbildningsinstansQuery;
 import se.sunet.ati.ladok.rest.api.utbildningsinformation.type.Status;
@@ -52,6 +53,8 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	private static final String RESOURCE_STRUKTUR = "struktur";
 	private static final String RESOURCE_PUBLICERA = "publicera";
 	private static final String RESOURCE_BOX = "box";
+	private static final String RESOURSE_SERVICE = "service";
+	private static final String RESOURSE_INDEX = "index";
 
 	private static final String RESOURCE_NATIONELL = "nationell";
 	private static final String RESOURCE_ATTRIBUTDEFINITIONER = "attributdefinitioner";
@@ -132,7 +135,24 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		return validatedResponse(response, LokalaUtbildningsmallar.class);
 	}
-			
+
+	@Override
+	public ServiceIndex hamtaIndex() {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURSE_SERVICE)
+				.path(RESOURSE_INDEX);
+
+		log.info("Query URL: " + client.getUri());
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, ServiceIndex.class);
+	}
+
 	@Override
 	public LokalUtbildningsmall hamtaLokalUtbildningsmall(String utbildningsmallUID) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;

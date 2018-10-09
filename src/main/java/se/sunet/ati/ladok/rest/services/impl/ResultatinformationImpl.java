@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import se.ladok.schemas.Hinderlista;
 import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
+import se.ladok.schemas.dap.ServiceIndex;
 import se.ladok.schemas.resultat.*;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfalleQuery;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfallesmojlighetQuery;
@@ -60,6 +61,8 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	private static final String RESOURCE_HINDER = "hinder";
 	private static final String RESOURCE_KURSTILLFALLESDELTAGARE = "kurstillfallesdeltagare";
 	private static final String RESOURCE_SOK = "sok";
+	private static final String RESOURSE_SERVICE = "service";
+	private static final String RESOURSE_INDEX = "index";
 
 	private static final String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 	public static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
@@ -1035,5 +1038,22 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 				.get();
 
 		return validatedResponse(response, AktivitetstillfalleForStudentLista.class);
+	}
+
+	@Override
+	public ServiceIndex hamtaIndex() {
+		String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURSE_SERVICE)
+				.path(RESOURSE_INDEX);
+
+		log.info("Query URL: " + client.getUri());
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, ServiceIndex.class);
 	}
 }

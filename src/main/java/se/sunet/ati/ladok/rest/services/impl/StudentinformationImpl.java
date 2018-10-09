@@ -2,6 +2,7 @@ package se.sunet.ati.ladok.rest.services.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import se.ladok.schemas.dap.ServiceIndex;
 import se.ladok.schemas.studentinformation.AvskiljandebeslutLista;
 import se.ladok.schemas.studentinformation.Avstangningar;
 import se.ladok.schemas.studentinformation.Kontaktuppgifter;
@@ -23,6 +24,8 @@ public class StudentinformationImpl extends LadokServicePropertiesImpl implement
 	private static final String RESOURCE_AVSTANGNING = "avstangning";
 	private static final String RESOURCE_KONTAKTUPPGIFTER = "kontaktuppgifter";
 	private static final String RESOURCE_STUDENT = "student";
+	private static final String RESOURSE_SERVICE = "service";
+	private static final String RESOURSE_INDEX = "index";
 
 	private static final String STUDENT_RESPONSE_TYPE = "application/vnd.ladok-studentinformation";
 	private static final String STUDENT_MEDIATYPE = "xml;charset=UTF-8";
@@ -102,5 +105,21 @@ public class StudentinformationImpl extends LadokServicePropertiesImpl implement
 				.get();
 
 		return validatedResponse(response, Kontaktuppgifter.class);
+	}
+
+	@Override
+	public ServiceIndex hamtaIndex() {
+		WebTarget client = getClient()
+				.path(RESOURSE_SERVICE)
+				.path(RESOURSE_INDEX);
+
+		log.info("Query URL: " + client.getUri());
+		Response response = client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, ServiceIndex.class);
 	}
 }
