@@ -10,6 +10,9 @@ import se.ladok.schemas.examen.Precisering;
 import se.ladok.schemas.examen.PreciseringLista;
 import se.sunet.ati.ladok.rest.services.Examen;
 
+/*
+ * Examen
+ */
 public class ExamenITCase {
 	
 	private static Examen examen;
@@ -28,7 +31,6 @@ public class ExamenITCase {
 		assertNotNull(listaPrecisering.getPrecisering());
 		assertFalse(listaPrecisering.getPrecisering().isEmpty());
 		for (Precisering p : listaPrecisering.getPrecisering()) {
-			//System.out.println(p);
 			assertNotNull(p);
 		}
 	}
