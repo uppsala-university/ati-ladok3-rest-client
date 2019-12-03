@@ -500,6 +500,19 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		return validatedResponse(response, Utbildningsinformationsstruktur.class);
 	}
 	
+	@Override
+	public Utbildningsinformationsstruktur uppdateraStruktur(Utbildningsinformationsstruktur utbildningsinformationsstruktur, String strukturUID, boolean registervard) {
+		JAXBElement<Utbildningsinformationsstruktur> utbildningsinformationsstrukturJAXBElement = new ObjectFactory().createUtbildningsinformationsstruktur(utbildningsinformationsstruktur);
+		WebTarget client = getClient()
+				.path(RESOURCE_STRUKTUR).path(strukturUID).queryParam("registervard", Boolean.toString(registervard));;
+
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.put(Entity.entity(utbildningsinformationsstrukturJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, Utbildningsinformationsstruktur.class);
+	}
+	
 	
 	@Override
 	public Utbildningsinstansbox hamtaUtbildningsinstansbox(int utbildningstypID, String utbildningsinstansUID) {
@@ -748,6 +761,23 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		WebTarget client = getClient()
 				.path(RESOURCE_UTBILDNINGSINSTANS)
 				.path(utbildningsinstans.getUid());
+
+		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(utbildningsinstansJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, Utbildningsinstans.class);
+	}
+	
+	@Override
+	public Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans, boolean registervard) {
+		JAXBElement<Utbildningsinstans> utbildningsinstansJAXBElement = new ObjectFactory().createUtbildningsinstans(utbildningsinstans);
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path(RESOURCE_UTBILDNINGSINSTANS)
+				.path(utbildningsinstans.getUid())
+				.queryParam("registervard", Boolean.toString(registervard));
 
 		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)

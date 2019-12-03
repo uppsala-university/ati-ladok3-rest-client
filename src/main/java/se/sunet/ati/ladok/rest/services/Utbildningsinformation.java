@@ -167,4 +167,9 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	LokalaUtbildningsmallar sokLokalUtbildningsmallar(int studieordningID);
 
 	ServiceIndex hamtaIndex();
+
+	Utbildningsinformationsstruktur uppdateraStruktur(Utbildningsinformationsstruktur utbildningsinformationsstruktur,
+			String strukturUID, boolean registervard);
+
+	Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans, boolean registervard);
 }
