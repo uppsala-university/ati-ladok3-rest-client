@@ -30,6 +30,7 @@ import static se.sunet.ati.ladok.rest.util.ClientUtil.addQueryParams;
 public class UtbildningsinformationImpl extends LadokServicePropertiesImpl implements Utbildningsinformation {
 
 
+	private static final String ATERAKTIVERA_AVVECKLAD = "ateraktivera_avvecklad";
 	private static Log log = LogFactory.getLog(UtbildningsinformationImpl.class);
 	private static final String UTBILDNINGSINFORMATION_URL = "/utbildningsinformation";
 
@@ -402,6 +403,23 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	}
 
 	@Override
+	public void ateraktiveraUtbildning(String utbildningUID, Beslut beslut) {
+		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
+        //The date isn't supposed to append timezone information, which it does out of the box. Explicitly tell the object that it is undefined to avoid that.
+		JAXBElement<Beslut> beslutJAXBElement = getBeslutJAXBElement(beslut);
+
+		WebTarget client = getClient().path(RESOURCE_UTBILDNINGSINSTANS).path(ATERAKTIVERA_AVVECKLAD).path(utbildningUID);
+
+		log.debug("PUT URL: " + client.getUri());
+		Response response = client.request(MediaType.APPLICATION_XML_TYPE)
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(beslutJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		validatedResponse(response, String.class);
+	}
+	
+	@Override
 	public void avvecklaUtbildning(String utbildningUID, Beslut beslut) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
         //The date isn't supposed to append timezone information, which it does out of the box. Explicitly tell the object that it is undefined to avoid that.
@@ -635,7 +653,8 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		return validatedResponse(response, Utbildningstillfalle.class);
 	}
-
+	
+	
 	@Override
 	public Utbildningstillfalle bytUtbildningsinstansForUtbildningstillfalle(String utbildningstillfalleUID, String utbildningsinstansUID) {
 		WebTarget client = getClient()

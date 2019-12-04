@@ -172,4 +172,6 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 			String strukturUID, boolean registervard);
 
 	Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans, boolean registervard);
+
+	void ateraktiveraUtbildning(String utbildningUID, Beslut beslut);
 }
