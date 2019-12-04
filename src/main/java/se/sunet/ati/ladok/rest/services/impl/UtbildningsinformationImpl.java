@@ -654,7 +654,6 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 		return validatedResponse(response, Utbildningstillfalle.class);
 	}
 	
-	
 	@Override
 	public Utbildningstillfalle bytUtbildningsinstansForUtbildningstillfalle(String utbildningstillfalleUID, String utbildningsinstansUID) {
 		WebTarget client = getClient()
