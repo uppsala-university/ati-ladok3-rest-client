@@ -171,6 +171,8 @@ public interface Utbildningsinformation extends LadokServiceProperties {
 	Utbildningsinformationsstruktur uppdateraStruktur(Utbildningsinformationsstruktur utbildningsinformationsstruktur,
 			String strukturUID, boolean registervard);
 
+	Utbildningsinstans skapaUnderliggandeUtbildningsinstansInomBefintligUtbildningsinstans(Utbildningsinstans utbildningsinstans, String utbildningsinstansUID, boolean registervard);
+
 	Utbildningsinstans uppdateraUtbildningsinstans(Utbildningsinstans utbildningsinstans, boolean registervard);
 
 	void ateraktiveraUtbildning(String utbildningUID, Beslut beslut); 

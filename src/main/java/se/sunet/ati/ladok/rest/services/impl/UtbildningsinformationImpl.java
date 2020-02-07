@@ -522,7 +522,7 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 	public Utbildningsinformationsstruktur uppdateraStruktur(Utbildningsinformationsstruktur utbildningsinformationsstruktur, String strukturUID, boolean registervard) {
 		JAXBElement<Utbildningsinformationsstruktur> utbildningsinformationsstrukturJAXBElement = new ObjectFactory().createUtbildningsinformationsstruktur(utbildningsinformationsstruktur);
 		WebTarget client = getClient()
-				.path(RESOURCE_STRUKTUR).path(strukturUID).queryParam("registervard", Boolean.toString(registervard));;
+				.path(RESOURCE_STRUKTUR).path(strukturUID).queryParam("registervard", Boolean.toString(registervard));
 
 		Response response = client.request()
 				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
@@ -530,8 +530,23 @@ public class UtbildningsinformationImpl extends LadokServicePropertiesImpl imple
 
 		return validatedResponse(response, Utbildningsinformationsstruktur.class);
 	}
-	
-	
+
+	@Override
+	public Utbildningsinstans skapaUnderliggandeUtbildningsinstansInomBefintligUtbildningsinstans(Utbildningsinstans utbildningsinstans, String utbildningsinstansUID, boolean registervard) {
+		JAXBElement<Utbildningsinstans> utbildningsinstansJAXBElement = new ObjectFactory().createUtbildningsinstans(utbildningsinstans);
+		WebTarget client = getClient()
+				.path(RESOURCE_UTBILDNINGSINSTANS).path(utbildningsinstansUID)
+				.path(RESOURCE_UNDERLIGGANDE)
+				.queryParam("registervard", Boolean.toString(registervard));
+
+		Response response = client.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.post(Entity.entity(utbildningsinstansJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, Utbildningsinstans.class);
+	}
+
+
 	@Override
 	public Utbildningsinstansbox hamtaUtbildningsinstansbox(int utbildningstypID, String utbildningsinstansUID) {
 		String responseType = UTBILDNINGSINFORMATION_RESPONSE_TYPE + "+" + UTBILDNINGSINFORMATION_MEDIATYPE;
