@@ -172,4 +172,11 @@ public class KataloginformationITCase {
 		Aktivitetstillfallestyper aktivitetstillfallestyper = ki.listaAktivitetstillfallestyper();
 		assertFalse(aktivitetstillfallestyper.getAktivitetstillfallestyp().isEmpty());
 	}
+	
+	@Test
+	public void listaMarkningsnycklar() throws Exception {
+		Kataloginformation ki = new KataloginformationImpl();
+		Markningsnycklar markningsnycklar = ki.listaMarkningsnycklar();
+		assertFalse(markningsnycklar.getMarkningsnyckel().isEmpty());
+	}
 }

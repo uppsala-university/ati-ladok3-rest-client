@@ -60,4 +60,6 @@ public interface Kataloginformation extends LadokServiceProperties {
 	Aktivitetstillfallestyper listaAktivitetstillfallestyper();
 
 	ServiceIndex hamtaIndex();
+	
+	Markningsnycklar listaMarkningsnycklar();
 }
