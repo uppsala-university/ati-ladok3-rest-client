@@ -62,4 +62,6 @@ public interface Kataloginformation extends LadokServiceProperties {
 	ServiceIndex hamtaIndex();
 	
 	Markningsnycklar listaMarkningsnycklar();
+
+	AnvandarbehorighetLista hamtAnvandarbehorighetEgna();
 }

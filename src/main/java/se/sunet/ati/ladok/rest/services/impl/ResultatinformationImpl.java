@@ -7,6 +7,7 @@ import se.ladok.schemas.Identiteter;
 import se.ladok.schemas.Organisationslista;
 import se.ladok.schemas.dap.ServiceIndex;
 import se.ladok.schemas.resultat.*;
+import se.ladok.schemas.resultat.UtdataAvgransningarLista.UtdataAvgransningar;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfalleQuery;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokAktivitetstillfallesmojlighetQuery;
 import se.sunet.ati.ladok.rest.api.resultatinformation.SokResultatKurstillfallesdeltagareQuery;
@@ -19,23 +20,34 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
+import static se.ladok.schemas.resultat.UtdataAvgransningstyp.HAR_GODKAND_KURS;
+import static se.ladok.schemas.resultat.UtdataAvgransningstyp.HAR_GODKANT_RESULTAT_PA_MODUL;
+import static se.ladok.schemas.resultat.UtdataAvgransningstyp.KURSUTBILDNINGUIDER;
+import static se.ladok.schemas.resultat.UtdataAvgransningstyp.MODULUTBILDNINGUIDER;
+import static se.ladok.schemas.resultat.UtdataAvgransningstyp.RESULTAT_INOM;
 import static se.sunet.ati.ladok.rest.services.impl.ResponseFactory.validatedResponse;
 import static se.sunet.ati.ladok.rest.util.ClientUtil.addQueryParams;
 
 public class ResultatinformationImpl extends LadokServicePropertiesImpl implements Resultatinformation {
+	
+
 	private static Log log = LogFactory.getLog(ResultatinformationImpl.class);
 
 	private static final String RESULTAT_URL = "/resultat";
 	private static final String RESULTAT_RESPONSE_TYPE = "application/vnd.ladok-resultat";
 	private static final String RESULTAT_MEDIATYPE = "xml;charset=UTF-8";
 	private static final String RESOURCE_STUDIERESULTAT = "studieresultat";
+	private static final String RESOURCE_STUDENTRESULTAT = "studentresultat";
 	private static final String RESOURCE_RESULTAT= "resultat";
 	private static final String RESOURCE_STUDENT_CRITERIA = "student";
 	private static final String RESOURCE_KURS = "utbildningstillfalle";
 	private static final String RESOURCE_UTBILDNINGSINSTANS = "utbildningsinstans";
 	private static final String RESOURCE_RAPPORTERA = "rapportera";
 	private static final String RESOURCE_ATTESTERA = "attestera";
+	private static final String RESOURCE_ATTESTERADE = "attesterade";
 	private static final String MODULER = "moduler";
 	private static final String RESOURCE_UTBILDNING = "utbildning";
 	private static final String RESOURCE_KLARMARKERA = "klarmarkera";
@@ -63,6 +75,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	private static final String RESOURCE_SOK = "sok";
 	private static final String RESOURSE_SERVICE = "service";
 	private static final String RESOURSE_INDEX = "index";
+	private static final String RESOURCE_UTDATA = "utdata";
 
 	private static final String responseType = RESULTAT_RESPONSE_TYPE + "+" + RESULTAT_MEDIATYPE;
 	public static final String CONTENT_TYPE_HEADER_NAME = "Content-Type";
@@ -730,6 +743,7 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 	public SokresultatResultatuppfoljning sokStudieresultatForResultatuppfoljningAvKurs(ResultatuppfoljningSokVarden resultatuppfoljningSokVarden){
 		JAXBElement<ResultatuppfoljningSokVarden> resultatJAXBElement = new ObjectFactory().createResultatuppfoljningSokVarden(resultatuppfoljningSokVarden);
 
+		
 		WebTarget client = getClient()
 				.path(RESOURCE_RESULTATUPPFOLJNING)
 				.path(RESOURCE_RESULTATUPPFOLJNING)
@@ -744,7 +758,125 @@ public class ResultatinformationImpl extends LadokServicePropertiesImpl implemen
 
 		return validatedResponse(response, SokresultatResultatuppfoljning.class);
 	}
+	
+	
+	@Override
+	public StudentresultatPerKurs sokResultatStudent(String studentUid, String kursUID){
+			
+		WebTarget client = getClient()
+				.path(RESOURCE_STUDENTRESULTAT).path(RESOURCE_ATTESTERADE)
+				.path(RESOURCE_STUDENT_CRITERIA).path(studentUid)
+				.queryParam("kursUID", kursUID);
 
+		log.info("Query URL: " + client.getUri());
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.get();
+
+		return validatedResponse(response, StudentresultatPerKurs.class);
+	}
+	
+	/**
+	 * Not currently supported by Ladok
+	 */
+	public UtdataResultat sokResultatAvKurs(List<String> utbildninguider, 
+			List<String> moduluider, 
+			String startdate, 
+			String enddate,
+			Boolean godkandModul,
+			Boolean godkandKurs){
+		
+		Objects.requireNonNull(startdate, "startdate is null");
+		Objects.requireNonNull(enddate, "enddate is null");
+		
+		UtdataAvgransningar ua = new UtdataAvgransningar();
+		
+		if (utbildninguider != null) {
+			for (String uid : utbildninguider) {	
+				UtdataAvgransning utdataAvgransning = new UtdataAvgransning();
+				utdataAvgransning.getUtdataAvgransningsvarden().add(uid);
+				utdataAvgransning.setUtdataAvgransningstyp(KURSUTBILDNINGUIDER);
+				ua.getUtdataAvgransning().add(utdataAvgransning);
+			}
+		}
+		
+		if (moduluider != null) {
+			for (String uid : moduluider) {
+				UtdataAvgransning utdataAvgransning = new UtdataAvgransning();
+				utdataAvgransning.getUtdataAvgransningsvarden().add(uid);
+				utdataAvgransning.setUtdataAvgransningstyp(MODULUTBILDNINGUIDER);
+				ua.getUtdataAvgransning().add(utdataAvgransning);
+			}
+		}
+		
+		if (godkandModul != null) {
+			UtdataAvgransning utdataAvgransning = new UtdataAvgransning();
+			utdataAvgransning.getUtdataAvgransningsvarden().add(godkandModul.toString());
+			utdataAvgransning.setUtdataAvgransningstyp(HAR_GODKANT_RESULTAT_PA_MODUL);
+			ua.getUtdataAvgransning().add(utdataAvgransning);
+		}
+		
+		if (godkandKurs != null) {
+			UtdataAvgransning utdataAvgransning = new UtdataAvgransning();
+			utdataAvgransning.getUtdataAvgransningsvarden().add(godkandKurs.toString());
+			utdataAvgransning.setUtdataAvgransningstyp(HAR_GODKAND_KURS);
+			ua.getUtdataAvgransning().add(utdataAvgransning);
+		}
+		
+		UtdataAvgransning utdataAvgransningDate = new UtdataAvgransning();
+		utdataAvgransningDate.getUtdataAvgransningsvarden().add(startdate + "_" + enddate);
+		utdataAvgransningDate.setUtdataAvgransningstyp(RESULTAT_INOM);
+		ua.getUtdataAvgransning().add(utdataAvgransningDate);		
+			
+		UtdataAvgransningarLista avg = new UtdataAvgransningarLista();
+		avg.setUtdataAvgransningar(ua);
+		
+		Utdatafraga u = new Utdatafraga();
+		u.setUtdataAvgransningar(avg);
+		
+		return sokResultatAvKurs(u);	
+	}
+	
+	@Override
+	public UtdataResultat sokResultatAvKurs(Utdatafraga u){
+		
+		JAXBElement<Utdatafraga> resultatJAXBElement = new ObjectFactory().createUtdatafraga(u);
+			
+		WebTarget client = getClient()
+				.path(RESOURCE_UTDATA).path(RESOURCE_SOK)
+				.path("resultat.domain.utdata.resultat");
+
+		log.info("Query URL: " + client.getUri());
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, UtdataResultat.class);
+	}
+	
+	@Override
+	public SokresultatResultatUtdata sokResultatAvKurs(SokkriterierResultatUtdata u){
+		
+		JAXBElement<SokkriterierResultatUtdata> resultatJAXBElement = new ObjectFactory().createSokkriterierResultatUtdata(u);
+			
+		WebTarget client = getClient()
+				.path(RESOURCE_UTDATA).path("resultat");
+
+		log.info("Query URL: " + client.getUri());
+		Response response =  client
+				.request()
+				.header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType)
+				.put(Entity.entity(resultatJAXBElement, ClientUtil.CONTENT_TYPE_HEADER_VALUE));
+
+		return validatedResponse(response, 	SokresultatResultatUtdata.class);
+	}
+	
+	
 	@Override
 	public SokresultatStudieresultatResultat sokStudieresultatForRapporteringsunderlag(
 			String aktivitetstillfalleUID,

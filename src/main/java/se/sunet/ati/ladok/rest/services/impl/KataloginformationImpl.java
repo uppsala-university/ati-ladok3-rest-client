@@ -24,6 +24,8 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 	private static final String RESOURCE_AKTIVITETSTILLFALLESTYP = "aktivitetstillfallestyp";
 	private static final String RESOURSE_SERVICE = "service";
 	private static final String RESOURSE_INDEX = "index";
+	
+	
 
 	private static Log log = LogFactory.getLog(KataloginformationImpl.class);
 
@@ -235,6 +237,17 @@ public class KataloginformationImpl extends LadokServicePropertiesImpl implement
 		WebTarget client = getClient().path(RESOURCE_ANVANDARE).path("autentiserad");
 		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
 				.accept(responseType).get(Anvandare.class);
+	}
+	
+	
+	@Override
+	public AnvandarbehorighetLista hamtAnvandarbehorighetEgna() {
+		String responseType = KATALOGINFORMATION_RESPONSE_TYPE + "+" + KATALOGINFORMATION_MEDIATYPE;
+		WebTarget client = getClient()
+				.path("anvandarbehorighet") 
+				.path("egna");
+		return client.request().header(ClientUtil.CONTENT_TYPE_HEADER_NAME, ClientUtil.CONTENT_TYPE_HEADER_VALUE)
+				.accept(responseType).get(AnvandarbehorighetLista.class);
 	}
 
 	@Override

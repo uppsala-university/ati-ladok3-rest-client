@@ -190,4 +190,10 @@ public interface Resultatinformation {
 	Hinderlista hamtaHinderKlarmarkera(String studieresultatUID, String resultatUID);
 
 	ServiceIndex hamtaIndex();
+
+	UtdataResultat sokResultatAvKurs(Utdatafraga u);
+
+	SokresultatResultatUtdata sokResultatAvKurs(SokkriterierResultatUtdata u);
+
+	StudentresultatPerKurs sokResultatStudent(String studentUid, String kursUID);
 }
